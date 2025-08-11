@@ -1,0 +1,45 @@
+using Photon.Pun;
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+
+public class PlayerController : MonoBehaviour
+{
+    PhotonView photonView;
+    Rigidbody rb;
+    public float speed = 10f;
+    [SerializeField] private TextMeshPro text;
+    void Start()
+    {
+        photonView = GetComponent<PhotonView>();
+        rb = GetComponent<Rigidbody>();
+        text = GetComponentInChildren<TextMeshPro>();
+    }
+
+    void Update()
+    {
+        if (photonView.IsMine) 
+        {
+            var x = Input.GetAxisRaw("Horizontal");
+            var y = Input.GetAxisRaw("Vertical");
+
+            Vector3 movement = new Vector3(x, 0, y);
+            //transform.LookAt(transform.position + movement);
+
+            if (movement != Vector3.zero)
+                rb.AddForce(movement.normalized * speed * Time.deltaTime);
+            else
+                rb.velocity = new Vector3(0, rb.velocity.y, 0);
+        }
+
+        //if (text != null)
+        //    text.transform.LookAt(Camera.main.transform);
+    }
+
+    public void ChangeUsername(string username) 
+    {
+        text = GetComponentInChildren<TextMeshPro>();
+        text.text = username;
+    }
+}
