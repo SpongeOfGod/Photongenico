@@ -39,6 +39,7 @@ public class PlayerController : MonoBehaviour
         //    text.transform.LookAt(Camera.main.transform);
     }
 
+    [PunRPC]
     public void ChangeUsername(string username) 
     {
         text = GetComponentInChildren<TextMeshPro>();
