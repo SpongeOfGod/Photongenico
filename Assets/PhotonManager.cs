@@ -19,7 +19,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         Debug.Log("OnConnectedToMaster() was called by PUN.");
 
         RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = 4;
+        roomOptions.MaxPlayers = 5;
         //PhotonNetwork.JoinRandomRoom();
         SceneManager.LoadScene("SampleScene");
         PhotonNetwork.JoinOrCreateRoom(RoomName, roomOptions, TypedLobby.Default);

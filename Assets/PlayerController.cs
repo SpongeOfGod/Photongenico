@@ -7,12 +7,14 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     PhotonView photonView;
+    PhotonRigidbodyView photonRigidbody;
     Rigidbody rb;
     public float speed = 10f;
     [SerializeField] private TextMeshPro text;
     void Start()
     {
         photonView = GetComponent<PhotonView>();
+        photonRigidbody = GetComponent<PhotonRigidbodyView>();
         rb = GetComponent<Rigidbody>();
         text = GetComponentInChildren<TextMeshPro>();
     }
