@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        CreateNewPlayer(newPlayer);
+        //CreateNewPlayer(newPlayer);
     }
 
     private void CreateNewPlayer(Player newPlayer)
@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         newPlayer.NickName = PlayerPrefab.name + PhotonNetwork.CurrentRoom.Players.Count;
         GameObject player = PhotonNetwork.Instantiate(PlayerPrefab.name, InitialPosition, Quaternion.identity);
 
+        Debug.Log( newPlayer.NickName);
         player.TryGetComponent(out PlayerController component);
 
         if (component != null)
