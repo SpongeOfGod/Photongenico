@@ -9,8 +9,9 @@ public class PlayerController : MonoBehaviour
     PhotonView photonView;
     PhotonRigidbodyView photonRigidbody;
     Rigidbody rb;
-    public float speed = 10f;
     [SerializeField] private TextMeshPro text;
+    public float speed = 10f;
+    [HideInInspector] public string PlayerName;
     void Start()
     {
         photonView = GetComponent<PhotonView>();
@@ -42,6 +43,7 @@ public class PlayerController : MonoBehaviour
     [PunRPC]
     public void ChangeUsername(string username) 
     {
+        PlayerName = username;
         text = GetComponentInChildren<TextMeshPro>();
         text.text = username;
     }

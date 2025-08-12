@@ -8,15 +8,21 @@ public class GameManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] GameObject PlayerPrefab;
     [SerializeField] Vector3 InitialPosition;
+    private List<PlayerController> CurrentPlayers = new();
 
     public override void OnJoinedRoom()
     {
-        (PhotonView, string) PV = CreateNewPlayer(PhotonNetwork.CurrentRoom.Players[PhotonNetwork.CurrentRoom.Players.Count]);
+        CreateNewPlayer(PhotonNetwork.CurrentRoom.Players[PhotonNetwork.CurrentRoom.Players.Count]);
 
-        PV.Item1.RPC("ChangeUsername", RpcTarget.AllBuffered, PV.Item2);
+        foreach (var item in CurrentPlayers)
+        {
+            item.TryGetComponent(out PhotonView PV);
+
+            PV.RPC("ChangeUsername", RpcTarget.AllBuffered, item.PlayerName);
+        }
     }
 
-    private (PhotonView, string) CreateNewPlayer(Player newPlayer)
+    private void CreateNewPlayer(Player newPlayer)
     {
         base.OnPlayerEnteredRoom(newPlayer);
         newPlayer.NickName = PlayerPrefab.name + PhotonNetwork.CurrentRoom.Players.Count;
@@ -24,9 +30,9 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         player.TryGetComponent(out PlayerController component);
 
+        CurrentPlayers.Add(component);
+
         if (component != null)
             component.ChangeUsername(newPlayer.NickName);
-
-        return (player.GetComponent<PhotonView>(), newPlayer.NickName);
     }
 }
