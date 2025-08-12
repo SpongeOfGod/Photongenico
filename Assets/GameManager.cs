@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public override void OnCreatedRoom()
     {
-        CreateNewPlayer(PhotonNetwork.CurrentRoom.Players[1]);
+       // CreateNewPlayer(PhotonNetwork.CurrentRoom.Players[1]);
     }
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
