@@ -10,9 +10,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] Vector3 InitialPosition;
 
 
-    public override void OnCreatedRoom()
+    public override void OnJoinedRoom()
     {
-       // CreateNewPlayer(PhotonNetwork.CurrentRoom.Players[1]);
+        CreateNewPlayer(PhotonNetwork.CurrentRoom.Players[1]);
     }
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
