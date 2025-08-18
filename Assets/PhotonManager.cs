@@ -9,18 +9,10 @@ using UnityEngine.SceneManagement;
 public class PhotonManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] string RoomName;
-
-    void Start()
-    {
-        PhotonNetwork.ConnectUsingSettings(); // Conecta al servidor master de Photon.
-    }
     public override void OnConnectedToMaster()
     {
-        Debug.Log("OnConnectedToMaster() was called by PUN.");
-
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.MaxPlayers = 5;
-        //PhotonNetwork.JoinRandomRoom();
         SceneManager.LoadScene("SampleScene");
         PhotonNetwork.JoinOrCreateRoom(RoomName, roomOptions, TypedLobby.Default);
         roomOptions.IsVisible = false;

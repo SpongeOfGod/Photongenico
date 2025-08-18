@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    PhotonView photonView;
+    public PhotonView photonView;
     PhotonRigidbodyView photonRigidbody;
     Rigidbody rb;
     [SerializeField] private TextMeshPro text;
