@@ -46,5 +46,7 @@ public class PlayerController : MonoBehaviour
         PlayerName = username;
         text = GetComponentInChildren<TextMeshPro>();
         text.text = username;
+
+        Debug.Log($"{PlayerName} has joined.");
     }
 }
