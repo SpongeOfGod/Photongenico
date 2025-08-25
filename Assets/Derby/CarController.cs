@@ -27,7 +27,7 @@ public class CarController : MonoBehaviour
 
     private float moveInput = 0;
     private float steerInput = 0;
-
+    
 
 
     [Header("Car Settings")]
@@ -84,6 +84,7 @@ public class CarController : MonoBehaviour
 
                 Debug.DrawLine(Raypoints[i].position, hit.point, Color.cyan);
 
+        
 
             }
             else wheelsOnGround[i] = 0;
@@ -115,10 +116,11 @@ public class CarController : MonoBehaviour
         {
             Acceleration();
             Deceleration();
-            turn();
+
             SidewayDrag();
             Jump();
-         }
+        }
+           turn();
     }
 
     private void Jump()
@@ -126,7 +128,7 @@ public class CarController : MonoBehaviour
         if (Input.GetButtonDown("Jump"))
         {
             carRB.AddForceAtPosition(jumpForce * transform.up, AcelerationTrPoint.position, ForceMode.Impulse);
-            Debug.Log("SALTO");
+         
         }
        
     }
