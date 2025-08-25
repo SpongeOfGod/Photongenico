@@ -134,11 +134,15 @@ public class CarController : MonoBehaviour
     }
     private void Acceleration()
     {
-        carRB.AddForceAtPosition(aceleration * moveInput * transform.forward, AcelerationTrPoint.position, ForceMode.Acceleration);
+        if (currentCarLocalVelocity.z < maxSpeed)
+        {
+carRB.AddForceAtPosition(aceleration * moveInput * transform.forward, AcelerationTrPoint.position, ForceMode.Acceleration);
+        }
+        
     }
      private void Deceleration()
     {
-        carRB.AddForceAtPosition(deceleration * moveInput * -transform.forward, AcelerationTrPoint.position, ForceMode.Acceleration);
+        carRB.AddForceAtPosition(deceleration * Mathf.Abs(carVelocityRatio) * -transform.forward, AcelerationTrPoint.position, ForceMode.Acceleration);
     }
     private void turn()
     {
