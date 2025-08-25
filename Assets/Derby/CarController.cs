@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using UnityEditor;
 using UnityEngine;
 
 public class CarController : MonoBehaviour
@@ -9,6 +10,7 @@ public class CarController : MonoBehaviour
 
     [SerializeField] private Rigidbody carRB;
     [SerializeField] private Transform[] Raypoints;
+    [SerializeField] private Transform upray;
     [SerializeField] private LayerMask drivable;
     [SerializeField] private Transform AcelerationTrPoint;
 
@@ -51,6 +53,7 @@ public class CarController : MonoBehaviour
     void Update()
     {
         GetplayerInputs();
+        restartRotation();
     }
 
     void FixedUpdate()
@@ -84,14 +87,21 @@ public class CarController : MonoBehaviour
 
                 Debug.DrawLine(Raypoints[i].position, hit.point, Color.cyan);
 
-        
+
 
             }
             else wheelsOnGround[i] = 0;
         }
 
-
+      
     }
+      void restartRotation()
+        {
+            if (Input.GetKeyDown(KeyCode.LeftShift) && Physics.Raycast( upray.position,upray.up,drivable))
+            {
+                transform.rotation = Quaternion.identity;
+        }
+      }
     void CheckGround()
     {
         int tempgroundwheels = 0;
