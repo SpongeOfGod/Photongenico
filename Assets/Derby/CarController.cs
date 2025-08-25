@@ -29,6 +29,7 @@ public class CarController : MonoBehaviour
     private float steerInput = 0;
 
 
+
     [Header("Car Settings")]
     [SerializeField] private float aceleration;
     [SerializeField] private float maxSpeed;
@@ -36,6 +37,8 @@ public class CarController : MonoBehaviour
     [SerializeField] private float steerStrength;
     [SerializeField] private AnimationCurve turningCurve;
     [SerializeField] private float draggcof;
+
+    [SerializeField] private float jumpForce;
     private Vector3 currentCarLocalVelocity = Vector3.zero;
     private float carVelocityRatio = 0;
     // Start is called before the first frame update
@@ -114,7 +117,18 @@ public class CarController : MonoBehaviour
             Deceleration();
             turn();
             SidewayDrag();
+            Jump();
          }
+    }
+
+    private void Jump()
+    {
+        if (Input.GetButtonDown("Jump"))
+        {
+            carRB.AddForceAtPosition(jumpForce * transform.up, AcelerationTrPoint.position, ForceMode.Impulse);
+            Debug.Log("SALTO");
+        }
+       
     }
     private void Acceleration()
     {
@@ -148,5 +162,6 @@ public class CarController : MonoBehaviour
     {
         moveInput = Input.GetAxis("Vertical");
         steerInput = Input.GetAxis("Horizontal");
+
     }
 }
