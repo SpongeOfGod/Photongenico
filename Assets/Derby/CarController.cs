@@ -12,7 +12,7 @@ public class CarController : MonoBehaviour
     [SerializeField] private Transform[] Raypoints;
     [SerializeField] private Transform upray;
     [SerializeField] private LayerMask drivable;
-    [SerializeField] private Transform AcelerationTrPoint;
+    [SerializeField] private Transform normalAcelerrationTrPoint;
 
     [Header("Suspension settings")]
 
@@ -34,8 +34,15 @@ public class CarController : MonoBehaviour
 
 
     [Header("Car Settings")]
-    [SerializeField] private float aceleration;
+    [SerializeField] private float normalAcelerration;
+    [SerializeField] private float boostAceleration;
+
+
+    private float Accelerationcapacity;
+
+    [SerializeField]
     [SerializeField] private float maxSpeed;
+    [SerializeField] private float maxBoost;
     [SerializeField] private float deceleration;
     [SerializeField] private float steerStrength;
     [SerializeField] private AnimationCurve turningCurve;
@@ -138,7 +145,7 @@ public class CarController : MonoBehaviour
     {
         if (Input.GetButtonDown("Jump"))
         {
-            carRB.AddForceAtPosition(jumpForce * transform.up, AcelerationTrPoint.position, ForceMode.Impulse);
+            carRB.AddForceAtPosition(jumpForce * transform.up, normalAcelerrationTrPoint.position, ForceMode.Impulse);
          
         }
        
@@ -147,13 +154,13 @@ public class CarController : MonoBehaviour
     {
         if (currentCarLocalVelocity.z < maxSpeed)
         {
-carRB.AddForceAtPosition(aceleration * moveInput * transform.forward, AcelerationTrPoint.position, ForceMode.Acceleration);
+carRB.AddForceAtPosition(normalAcelerration * moveInput * transform.forward, normalAcelerrationTrPoint.position, ForceMode.Acceleration);
         }
         
     }
      private void Deceleration()
     {
-        carRB.AddForceAtPosition(deceleration * Mathf.Abs(carVelocityRatio) * -transform.forward, AcelerationTrPoint.position, ForceMode.Acceleration);
+        carRB.AddForceAtPosition(deceleration * Mathf.Abs(carVelocityRatio) * -transform.forward, normalAcelerrationTrPoint.position, ForceMode.Acceleration);
     }
     private void turn()
     {
