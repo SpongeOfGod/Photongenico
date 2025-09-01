@@ -11,7 +11,6 @@ public class PlayerController : MonoBehaviour
     Rigidbody rb;
     [SerializeField] private TextMeshPro text;
     public float speed = 10f;
-    [HideInInspector] public string PlayerName;
     void Start()
     {
         photonView = GetComponent<PhotonView>();
@@ -41,12 +40,16 @@ public class PlayerController : MonoBehaviour
     }
 
     [PunRPC]
-    public void ChangeUsername(string username) 
+    public void ChangeUsername() 
     {
-        PlayerName = username;
+        //PlayerName = username;
         text = GetComponentInChildren<TextMeshPro>();
-        text.text = username;
+        photonView = GetComponent<PhotonView>();
 
-        Debug.Log($"{PlayerName} has joined.");
+        if (photonView.IsMine) 
+            text.text = PhotonNetwork.NickName;    
+        else
+            text.text = photonView.Owner.NickName;
+        //Debug.Log($"{PlayerName} has joined.");
     }
 }

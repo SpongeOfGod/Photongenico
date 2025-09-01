@@ -13,14 +13,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        CreateNewPlayer(/*PhotonNetwork.CurrentRoom.Players[CurrentPlayers.Count]*/);
-
-        //foreach (var item in CurrentPlayers)
-        //{
-        //    item.TryGetComponent(out PhotonView PV);
-
-        //    PV.RPC("ChangeUsername", RpcTarget.AllBuffered, null);
-        //}
+        CreateNewPlayer();
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -30,20 +23,14 @@ public class GameManager : MonoBehaviourPunCallbacks
         Debug.Log($"Player: {newPlayer.NickName} entered the room!");
     }
 
-    private void CreateNewPlayer(/*Player newPlayer*/)
+    private void CreateNewPlayer()
     {
-        //base.OnPlayerEnteredRoom(newPlayer);
-        //newPlayer.NickName = PlayerPrefab.name + PhotonNetwork.CurrentRoom.Players.Count;
         GameObject player = PhotonNetwork.Instantiate(PlayerPrefab.name, InitialPosition, Quaternion.identity);
 
         player.TryGetComponent(out PlayerController component);
 
         CurrentPlayers.Add(component);
 
-
-
-        component.GetComponent<PhotonView>().RPC("ChangeUsername", RpcTarget.AllBuffered, PlayerPrefs.GetString("PlayerNickname"));
-        //if (component != null)
-        //    component.ChangeUsername();
+        component.GetComponent<PhotonView>().RPC("ChangeUsername", RpcTarget.AllBuffered, null);
     }
 }

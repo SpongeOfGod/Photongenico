@@ -174,7 +174,6 @@ MonoBehaviour:
   photonView: {fileID: 0}
   text: {fileID: 0}
   speed: 500
-  PlayerName: 
 --- !u!1 &3904603830678754054
 GameObject:
   m_ObjectHideFlags: 0
