@@ -25,8 +25,9 @@ public class CarController : MonoBehaviour
 
     private int[] wheelsOnGround = new int[4];
     private bool IsGrounded;
-    [Header("Inputs")]
 
+
+    [Header("Inputs")]
     private float moveInput = 0;
     private float steerInput = 0;
     
