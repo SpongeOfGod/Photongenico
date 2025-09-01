@@ -462,6 +462,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Auto2
       objectReference: {fileID: 0}
+    - target: {fileID: 5892920075932126165, guid: 1e515f3e3e62d814d8a5ae9c8028b57b, type: 3}
+      propertyPath: maxBoost
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5892920075932126165, guid: 1e515f3e3e62d814d8a5ae9c8028b57b, type: 3}
+      propertyPath: wheelRadius
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5892920075932126165, guid: 1e515f3e3e62d814d8a5ae9c8028b57b, type: 3}
+      propertyPath: boostAceleration
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 5892920075932126165, guid: 1e515f3e3e62d814d8a5ae9c8028b57b, type: 3}
+      propertyPath: normalAcelerration
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 5892920075932126166, guid: 1e515f3e3e62d814d8a5ae9c8028b57b, type: 3}
       propertyPath: m_RootOrder
       value: 1

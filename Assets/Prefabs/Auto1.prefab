@@ -182,14 +182,16 @@ MonoBehaviour:
   drivable:
     serializedVersion: 2
     m_Bits: 64
-  AcelerationTrPoint: {fileID: 2655473791450435725}
+  normalAcelerrationTrPoint: {fileID: 2655473791450435725}
   springStiffness: 3000
   restLenght: 1
   springTravel: 0.02
   wheelRadius: 0.2
   damperStiffness: 3000
-  aceleration: 35
+  normalAcelerration: 25
+  boostAceleration: 0
   maxSpeed: 200
+  maxBoost: 0
   deceleration: 20
   steerStrength: 80
   turningCurve:

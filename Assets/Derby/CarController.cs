@@ -38,9 +38,8 @@ public class CarController : MonoBehaviour
     [SerializeField] private float boostAceleration;
 
 
-    private float Accelerationcapacity;
+    private float Accelerationcapacity = 100;
 
-    [SerializeField]
     [SerializeField] private float maxSpeed;
     [SerializeField] private float maxBoost;
     [SerializeField] private float deceleration;
