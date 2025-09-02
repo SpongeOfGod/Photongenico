@@ -378,7 +378,7 @@ GameObject:
   - component: {fileID: 1929119620369430686}
   - component: {fileID: 5179600221801194356}
   - component: {fileID: 5490322123626697346}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hatchback Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}

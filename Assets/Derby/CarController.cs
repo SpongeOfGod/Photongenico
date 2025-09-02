@@ -49,7 +49,7 @@ public class CarController : MonoBehaviour
 
     [SerializeField] private float jumpForce;
     private Vector3 currentCarLocalVelocity = Vector3.zero;
-    private float carVelocityRatio = 0;
+    public float carVelocityRatio = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -153,13 +153,13 @@ public class CarController : MonoBehaviour
     {
         if (currentCarLocalVelocity.z < maxSpeed)
         {
-carRB.AddForceAtPosition(normalAcelerration * moveInput * transform.forward, normalAcelerrationTrPoint.position, ForceMode.Acceleration);
+    carRB.AddForceAtPosition(normalAcelerration * moveInput * transform.forward, normalAcelerrationTrPoint.position, ForceMode.Acceleration);
         }
         
     }
      private void Deceleration()
     {
-        carRB.AddForceAtPosition(deceleration * Mathf.Abs(carVelocityRatio) * -transform.forward, normalAcelerrationTrPoint.position, ForceMode.Acceleration);
+        carRB.AddForceAtPosition(deceleration * moveInput *  Mathf.Abs(carVelocityRatio) * -transform.forward, normalAcelerrationTrPoint.position, ForceMode.Acceleration);
     }
     private void turn()
     {
@@ -187,4 +187,10 @@ carRB.AddForceAtPosition(normalAcelerration * moveInput * transform.forward, nor
         steerInput = Input.GetAxis("Horizontal");
 
     }
+    public float calculateForce() {
+        var force  = carRB.mass/100 * carVelocityRatio;
+
+        return force;
+    }
+    
 }
