@@ -41,6 +41,7 @@ public class CarController : MonoBehaviour
     private float Accelerationcapacity = 100;
 
     [SerializeField] private float maxSpeed;
+    public float CurrentVel;
     [SerializeField] private float maxBoost;
     [SerializeField] private float deceleration;
     [SerializeField] private float steerStrength;
@@ -144,7 +145,7 @@ public class CarController : MonoBehaviour
     {
         if (Input.GetButtonDown("Jump"))
         {
-            carRB.AddForceAtPosition(jumpForce * transform.up, normalAcelerrationTrPoint.position, ForceMode.Impulse);
+          carRB.AddForceAtPosition(jumpForce * transform.up, normalAcelerrationTrPoint.position, ForceMode.Impulse);
          
         }
        
@@ -153,7 +154,7 @@ public class CarController : MonoBehaviour
     {
         if (currentCarLocalVelocity.z < maxSpeed)
         {
-    carRB.AddForceAtPosition(normalAcelerration * moveInput * transform.forward, normalAcelerrationTrPoint.position, ForceMode.Acceleration);
+        carRB.AddForceAtPosition(normalAcelerration * moveInput * transform.forward, normalAcelerrationTrPoint.position, ForceMode.Acceleration);
         }
         
     }
@@ -187,8 +188,9 @@ public class CarController : MonoBehaviour
         steerInput = Input.GetAxis("Horizontal");
 
     }
+    
     public float calculateForce() {
-        var force  = carRB.mass/100 * carVelocityRatio;
+        var force = carRB.mass / 10 * (carVelocityRatio / Time.fixedDeltaTime);
 
         return force;
     }

@@ -35,7 +35,7 @@ public class CarDamage : MonoBehaviour
 
      public void RecieveDamage( float force)
     {        
-           Current -= (force * controller.carVelocityRatio) / CarRb.mass;
+         Current -= force / CarRb.mass;
         Debug.Log(Current);
     }
 }
