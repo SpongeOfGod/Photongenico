@@ -301,7 +301,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3660867207402653683
 Transform:
   m_ObjectHideFlags: 0
@@ -346,18 +346,18 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   normalAcelerrationTrPoint: {fileID: 3660867208286917671}
-  springStiffness: 3000
+  springStiffness: 300
   restLenght: 1
   springTravel: 0.02
   wheelRadius: 0.2
-  damperStiffness: 3000
+  damperStiffness: 300
   normalAcelerration: 25
   boostAceleration: 0
-  maxSpeed: 180
+  maxSpeed: 26
   CurrentVel: 0
-  maxBoost: 220
+  maxBoost: 22
   deceleration: 20
-  steerStrength: 80
+  steerStrength: 8
   turningCurve:
     serializedVersion: 2
     m_Curve:
@@ -392,7 +392,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   draggcof: 40
-  jumpForce: 35000
+  jumpForce: 3500
   carVelocityRatio: 0
 --- !u!54 &3660867207402653681
 Rigidbody:
@@ -402,7 +402,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3660867207402653686}
   serializedVersion: 2
-  m_Mass: 3500
+  m_Mass: 350
   m_Drag: 0.2
   m_AngularDrag: 10
   m_UseGravity: 1

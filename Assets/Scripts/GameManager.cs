@@ -35,10 +35,5 @@ public class GameManager : MonoBehaviourPunCallbacks
             controller.AssignCameraTarget(VirtualCamera);
             controller.PhotonView.RPC("ChangeUsername", RpcTarget.AllBuffered, null);
         }
-
-        //if (component != null) 
-        //{
-        //    component.GetComponent<PhotonView>().RPC("ChangeUsername", RpcTarget.AllBuffered, null);
-        //}
     }
 }
