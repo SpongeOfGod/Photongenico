@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,21 +27,22 @@ public class CarDamage : MonoBehaviour
         {
             float force = controller.calculateForce();
           
-                hit.collider.GetComponentInParent<CarDamage>().RecieveDamage(force);
+                hit.collider.GetComponentInParent<CarDamage>().RecieveDamage(force, transform);
             
         }
     }
 
 
 
-    public void RecieveDamage(float force)
+    public void RecieveDamage(float force,Transform car)
     {
-        if (force > 100)
+        if (force > 1000)
         {
-            Current -= force / CarRb.mass;
-            Debug.Log("hitteo");
+            Debug.Log(force);
+            Current -=  (force/10) / CarRb.mass;
+            Debug.Log(Current);
 
-            CarRb.AddForceAtPosition( Vector3.forward * force, transform.position,ForceMode.Force);
+            CarRb.AddRelativeForce(transform.position * MathF.Cos(car.transform.eulerAngles.magnitude) * force, ForceMode.Force);
         }
           
     }
