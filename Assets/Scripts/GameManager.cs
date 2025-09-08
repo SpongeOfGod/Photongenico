@@ -1,3 +1,4 @@
+using Cinemachine;
 using Photon.Pun;
 using Photon.Realtime;
 using System;
@@ -9,6 +10,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] GameObject PlayerPrefab;
     [SerializeField] Vector3 InitialPosition;
+    [SerializeField] CinemachineVirtualCamera VirtualCamera;
     private List<PlayerController> CurrentPlayers = new();
 
     public override void OnJoinedRoom()
@@ -27,10 +29,17 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         GameObject player = PhotonNetwork.Instantiate(PlayerPrefab.name, InitialPosition, Quaternion.identity);
 
+        player.TryGetComponent(out CarController controller);
+
         player.TryGetComponent(out PlayerController component);
 
-        CurrentPlayers.Add(component);
+        if (controller != null)
+            controller.AssignCameraTarget(VirtualCamera);
 
-        component.GetComponent<PhotonView>().RPC("ChangeUsername", RpcTarget.AllBuffered, null);
+        if (component != null) 
+        {
+            CurrentPlayers.Add(component);
+            component.GetComponent<PhotonView>().RPC("ChangeUsername", RpcTarget.AllBuffered, null);
+        }
     }
 }

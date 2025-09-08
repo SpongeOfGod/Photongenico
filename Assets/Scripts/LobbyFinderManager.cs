@@ -50,7 +50,7 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
     {
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.MaxPlayers = 5;
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene(2);
         PhotonNetwork.JoinOrCreateRoom(Lobby.text, roomOptions, TypedLobby.Default);
         roomOptions.IsVisible = false;
     }

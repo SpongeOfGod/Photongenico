@@ -13,7 +13,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     {
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.MaxPlayers = 5;
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene(2);
         PhotonNetwork.JoinOrCreateRoom(RoomName, roomOptions, TypedLobby.Default);
         roomOptions.IsVisible = false;
         Debug.Log("hi");

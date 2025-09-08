@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using JetBrains.Annotations;
+using Photon.Pun;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,6 +10,7 @@ public class CarController : MonoBehaviour
 {
     [Header("References")]
 
+    [HideInInspector] PhotonView PhotonView;
     [SerializeField] private Rigidbody carRB;
     [SerializeField] private Transform[] Raypoints;
     [SerializeField] private Transform upray;
@@ -51,28 +54,42 @@ public class CarController : MonoBehaviour
     [SerializeField] private float jumpForce;
     private Vector3 currentCarLocalVelocity = Vector3.zero;
     public float carVelocityRatio = 0;
-    // Start is called before the first frame update
+
+    private void Awake()
+    {
+        PhotonView = GetComponent<PhotonView>();
+    }
     void Start()
     {
         carRB = this.GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
     void Update()
     {
+        if (!PhotonView.IsMine) return;
+
         GetplayerInputs();
         restartRotation();
     }
 
     void FixedUpdate()
     {
-        suspension();
+        if (!PhotonView.IsMine) return;
+
+        Suspension();
         CheckGround();
         CalculateVel();
         Movement();
     }
-
-    void suspension()
+    public void AssignCameraTarget(CinemachineVirtualCamera camera)
+    {
+        if (PhotonView.IsMine)
+        {
+            camera.Follow = gameObject.transform;
+            camera.LookAt = gameObject.transform;
+        }
+    }
+    void Suspension()
     {
         for (int i = 0; i < Raypoints.Length; i++)
         {
@@ -194,5 +211,4 @@ public class CarController : MonoBehaviour
 
         return force;
     }
-    
 }
