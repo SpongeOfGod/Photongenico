@@ -294,6 +294,7 @@ GameObject:
   - component: {fileID: 4218448702699377950}
   - component: {fileID: 775813942761859900}
   - component: {fileID: 1590931806304588218}
+  - component: {fileID: 8019303706881987167}
   m_Layer: 0
   m_Name: PlayerCar
   m_TagString: Untagged
@@ -482,6 +483,24 @@ MonoBehaviour:
   m_SynchronizeAngularVelocity: 1
   m_TeleportEnabled: 0
   m_TeleportIfDistanceGreaterThan: 10
+--- !u!114 &8019303706881987167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3660867207402653686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bb806a348a8b644491782cffbb8a03a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RaycastPosition: {fileID: 4543997408415538954}
+  CarRb: {fileID: 3660867207402653681}
+  Car:
+    serializedVersion: 2
+    m_Bits: 128
+  controller: {fileID: 3660867207402653680}
 --- !u!1 &3660867207658816120
 GameObject:
   m_ObjectHideFlags: 0

@@ -208,8 +208,8 @@ public class CarController : MonoBehaviour
     }
     
     public float calculateForce() {
-        var force = carRB.mass / 10 * (carVelocityRatio / Time.fixedDeltaTime);
-
+        var force = carRB.mass / 100 * (carVelocityRatio / Time.fixedDeltaTime);
+        Debug.Log(force);
         return force;
     }
 

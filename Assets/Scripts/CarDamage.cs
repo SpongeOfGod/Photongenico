@@ -30,12 +30,18 @@ public class CarDamage : MonoBehaviour
             
         }
     }
-    
 
 
-     public void RecieveDamage( float force)
-    {        
-         Current -= force / CarRb.mass;
-        Debug.Log(Current);
+
+    public void RecieveDamage(float force)
+    {
+        if (force > 100)
+        {
+            Current -= force / CarRb.mass;
+            Debug.Log("hitteo");
+
+            CarRb.AddForceAtPosition( Vector3.forward * force, transform.position,ForceMode.Force);
+        }
+          
     }
 }
