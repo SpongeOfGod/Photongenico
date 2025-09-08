@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using JetBrains.Annotations;
 using Photon.Pun;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ public class CarController : MonoBehaviour
 {
     [Header("References")]
 
-    [HideInInspector] PhotonView PhotonView;
+    [HideInInspector] public PhotonView PhotonView;
     [SerializeField] private Rigidbody carRB;
     [SerializeField] private Transform[] Raypoints;
     [SerializeField] private Transform upray;
@@ -210,5 +211,18 @@ public class CarController : MonoBehaviour
         var force = carRB.mass / 10 * (carVelocityRatio / Time.fixedDeltaTime);
 
         return force;
+    }
+
+
+    [PunRPC]
+    public void ChangeUsername()
+    {
+        var text = GetComponentInChildren<TextMeshPro>();
+        PhotonView = GetComponent<PhotonView>();
+
+        if (PhotonView.IsMine)
+            text.text = PhotonNetwork.NickName;
+        else
+            text.text = PhotonView.Owner.NickName;
     }
 }

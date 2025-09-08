@@ -30,16 +30,15 @@ public class GameManager : MonoBehaviourPunCallbacks
         GameObject player = PhotonNetwork.Instantiate(PlayerPrefab.name, InitialPosition, Quaternion.identity);
 
         player.TryGetComponent(out CarController controller);
-
-        player.TryGetComponent(out PlayerController component);
-
-        if (controller != null)
-            controller.AssignCameraTarget(VirtualCamera);
-
-        if (component != null) 
+        if (controller != null) 
         {
-            CurrentPlayers.Add(component);
-            component.GetComponent<PhotonView>().RPC("ChangeUsername", RpcTarget.AllBuffered, null);
+            controller.AssignCameraTarget(VirtualCamera);
+            controller.PhotonView.RPC("ChangeUsername", RpcTarget.AllBuffered, null);
         }
+
+        //if (component != null) 
+        //{
+        //    component.GetComponent<PhotonView>().RPC("ChangeUsername", RpcTarget.AllBuffered, null);
+        //}
     }
 }
