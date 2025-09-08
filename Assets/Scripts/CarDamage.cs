@@ -39,10 +39,10 @@ public class CarDamage : MonoBehaviour
         if (force > 1000)
         {
             Debug.Log(force);
-            Current -=  (force/10) / CarRb.mass;
+            Current -=  (force) / CarRb.mass;
             Debug.Log(Current);
 
-            CarRb.AddForceAtPosition(transform.position * MathF.Cos(car.transform.eulerAngles.z) * force,transform.position, ForceMode.Impulse);
+            CarRb.AddForce(transform.position * force, ForceMode.Impulse);
         }
           
     }
