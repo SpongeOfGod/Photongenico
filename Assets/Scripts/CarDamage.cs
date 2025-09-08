@@ -42,7 +42,7 @@ public class CarDamage : MonoBehaviour
             Current -=  (force/10) / CarRb.mass;
             Debug.Log(Current);
 
-            CarRb.AddRelativeForce(transform.position * MathF.Cos(car.transform.eulerAngles.magnitude) * force, ForceMode.Force);
+            CarRb.AddForceAtPosition(transform.position * MathF.Cos(car.transform.eulerAngles.z) * force,transform.position, ForceMode.Impulse);
         }
           
     }
