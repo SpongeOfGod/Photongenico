@@ -13,13 +13,11 @@ public class CarDamage : MonoBehaviour
     [SerializeField] CarController controller;
     float rayDist = 2f;
 
-    // Start is called before the first frame update
     void Start()
     {
         Current = maxHealth;
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         RaycastHit hit;
@@ -27,12 +25,9 @@ public class CarDamage : MonoBehaviour
         {
             float force = controller.calculateForce();
           
-                hit.collider.GetComponentInParent<CarDamage>().RecieveDamage(force, transform);
-            
+            hit.collider.GetComponentInParent<CarDamage>().RecieveDamage(force, transform);
         }
     }
-
-
 
     public void RecieveDamage(float force,Transform car)
     {
@@ -44,6 +39,5 @@ public class CarDamage : MonoBehaviour
 
             CarRb.AddForce(transform.position * force, ForceMode.Impulse);
         }
-          
     }
 }

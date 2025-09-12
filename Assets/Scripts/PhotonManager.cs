@@ -12,16 +12,18 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = 5;
-        SceneManager.LoadScene(2);
-        PhotonNetwork.JoinOrCreateRoom(RoomName, roomOptions, TypedLobby.Default);
-        roomOptions.IsVisible = false;
-        Debug.Log("hi");
+        roomOptions.MaxPlayers = 1;
+        PhotonNetwork.JoinRoom(RoomName);
+        //PhotonNetwork.JoinOrCreateRoom(RoomName, roomOptions, TypedLobby.Default);
+        //SceneManager.LoadScene(2);
+        //roomOptions.IsVisible = false;
+        //Debug.Log("hi");
     }
 
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
+        Debug.Log("JoinSuccesful");
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
