@@ -29,7 +29,7 @@ public class CarDamage : MonoBehaviour
         {
             float force = controller.calculateForce();
           
-            hit.collider.GetComponentInParent<CarDamage>().RecieveDamage(force, hit.transform);
+            hit.collider.GetComponentInParent<CarDamage>().RecieveDamage(force, this.transform);
         }
     }
 
