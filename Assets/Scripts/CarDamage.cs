@@ -12,32 +12,35 @@ public class CarDamage : MonoBehaviour
     public LayerMask Car;
     [SerializeField] CarController controller;
     float rayDist = 2f;
+    private Vector3 boxsize = Vector3.zero;
 
     void Start()
     {
         Current = maxHealth;
+        boxsize.x = 2;
+        boxsize.z = 2;
+        boxsize.y = 2;
     }
 
     void FixedUpdate()
     {
         RaycastHit hit;
-        if (Physics.Raycast(RaycastPosition.position,RaycastPosition.forward, out hit,rayDist, Car)) 
+        if (Physics.BoxCast(RaycastPosition.position,boxsize,transform.forward,out hit, Quaternion.identity,rayDist, Car)) 
         {
             float force = controller.calculateForce();
           
-            hit.collider.GetComponentInParent<CarDamage>().RecieveDamage(force, transform);
+            hit.collider.GetComponentInParent<CarDamage>().RecieveDamage(force, hit.transform);
         }
     }
 
     public void RecieveDamage(float force,Transform car)
     {
-        if (force > 1000)
+        if (force > 4000)
         {
             Debug.Log(force);
             Current -=  (force) / CarRb.mass;
-            Debug.Log(Current);
 
-            CarRb.AddForce(transform.position * force, ForceMode.Impulse);
+            CarRb.AddForce( new Vector3 (Vector3.Angle(car.position,this.transform.position) * force,0, Vector3.Angle(car.position, this.transform.position) * force), ForceMode.Force);
         }
     }
 }
