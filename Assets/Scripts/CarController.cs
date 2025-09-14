@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Adrenak.Tork.Demo;
 using Cinemachine;
 using JetBrains.Annotations;
 using Photon.Pun;
@@ -82,12 +83,11 @@ public class CarController : MonoBehaviour
         CalculateVel();
         Movement();
     }
-    public void AssignCameraTarget(CinemachineVirtualCamera camera)
+    public void AssignCameraTarget(SmoothFollow camera)
     {
         if (PhotonView.IsMine)
         {
-            camera.Follow = gameObject.transform;
-            camera.LookAt = gameObject.transform;
+            camera.target = transform;
         }
     }
     void Suspension()

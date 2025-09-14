@@ -7,15 +7,15 @@ using Photon.Pun;
 using UnityEngine.UI;
 using Photon.Realtime;
 
-
 public class LobbyUIController : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI CurrentPlayersOnRoom;
     [SerializeField] Button StartGameButton;
     [SerializeField] RoomOptions RoomOptions;
-    [SerializeField] private PhotonView photonView;
+    [HideInInspector] public PhotonView photonView;
     private void Awake()
     {
+        photonView = GetComponent<PhotonView>();
         StartGameButton.onClick.AddListener(CallRPCStarGame);
         StartGameButton.gameObject.SetActive(false);
     }
@@ -46,5 +46,16 @@ public class LobbyUIController : MonoBehaviour
         if (PhotonNetwork.CurrentRoom.IsOpen)
             PhotonNetwork.CurrentRoom.IsOpen = false;
         StartGameButton.transform.parent.gameObject.SetActive(false);
+        GameManager.Instance.ChangeState(GameManager.GameStates.InRound);
+    }
+
+    [PunRPC]
+    private void ReturnToStartup()
+    {
+        if (!PhotonNetwork.CurrentRoom.IsOpen)
+            PhotonNetwork.CurrentRoom.IsOpen = true;
+
+        if (PhotonNetwork.IsMasterClient)
+            StartGameButton.transform.parent.gameObject.SetActive(true);
     }
 }
