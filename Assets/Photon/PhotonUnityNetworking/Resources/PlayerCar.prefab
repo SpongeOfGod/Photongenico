@@ -353,7 +353,7 @@ MonoBehaviour:
   damperStiffness: 300
   normalAcelerration: 25
   boostAceleration: 0
-  maxSpeed: 26
+  maxSpeed: 40
   CurrentVel: 0
   maxBoost: 22
   deceleration: 20

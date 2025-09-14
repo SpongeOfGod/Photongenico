@@ -40,7 +40,7 @@ public class CarDamage : MonoBehaviour
             Debug.Log(force);
             Current -=  (force) / CarRb.mass;
 
-            CarRb.AddForce( new Vector3 (Vector3.Angle(car.position,this.transform.position) * force,0, Vector3.Angle(car.position, this.transform.position) * force), ForceMode.Force);
+            CarRb.AddForceAtPosition( new Vector3 (Vector3.Angle(car.position,this.transform.position) * force ,0, Vector3.Angle(car.position, this.transform.position) * force),transform.position, ForceMode.Force);
         }
     }
 }
