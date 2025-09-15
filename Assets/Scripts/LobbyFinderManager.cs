@@ -3,9 +3,11 @@ using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using WebSocketSharp;
 
 public class LobbyFinderManager : MonoBehaviourPunCallbacks
 {
@@ -16,6 +18,7 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
     public Transform NicknameWindow;
     public TMP_InputField PlayerName;
     public Button StartButton;
+    public TextMeshProUGUI LobbyStatus;
 
     [Header("Nickname - ServerInfo")]
     public Transform ServerInfoWindow;
@@ -42,7 +45,7 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
     private Dictionary<string, GameObject> activeLobbies = new Dictionary<string, GameObject>();
 
     private string NicknameKey = "PlayerNickname";
-    private string Nickname;
+    public string Nickname;
     private bool isConnected = false;
     private bool isInLobby = false;
 
@@ -65,14 +68,18 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
     }
     private void CheckName(string name)
     {
-        if (!string.IsNullOrEmpty(PlayerName.text) && isConnected)
+        LobbyStatus.text = isConnected ? "" : "Conectando...";
+
+        if (!string.IsNullOrEmpty(PlayerName.text))
         {
-            StartButton.gameObject.SetActive(true);
+            StartButton.gameObject.SetActive(isConnected);
             Nickname = PlayerName.text;
             PlayingAsName.text = name;
         }
-        else
+        else 
+        {
             StartButton.gameObject.SetActive(false);
+        }
     }
 
     private void CheckLoadLobby(string name)
@@ -89,6 +96,9 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
         isConnected = true;
 
         PhotonNetwork.JoinLobby(TypedLobby.Default);
+
+        if (!string.IsNullOrEmpty(PlayerName.text))
+            StartButton.gameObject.SetActive(true);
     }
 
     public override void OnJoinedLobby()
@@ -101,8 +111,11 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
     {
         if (!string.IsNullOrEmpty(CreateLobbyField.text))
             CreateButton.gameObject.SetActive(true);
-        else
-            CreateButton.gameObject.SetActive(false);
+        else 
+        {
+            string message = "Room name cannot be empty";
+            HandleErrorMessage(message + $"\n error code: {0}");
+        }
     }
 
     public void ChangeMaxPlayersValue(int value)
@@ -148,7 +161,6 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
 
         StartCoroutine(WaitCreateAndJoin(isCreatingLobby));
     }
-
     IEnumerator WaitCreateAndJoin(bool isCreatingLobby)
     {
         while (!isConnected)
