@@ -9,10 +9,25 @@ using UnityEngine.UI;
 
 public class LobbyFinderManager : MonoBehaviourPunCallbacks
 {
-    [Header("Connection")]
-    public TMP_InputField Lobby;
+    public enum MenuState { Nickname, ServerInfo}
+    [HideInInspector] public MenuState state;
+
+    [Header("Nickname - MenuState")]
+    public Transform NicknameWindow;
     public TMP_InputField PlayerName;
+    public Button StartButton;
+
+    [Header("Nickname - ServerInfo")]
+    public Transform ServerInfoWindow;
+    public TMP_InputField Lobby;
+    public TextMeshProUGUI PlayingAsName;
+    public TextMeshProUGUI MaxPlayersText;
+    public Button buttonSustract;
+    public Button buttonAddup;
     public Button ConnectButton;
+    public Button GoBack;
+    public string SceneToload;
+    public int MaxNumberOfPlayers = 2;
 
     [Header("Error Handler")]
     public Transform ErrorTextHolder;
@@ -21,13 +36,6 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
     private string NicknameKey = "PlayerNickname";
     private string Nickname;
 
-    public string SceneToload;
-    public int MaxNumberOfPlayers = 2;
-    public TextMeshProUGUI MaxPlayersText;
-    public Button buttonSustract;
-    public Button buttonAddup;
-
-
     private void Awake()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
@@ -35,9 +43,33 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
     }
     void Start()
     {
-        Lobby.onValueChanged.AddListener(CheckLobbyAndName);
-        PlayerName.onValueChanged.AddListener(CheckLobbyAndName);
+        Lobby.onValueChanged.AddListener(CheckLobby);
+        PlayerName.onValueChanged.AddListener(CheckName);
+        StartButton.onClick.AddListener(() => SwitchState(MenuState.ServerInfo));
         ConnectButton.onClick.AddListener(ConnectToLobby);
+        GoBack.onClick.AddListener(() => SwitchState(MenuState.Nickname));
+    }
+
+    private void CheckName(string name) 
+    {
+        if (PlayerName.text != string.Empty)
+        {
+            StartButton.gameObject.SetActive(true);
+            Nickname = PlayerName.text;
+            PlayingAsName.text = name;
+        }
+        else
+            StartButton.gameObject.SetActive(false);
+    }
+
+    private void CheckLobby(string name)
+    {
+        if (Lobby.text != string.Empty)
+        {
+            ConnectButton.gameObject.SetActive(true);
+        }
+        else
+            ConnectButton.gameObject.SetActive(false);
     }
 
     public void ChangeMaxPlayersValue(int value) 
@@ -51,15 +83,24 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
         MaxPlayersText.text = MaxNumberOfPlayers.ToString();
     }
 
-    private void CheckLobbyAndName(string name) 
+    public void SwitchState(MenuState newState) 
     {
-        if (Lobby.text != string.Empty && PlayerName.text != string.Empty) 
+        state = newState;
+
+        switch (state) 
         {
-            ConnectButton.gameObject.SetActive(true);
-            Nickname = PlayerName.text;
+            case MenuState.Nickname:
+
+                ServerInfoWindow.gameObject.SetActive(false);
+                NicknameWindow.gameObject.SetActive(true);
+                break;
+
+            case MenuState.ServerInfo:
+
+                NicknameWindow.gameObject.SetActive(false);
+                ServerInfoWindow.gameObject.SetActive(true);
+                break;
         }
-        else
-            ConnectButton.gameObject.SetActive(false);
     }
 
     public void ConnectToLobby() 

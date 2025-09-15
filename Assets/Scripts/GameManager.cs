@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] Vector3 InitialPosition;
     [SerializeField] SmoothFollow smoothFollow;
     [SerializeField] LobbyUIController LobbyUIController;
+    [HideInInspector] PhotonView photonView;
     [HideInInspector] public GameStates GameState { get; private set; }
     public enum GameStates 
     {
@@ -30,6 +31,8 @@ public class GameManager : MonoBehaviourPunCallbacks
             Instance = this;
         else if (Instance != this)
             Destroy(gameObject);
+
+        photonView = GetComponent<PhotonView>();
     }
     private void Start()
     {
@@ -58,7 +61,13 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     public override void OnJoinedRoom()
     {
-        CreateNewPlayer();
+
+    }
+
+
+    public void InstantiatePlayerCar(GameObject prefab) 
+    {
+        CreateNewPlayer(prefab);
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -68,9 +77,10 @@ public class GameManager : MonoBehaviourPunCallbacks
         Debug.Log($"Player: {newPlayer.NickName} entered the room!");
     }
 
-    private void CreateNewPlayer()
+    //[PunRPC]
+    public void CreateNewPlayer(GameObject prefab)
     {
-        GameObject player = PhotonNetwork.Instantiate(PlayerPrefab.name, InitialPosition, Quaternion.identity);
+        GameObject player = PhotonNetwork.Instantiate(prefab.name, InitialPosition, Quaternion.identity);
 
         player.TryGetComponent(out CarNameSync NameSync);
         if (player != null) 
