@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
+using Photon.Pun;
 
 [DisallowMultipleComponent]
-public class Wheel : MonoBehaviour
+public class Wheel : MonoBehaviour, IPunObservable
 {
     public enum HitDetectionType
     {
@@ -30,6 +31,7 @@ public class Wheel : MonoBehaviour
     [SerializeField, Min(8f)] private int _gizmosSmoothness = 16;
 
     private Rigidbody _rigidbody;
+    private PhotonView _photonView;
 
     private float _suspensionCompression;
     private float _prevSuspensionCompression;
@@ -112,18 +114,18 @@ public class Wheel : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponentInParent<Rigidbody>();
+        _photonView = GetComponentInParent<PhotonView>();
     }
 
     private void FixedUpdate()
     {
+        if (_photonView != null && !_photonView.IsMine) return;
+
         _totalForce = Vector3.zero;
 
         CheckGrounded();
-
         UpdateSuspensionCompression();
-
         AddSuspensionForce();
-
         UpdateModel();
     }
 
@@ -219,10 +221,7 @@ public class Wheel : MonoBehaviour
 
     private void AddSuspensionForce()
     {
-        if (!_grounded)
-        {
-            return;
-        }
+        if (!_grounded) return;
 
         var springForce = _suspensionSpring * _suspensionCompression;
 
@@ -230,10 +229,7 @@ public class Wheel : MonoBehaviour
         var damperForce = _suspensionDamper * susVel;
 
         var force = springForce + damperForce;
-        if (force < 0f)
-        {
-            force = 0f;
-        }
+        if (force < 0f) force = 0f;
 
         var forceVec = transform.up * force;
         _rigidbody.AddForceAtPosition(forceVec, _hitInfo.point);
@@ -243,10 +239,7 @@ public class Wheel : MonoBehaviour
 
     private void UpdateModel()
     {
-        if (_model == null)
-        {
-            return;
-        }
+        if (_model == null) return;
 
         if (_grounded)
         {
@@ -267,5 +260,23 @@ public class Wheel : MonoBehaviour
 
         _model.position = Center;
         _model.rotation = Rotation;
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(_steerAngle);
+            stream.SendNext(_suspensionCompression);
+            stream.SendNext(_angle);
+        }
+        else
+        {
+            _steerAngle = (float)stream.ReceiveNext();
+            _suspensionCompression = (float)stream.ReceiveNext();
+            _angle = (float)stream.ReceiveNext();
+
+            UpdateModel();
+        }
     }
 }

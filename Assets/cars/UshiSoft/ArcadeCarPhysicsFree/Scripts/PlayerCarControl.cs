@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
+using Photon.Pun;
 
 [DisallowMultipleComponent]
+[RequireComponent(typeof(PhotonView))]
 public class PlayerCarControl : DriverBase
 {
     [SerializeField, Min(0.001f)] private float _steerTime = 0.1f;
@@ -20,18 +22,30 @@ public class PlayerCarControl : DriverBase
 
     [SerializeField] private bool _enableVirtualPad = true;
 
+    private PhotonView _photonView;
+
     public bool SteerLimitByFriction { get => _steerLimitByFriction; set => _steerLimitByFriction = value; }
     public bool AutoSwitchToReverse { get => _autoShiftToReverse; set => _autoShiftToReverse = value; }
     public bool EnableVirtualPad { get => _enableVirtualPad; set => _enableVirtualPad = value; }
 
+    protected override void Awake()
+    {
+        base.Awake();
+        _photonView = GetComponent<PhotonView>();
+    }
+
     protected override void Drive()
     {
+        if (!_photonView.IsMine) return;
+
         UpdateSteerInput();
         UpdateThrottleAndBrakeInput();
     }
 
     protected override void Stop()
     {
+        if (!_photonView.IsMine) return;
+
         _carController.BrakeInput = 1f;
 
         var throttleInput = GetRawThrottleInput();
@@ -39,6 +53,7 @@ public class PlayerCarControl : DriverBase
         _carController.ThrottleInput = Mathf.MoveTowards(_carController.ThrottleInput, throttleInput, Time.deltaTime / throttleTime);
     }
 
+    #region INPUTS
     private float GetRawSteerInput()
     {
         if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) return -1f;
@@ -57,6 +72,7 @@ public class PlayerCarControl : DriverBase
         if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.X)) return 1f;
         return 0f;
     }
+    #endregion
 
     private void UpdateSteerInput()
     {
