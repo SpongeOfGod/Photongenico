@@ -605,7 +605,7 @@ MonoBehaviour:
   springStiffness: 300
   restLenght: 1
   springTravel: 0.02
-  wheelRadius: 0.2
+  wheelRadius: 0.33
   damperStiffness: 300
   normalAcelerration: 25
   boostAceleration: 0

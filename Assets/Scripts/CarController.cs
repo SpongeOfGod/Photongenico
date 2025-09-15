@@ -148,15 +148,18 @@ public class CarController : MonoBehaviour
 
     private void Movement()
     {
-        if (IsGrounded)
-        {
-            Acceleration();
-            Deceleration();
+      
+            if (IsGrounded)
+            {
+                Acceleration();
+                Deceleration();
 
-            SidewayDrag();
-            Jump();
-        }
-           turn();
+                SidewayDrag();
+                Jump();
+            }
+            turn();
+
+        
     }
 
     private void Jump()
