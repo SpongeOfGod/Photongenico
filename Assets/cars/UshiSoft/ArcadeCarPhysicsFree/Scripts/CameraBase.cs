@@ -1,16 +1,13 @@
 ﻿using UnityEngine;
 
-namespace UshiSoft.UACPF
+[RequireComponent(typeof(Camera))]
+public class CameraBase : MonoBehaviour
 {
-    [RequireComponent(typeof(Camera))]
-    public class CameraBase : MonoBehaviour
-    {
-        [SerializeField] protected CarControllerBase _targetCar;
+    [SerializeField] protected GameObject _targetObject;
 
-        public virtual CarControllerBase TargetCar
-        {
-            get => _targetCar;
-            set => _targetCar = value;
-        }
+    public virtual GameObject TargetObject
+    {
+        get => _targetObject;
+        set => _targetObject = value;
     }
 }

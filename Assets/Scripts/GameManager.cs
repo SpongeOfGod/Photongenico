@@ -11,16 +11,18 @@ public class GameManager : MonoBehaviourPunCallbacks
     public static GameManager Instance;
     [SerializeField] GameObject PlayerPrefab;
     [SerializeField] Vector3 InitialPosition;
-    [SerializeField] SmoothFollow smoothFollow;
+    [SerializeField] ChaseCamera chaseCamera;
     [SerializeField] LobbyUIController LobbyUIController;
+
     [HideInInspector] PhotonView photonView;
     [HideInInspector] public GameStates GameState { get; private set; }
-    public enum GameStates 
+
+    public enum GameStates
     {
         Startup, Interlude, InRound
     }
 
-    public void ChangeState(GameStates newState) 
+    public void ChangeState(GameStates newState)
     {
         GameState = newState;
     }
@@ -34,6 +36,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         photonView = GetComponent<PhotonView>();
     }
+
     private void Start()
     {
         if (PhotonNetwork.IsMasterClient)
@@ -42,15 +45,14 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        if (PhotonNetwork.CurrentRoom != null && PhotonNetwork.CurrentRoom.PlayerCount < 2 && GameState != GameStates.Startup && PhotonNetwork.IsMasterClient) 
+        if (PhotonNetwork.CurrentRoom != null && PhotonNetwork.CurrentRoom.PlayerCount < 2 && GameState != GameStates.Startup && PhotonNetwork.IsMasterClient)
         {
             ChangeState(GameStates.Startup);
             LobbyUIController.photonView.RPC("ReturnToStartup", RpcTarget.All);
         }
-
     }
 
-    public void LeaveRoom() 
+    public void LeaveRoom()
     {
         PhotonNetwork.LeaveRoom(this);
     }
@@ -59,13 +61,12 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         SceneManager.LoadScene(0);
     }
+
     public override void OnJoinedRoom()
     {
-
     }
 
-
-    public void InstantiatePlayerCar(GameObject prefab) 
+    public void InstantiatePlayerCar(GameObject prefab)
     {
         CreateNewPlayer(prefab);
     }
@@ -73,7 +74,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         base.OnPlayerEnteredRoom(newPlayer);
-
         Debug.Log($"Player: {newPlayer.NickName} entered the room!");
     }
 
@@ -83,11 +83,12 @@ public class GameManager : MonoBehaviourPunCallbacks
         GameObject player = PhotonNetwork.Instantiate(prefab.name, InitialPosition, Quaternion.identity);
 
         player.TryGetComponent(out CarNameSync NameSync);
-        if (player != null) 
+        if (player != null)
         {
-            smoothFollow.target = player.transform;
+            chaseCamera.TargetObject = player;
+
             if (NameSync != null)
-            NameSync.PhotonView.RPC("ChangeUsername", RpcTarget.AllBuffered, null);
+                NameSync.PhotonView.RPC("ChangeUsername", RpcTarget.AllBuffered, null);
         }
     }
 }
