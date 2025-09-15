@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] Vector3 InitialPosition;
     [SerializeField] ChaseCamera chaseCamera;
     [SerializeField] LobbyUIController LobbyUIController;
-
+    [SerializeField] Transform[] spawnpositions;
         [HideInInspector] public GameStates GameState { get; private set; }
 
     public enum GameStates
@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void CreateNewPlayer(GameObject prefab)
     {
-        GameObject player = PhotonNetwork.Instantiate(prefab.name, InitialPosition, Quaternion.identity);
+        GameObject player = PhotonNetwork.Instantiate(prefab.name, spawnpositions[PhotonNetwork.CurrentRoom.PlayerCount -1].position, Quaternion.identity);
 
         player.TryGetComponent(out CarNameSync NameSync);
         if (player != null)
