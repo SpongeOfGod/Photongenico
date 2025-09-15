@@ -1,48 +1,45 @@
 ﻿using UnityEngine;
 
-namespace UshiSoft.UACPF
+[RequireComponent(typeof(CarControllerBase))]
+public class DriverBase : MonoBehaviour
 {
-    [RequireComponent(typeof(CarControllerBase))]
-    public class DriverBase : MonoBehaviour
+    protected CarControllerBase _carController;
+
+    private bool stopping;
+
+    public CarControllerBase CarController => _carController;
+
+    public bool Stopping
     {
-        protected CarControllerBase _carController;
+        get => stopping;
+        set => stopping = value;
+    }
 
-        private bool stopping;
+    protected virtual void Awake()
+    {
+        _carController = GetComponent<CarControllerBase>();
+    }
 
-        public CarControllerBase CarController => _carController;
-
-        public bool Stopping
+    private void Update()
+    {
+        if (stopping)
         {
-            get => stopping;
-            set => stopping = value;
+            Stop();
         }
-
-        protected virtual void Awake()
+        else
         {
-            _carController = GetComponent<CarControllerBase>();
+            Drive();
         }
+    }
 
-        private void Update()
-        {
-            if (stopping)
-            {
-                Stop();
-            }
-            else
-            {
-                Drive();
-            }
-        }
+    protected virtual void Drive()
+    {
+    }
 
-        protected virtual void Drive()
-        {
-        }
-
-        protected virtual void Stop()
-        {
-            _carController.SteerInput = 0f;
-            _carController.ThrottleInput = 0f;
-            _carController.BrakeInput = 1f;
-        }
+    protected virtual void Stop()
+    {
+        _carController.SteerInput = 0f;
+        _carController.ThrottleInput = 0f;
+        _carController.BrakeInput = 1f;
     }
 }
