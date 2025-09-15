@@ -16,7 +16,7 @@ public class MysteryBoxManager : MonoBehaviour
     private float elapsedTime = 0;
     private void Update()
     {
-        if (!PhotonNetwork.IsMasterClient/* || GameManager.Instance.GameState != GameManager.GameStates.InRound*/)
+        if (!PhotonNetwork.IsMasterClient || GameManager.Instance.GameState != GameManager.GameStates.InRound)
         {
             elapsedTime = 0;
             return;
@@ -62,7 +62,7 @@ public class MysteryBoxManager : MonoBehaviour
                     break;
             }
 
-            var itemBox = PhotonNetwork.InstantiateRoomObject(ItemBoxPrefab.name, PossiblePositions.GetChild(rdmIndex).transform.position, Quaternion.identity);
+            var itemBox = PhotonNetwork.Instantiate/*RoomObject*/(ItemBoxPrefab.name, PossiblePositions.GetChild(rdmIndex).transform.position, Quaternion.identity);
             itemBox.transform.parent = ItemHolder;
             elapsedTime = 0;
             items.Add(itemBox);

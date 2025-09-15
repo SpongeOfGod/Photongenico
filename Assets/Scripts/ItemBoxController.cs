@@ -54,7 +54,7 @@ public class ItemBoxController : MonoBehaviour
 
     private void Update()
     {
-        //if (GameManager.Instance.GameState != GameManager.GameStates.InRound && PhotonNetwork.IsMasterClient)
-        //    PhotonNetwork.Destroy(gameObject);
+        if (GameManager.Instance.GameState != GameManager.GameStates.InRound && PhotonNetwork.IsMasterClient)
+            PhotonNetwork.Destroy(gameObject);
     }
 }

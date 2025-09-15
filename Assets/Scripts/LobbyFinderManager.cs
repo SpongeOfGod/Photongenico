@@ -50,6 +50,7 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.UseRpcMonoBehaviourCache = true;
+        PhotonNetwork.ConnectUsingSettings();
     }
 
     void Start()
@@ -62,10 +63,9 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
         CreateButton.onClick.AddListener(() => ConnectToLobby(true));
         GoBack.onClick.AddListener(() => SwitchState(MenuState.Nickname));
     }
-
     private void CheckName(string name)
     {
-        if (!string.IsNullOrEmpty(PlayerName.text))
+        if (!string.IsNullOrEmpty(PlayerName.text) && isConnected)
         {
             StartButton.gameObject.SetActive(true);
             Nickname = PlayerName.text;
@@ -143,9 +143,7 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
         CreateLobbyField.gameObject.SetActive(false);
         PlayerName.gameObject.SetActive(false);
 
-        if (!PhotonNetwork.IsConnected)
-            PhotonNetwork.ConnectUsingSettings();
-        else
+        if (PhotonNetwork.IsConnected)
             isConnected = true;
 
         StartCoroutine(WaitCreateAndJoin(isCreatingLobby));
