@@ -29,7 +29,6 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
     public string SceneToload;
     public int MaxNumberOfPlayers = 2;
 
-
     public TMP_InputField JoinLobbyField;
     public Button buttonJoinLobby;
 
@@ -37,15 +36,22 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
     public Transform ErrorTextHolder;
     public TextMeshProUGUI PrefabText;
 
+    [Header("Lobby List")]
+    public Transform LobbyListContainer;
+    public GameObject LobbyEntryPrefab;
+    private Dictionary<string, GameObject> activeLobbies = new Dictionary<string, GameObject>();
+
     private string NicknameKey = "PlayerNickname";
     private string Nickname;
-    private bool isConnected;
+    private bool isConnected = false;
+    private bool isInLobby = false;
 
     private void Awake()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.UseRpcMonoBehaviourCache = true;
     }
+
     void Start()
     {
         CreateLobbyField.onValueChanged.AddListener(CheckCreateLobby);
@@ -59,7 +65,7 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
 
     private void CheckName(string name)
     {
-        if (PlayerName.text != string.Empty)
+        if (!string.IsNullOrEmpty(PlayerName.text))
         {
             StartButton.gameObject.SetActive(true);
             Nickname = PlayerName.text;
@@ -71,26 +77,32 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
 
     private void CheckLoadLobby(string name)
     {
-        if (JoinLobbyField.text != string.Empty)
-        {
-            buttonJoinLobby.interactable = true;
-        }
+        if (!string.IsNullOrEmpty(JoinLobbyField.text))
+            buttonJoinLobby.gameObject.SetActive(true);
         else
-            buttonJoinLobby.interactable = false;
+            buttonJoinLobby.gameObject.SetActive(false);
     }
+
     public override void OnConnectedToMaster()
     {
         base.OnConnectedToMaster();
         isConnected = true;
+
+        PhotonNetwork.JoinLobby(TypedLobby.Default);
     }
+
+    public override void OnJoinedLobby()
+    {
+        base.OnJoinedLobby();
+        isInLobby = true;
+    }
+
     private void CheckCreateLobby(string name)
     {
-        if (CreateLobbyField.text != string.Empty)
-        {
-            CreateButton.interactable = true;
-        }
+        if (!string.IsNullOrEmpty(CreateLobbyField.text))
+            CreateButton.gameObject.SetActive(true);
         else
-            CreateButton.interactable = false;
+            CreateButton.gameObject.SetActive(false);
     }
 
     public void ChangeMaxPlayersValue(int value)
@@ -111,13 +123,11 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
         switch (state)
         {
             case MenuState.Nickname:
-
                 ServerInfoWindow.gameObject.SetActive(false);
                 NicknameWindow.gameObject.SetActive(true);
                 break;
 
             case MenuState.ServerInfo:
-
                 NicknameWindow.gameObject.SetActive(false);
                 ServerInfoWindow.gameObject.SetActive(true);
                 break;
@@ -129,9 +139,9 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
         PlayerPrefs.SetString(NicknameKey, Nickname);
         PhotonNetwork.NickName = Nickname.ToUpper();
 
-        CreateButton.interactable = false;
-        CreateLobbyField.interactable = false;
-        PlayerName.interactable = false;
+        CreateButton.gameObject.SetActive(false);
+        CreateLobbyField.gameObject.SetActive(false);
+        PlayerName.gameObject.SetActive(false);
 
         if (!PhotonNetwork.IsConnected)
             PhotonNetwork.ConnectUsingSettings();
@@ -143,10 +153,11 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
 
     IEnumerator WaitCreateAndJoin(bool isCreatingLobby)
     {
-        while (!isConnected) 
-        {
+        while (!isConnected)
             yield return null;
-        }
+
+        while (!isInLobby)
+            yield return null;
 
         if (isCreatingLobby)
             CreateRoom();
@@ -156,20 +167,18 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
 
     private void JoinRoom()
     {
-        if (JoinLobbyField.text != "")
-        {
+        if (!string.IsNullOrEmpty(JoinLobbyField.text))
             PhotonNetwork.JoinRoom(JoinLobbyField.text);
-        }
     }
 
     private void CreateRoom()
     {
-        if (CreateLobbyField.text != "")
+        if (!string.IsNullOrEmpty(CreateLobbyField.text))
         {
             RoomOptions roomOptions = new RoomOptions();
             roomOptions.MaxPlayers = MaxNumberOfPlayers;
-            PhotonNetwork.CreateRoom(CreateLobbyField.text, roomOptions, TypedLobby.Default);
             roomOptions.IsVisible = true;
+            PhotonNetwork.CreateRoom(CreateLobbyField.text, roomOptions, TypedLobby.Default);
         }
     }
 
@@ -186,38 +195,68 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
         prefab.text = message;
         prefab.gameObject.SetActive(true);
 
-        CreateButton.interactable = true;
-        CreateLobbyField.interactable = true;
-        PlayerName.interactable = true;
+        CreateButton.gameObject.SetActive(true);
+        CreateLobbyField.gameObject.SetActive(true);
+        PlayerName.gameObject.SetActive(true);
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
         base.OnCreateRoomFailed(returnCode, message);
         Debug.Log(message + $"\n error code: {returnCode}");
-
-        string newMessage = message + $"\n error code: {returnCode}";
-
-        HandleErrorMessage(newMessage);
+        HandleErrorMessage(message + $"\n error code: {returnCode}");
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
         base.OnJoinRandomFailed(returnCode, message);
         Debug.Log(message + $"\n error code: {returnCode}");
-
-        string newMessage = message + $"\n error code: {returnCode}";
-
-        HandleErrorMessage(newMessage);
+        HandleErrorMessage(message + $"\n error code: {returnCode}");
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
         base.OnJoinRoomFailed(returnCode, message);
         Debug.Log(message + $"\n error code: {returnCode}");
+        HandleErrorMessage(message + $"\n error code: {returnCode}");
+    }
 
-        string newMessage = message + $"\n error code: {returnCode}";
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+        foreach (var room in new List<string>(activeLobbies.Keys))
+        {
+            if (!roomList.Exists(r => r.Name == room))
+            {
+                Destroy(activeLobbies[room]);
+                activeLobbies.Remove(room);
+            }
+        }
 
-        HandleErrorMessage(newMessage);
+        foreach (RoomInfo roomInfo in roomList)
+        {
+            if (activeLobbies.ContainsKey(roomInfo.Name))
+            {
+                var text = activeLobbies[roomInfo.Name].GetComponentInChildren<TextMeshProUGUI>();
+                text.text = $"{roomInfo.Name} ({roomInfo.PlayerCount}/{roomInfo.MaxPlayers})";
+            }
+            else
+            {
+                GameObject entry = Instantiate(LobbyEntryPrefab, LobbyListContainer);
+                var text = entry.GetComponentInChildren<TextMeshProUGUI>();
+                text.text = $"{roomInfo.Name} ({roomInfo.PlayerCount}/{roomInfo.MaxPlayers})";
+
+                Button btn = entry.GetComponentInChildren<Button>();
+                string lobbyName = roomInfo.Name;
+                btn.onClick.AddListener(() => JoinLobbyFromButton(lobbyName));
+
+                activeLobbies.Add(roomInfo.Name, entry);
+            }
+        }
+    }
+
+    private void JoinLobbyFromButton(string lobbyName)
+    {
+        JoinLobbyField.text = lobbyName;
+        ConnectToLobby(false);
     }
 }
