@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class LobbyFinderManager : MonoBehaviourPunCallbacks
 {
-    public enum MenuState { Nickname, ServerInfo}
+    public enum MenuState { Nickname, ServerInfo }
     [HideInInspector] public MenuState state;
 
     [Header("Nickname - MenuState")]
@@ -19,15 +19,19 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
 
     [Header("Nickname - ServerInfo")]
     public Transform ServerInfoWindow;
-    public TMP_InputField Lobby;
+    public TMP_InputField CreateLobbyField;
     public TextMeshProUGUI PlayingAsName;
     public TextMeshProUGUI MaxPlayersText;
     public Button buttonSustract;
     public Button buttonAddup;
-    public Button ConnectButton;
+    public Button CreateButton;
     public Button GoBack;
     public string SceneToload;
     public int MaxNumberOfPlayers = 2;
+
+
+    public TMP_InputField JoinLobbyField;
+    public Button buttonJoinLobby;
 
     [Header("Error Handler")]
     public Transform ErrorTextHolder;
@@ -35,6 +39,7 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
 
     private string NicknameKey = "PlayerNickname";
     private string Nickname;
+    private bool isConnected;
 
     private void Awake()
     {
@@ -43,14 +48,16 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
     }
     void Start()
     {
-        Lobby.onValueChanged.AddListener(CheckLobby);
+        CreateLobbyField.onValueChanged.AddListener(CheckCreateLobby);
+        JoinLobbyField.onValueChanged.AddListener(CheckLoadLobby);
         PlayerName.onValueChanged.AddListener(CheckName);
         StartButton.onClick.AddListener(() => SwitchState(MenuState.ServerInfo));
-        ConnectButton.onClick.AddListener(ConnectToLobby);
+        buttonJoinLobby.onClick.AddListener(() => ConnectToLobby(false));
+        CreateButton.onClick.AddListener(() => ConnectToLobby(true));
         GoBack.onClick.AddListener(() => SwitchState(MenuState.Nickname));
     }
 
-    private void CheckName(string name) 
+    private void CheckName(string name)
     {
         if (PlayerName.text != string.Empty)
         {
@@ -62,17 +69,31 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
             StartButton.gameObject.SetActive(false);
     }
 
-    private void CheckLobby(string name)
+    private void CheckLoadLobby(string name)
     {
-        if (Lobby.text != string.Empty)
+        if (JoinLobbyField.text != string.Empty)
         {
-            ConnectButton.gameObject.SetActive(true);
+            buttonJoinLobby.interactable = true;
         }
         else
-            ConnectButton.gameObject.SetActive(false);
+            buttonJoinLobby.interactable = false;
+    }
+    public override void OnConnectedToMaster()
+    {
+        base.OnConnectedToMaster();
+        isConnected = true;
+    }
+    private void CheckCreateLobby(string name)
+    {
+        if (CreateLobbyField.text != string.Empty)
+        {
+            CreateButton.interactable = true;
+        }
+        else
+            CreateButton.interactable = false;
     }
 
-    public void ChangeMaxPlayersValue(int value) 
+    public void ChangeMaxPlayersValue(int value)
     {
         if (MaxNumberOfPlayers + value >= 2 && MaxNumberOfPlayers + value <= 4)
             MaxNumberOfPlayers += value;
@@ -83,11 +104,11 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
         MaxPlayersText.text = MaxNumberOfPlayers.ToString();
     }
 
-    public void SwitchState(MenuState newState) 
+    public void SwitchState(MenuState newState)
     {
         state = newState;
 
-        switch (state) 
+        switch (state)
         {
             case MenuState.Nickname:
 
@@ -103,34 +124,52 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public void ConnectToLobby() 
+    public void ConnectToLobby(bool isCreatingLobby)
     {
         PlayerPrefs.SetString(NicknameKey, Nickname);
         PhotonNetwork.NickName = Nickname.ToUpper();
 
-        ConnectButton.interactable = false;
-        Lobby.interactable = false;
+        CreateButton.interactable = false;
+        CreateLobbyField.interactable = false;
         PlayerName.interactable = false;
 
         if (!PhotonNetwork.IsConnected)
             PhotonNetwork.ConnectUsingSettings();
         else
-            JoinOrCreateRoom();
+            isConnected = true;
+
+        StartCoroutine(WaitCreateAndJoin(isCreatingLobby));
     }
 
-    public override void OnConnectedToMaster()
+    IEnumerator WaitCreateAndJoin(bool isCreatingLobby)
     {
-        JoinOrCreateRoom();
+        while (!isConnected) 
+        {
+            yield return null;
+        }
+
+        if (isCreatingLobby)
+            CreateRoom();
+        else
+            JoinRoom();
     }
 
-    private void JoinOrCreateRoom()
+    private void JoinRoom()
     {
-        if (Lobby.text != "") 
+        if (JoinLobbyField.text != "")
+        {
+            PhotonNetwork.JoinRoom(JoinLobbyField.text);
+        }
+    }
+
+    private void CreateRoom()
+    {
+        if (CreateLobbyField.text != "")
         {
             RoomOptions roomOptions = new RoomOptions();
             roomOptions.MaxPlayers = MaxNumberOfPlayers;
-            PhotonNetwork.JoinOrCreateRoom(Lobby.text, roomOptions, TypedLobby.Default);
-            roomOptions.IsVisible = false;
+            PhotonNetwork.CreateRoom(CreateLobbyField.text, roomOptions, TypedLobby.Default);
+            roomOptions.IsVisible = true;
         }
     }
 
@@ -141,14 +180,14 @@ public class LobbyFinderManager : MonoBehaviourPunCallbacks
         SceneManager.LoadScene(SceneToload);
     }
 
-    private void HandleErrorMessage(string message) 
+    private void HandleErrorMessage(string message)
     {
         var prefab = Instantiate(PrefabText, ErrorTextHolder);
         prefab.text = message;
         prefab.gameObject.SetActive(true);
 
-        ConnectButton.interactable = true;
-        Lobby.interactable = true;
+        CreateButton.interactable = true;
+        CreateLobbyField.interactable = true;
         PlayerName.interactable = true;
     }
 

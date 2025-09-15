@@ -44,6 +44,8 @@ MonoBehaviour:
   - ItemReaction
   - ReturnToStartup
   - CreateNewPlayer
+  - RPC_FlashHit
+  - RPC_ItemReaction
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
