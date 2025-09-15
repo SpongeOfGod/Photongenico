@@ -47,6 +47,7 @@ MonoBehaviour:
   - RPC_FlashHit
   - RPC_ItemReaction
   - Reaction
+  - RPC_Reaction
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

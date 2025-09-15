@@ -16,7 +16,7 @@ public class MysteryBoxManager : MonoBehaviour
     private float elapsedTime = 0;
     private void Update()
     {
-        if (!PhotonNetwork.IsMasterClient || GameManager.Instance.GameState != GameManager.GameStates.InRound)
+        if (!PhotonNetwork.IsMasterClient/* || GameManager.Instance.GameState != GameManager.GameStates.InRound*/)
         {
             elapsedTime = 0;
             return;

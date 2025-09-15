@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 1044510764082833001}
   - component: {fileID: 4166113968315017676}
   - component: {fileID: 2176916325197503750}
-  - component: {fileID: 4976209552987988685}
   - component: {fileID: 717304330638049668}
+  - component: {fileID: 5895395092058665362}
   m_Layer: 0
   m_Name: WoodenSpear
   m_TagString: Untagged
@@ -27,14 +27,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 375216783051390163}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.59, y: 1.121992, z: 1.59}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4166113968315017676
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -85,7 +85,23 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4976209552987988685
+--- !u!114 &717304330638049668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375216783051390163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 750ccd43f12de7c45942f95caed683b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DamageAmount: 1
+  DamageMultiplier: 1.5
+  timeToBeDestroyed: 10
+  PhotonView: {fileID: 0}
+--- !u!114 &5895395092058665362
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -107,18 +123,3 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &717304330638049668
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 375216783051390163}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 750ccd43f12de7c45942f95caed683b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DamageAmount: 1
-  DamageMultiplier: 1
-  timeToBeDestroyed: 10

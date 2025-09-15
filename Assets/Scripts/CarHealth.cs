@@ -32,23 +32,20 @@ public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
         currentHealth = maxHealth;
     }
 
-    private void Start()
-    {
-    }
     private void FixedUpdate()
     {
-        GameManager.Instance.HUD_Controller.RefreshHealth(currentHealth);
-        currentSpeed = rb.velocity.magnitude;
+        if (photonView.IsMine) 
+        {
+            GameManager.Instance.HUD_Controller.RefreshHealth(currentHealth);
+            currentSpeed = rb.velocity.magnitude;
+        }
     }
 
     public void TakeDamage(float amount)
     {
         if (!photonView.IsMine) return;
 
-        if (weaponController.CurrentWeapon == null)
-            currentHealth -= amount;
-        else
-            currentHealth -= (amount + weaponController.CurrentWeapon.DamageAmount) * weaponController.CurrentWeapon.DamageMultiplier;
+        currentHealth -= amount;
 
         currentHealth = Mathf.Max(currentHealth, 0f);
         GameManager.Instance.HUD_Controller.RefreshHealth(currentHealth);
@@ -124,6 +121,9 @@ public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
 
         float speedFactor = Mathf.Clamp01((impactSpeed - minImpactSpeed) / (maxImpactSpeed - minImpactSpeed));
         float damage = speedFactor * maxDamage * frontalFactor;
+
+        if (weaponController.CurrentWeapon != null)
+            damage = (damage + weaponController.CurrentWeapon.DamageAmount) * weaponController.CurrentWeapon.DamageMultiplier;
 
         TakeDamage(damage);
     }

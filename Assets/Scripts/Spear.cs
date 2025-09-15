@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Spear : Weapon
 {
-    PhotonView PhotonView;
+    public PhotonView PhotonView;
     private void Awake()
     {
         InitialTime = Time.time;
@@ -19,12 +19,12 @@ public class Spear : Weapon
         if (Time.time - InitialTime >= timeToBeDestroyed && PhotonView.IsMine) 
         {
             GameManager.Instance.HUD_Controller.CurrentWeaponChange("None");
-            PhotonView.RPC("Reaction", RpcTarget.All);
+            PhotonView.RPC("RPC_Reaction", RpcTarget.All);
         }
     }
 
     [PunRPC]
-    public void Reaction() 
+    public void RPC_Reaction() 
     {
         Destroy(gameObject);
     }

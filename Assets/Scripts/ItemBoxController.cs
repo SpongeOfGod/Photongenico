@@ -18,10 +18,21 @@ public class ItemBoxController : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             CollidingPlayer = other.gameObject;
-            photonView.RPC("RPC_ItemReaction", RpcTarget.All);
+            RPC_ItemReaction();
+            //photonView.RPC("RPC_ItemReaction", RpcTarget.All);
         }
     }
-    [PunRPC]
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            CollidingPlayer = collision.gameObject;
+            RPC_ItemReaction();
+            //photonView.RPC("RPC_ItemReaction", RpcTarget.All);
+        }
+    }
+    //[PunRPC]
     private void RPC_ItemReaction() 
     {
         if (CollidingPlayer != null) 
@@ -34,9 +45,8 @@ public class ItemBoxController : MonoBehaviour
             
             if (CarWeaponController != null) 
             {
-                var weapon = Instantiate(WeaponPrefabs[index]);
-
-                CarWeaponController.CurrentWeapon = weapon;
+                var weapon = PhotonNetwork.Instantiate(WeaponPrefabs[index].name, Vector2.zero, Quaternion.identity);
+                CarWeaponController.CurrentWeapon = weapon.GetComponent<Weapon>();
             }
         }
         Destroy(gameObject);
@@ -44,7 +54,7 @@ public class ItemBoxController : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.Instance.GameState != GameManager.GameStates.InRound)
-            photonView.RPC("RPC_ItemReaction", RpcTarget.All);
+        //if (GameManager.Instance.GameState != GameManager.GameStates.InRound && PhotonNetwork.IsMasterClient)
+        //    PhotonNetwork.Destroy(gameObject);
     }
 }
