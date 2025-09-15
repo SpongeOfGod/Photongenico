@@ -295,6 +295,7 @@ GameObject:
   - component: {fileID: 775813942761859900}
   - component: {fileID: 1590931806304588218}
   - component: {fileID: 8019303706881987167}
+  - component: {fileID: 5928122920359275674}
   m_Layer: 0
   m_Name: PlayerCar
   m_TagString: Untagged
@@ -501,6 +502,19 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   controller: {fileID: 3660867207402653680}
+--- !u!114 &5928122920359275674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3660867207402653686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6ea7e29dc11ae84b8752844c0ab8347, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PhotonView: {fileID: 0}
 --- !u!1 &3660867207658816120
 GameObject:
   m_ObjectHideFlags: 0

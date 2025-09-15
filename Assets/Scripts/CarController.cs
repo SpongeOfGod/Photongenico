@@ -211,17 +211,4 @@ public class CarController : MonoBehaviour
         var force = carRB.mass  * carRB.velocity.magnitude;
         return force;
     }
-
-
-    [PunRPC]
-    public void ChangeUsername()
-    {
-        var text = GetComponentInChildren<TextMeshPro>();
-        PhotonView = GetComponent<PhotonView>();
-
-        if (PhotonView.IsMine)
-            text.text = PhotonNetwork.NickName;
-        else
-            text.text = PhotonView.Owner.NickName;
-    }
 }
