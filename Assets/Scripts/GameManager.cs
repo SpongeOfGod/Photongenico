@@ -9,13 +9,13 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviourPunCallbacks
 {
     public static GameManager Instance;
+    public HUD_Controller HUD_Controller;
     [SerializeField] GameObject PlayerPrefab;
     [SerializeField] Vector3 InitialPosition;
     [SerializeField] ChaseCamera chaseCamera;
     [SerializeField] LobbyUIController LobbyUIController;
 
-    [HideInInspector] PhotonView photonView;
-    [HideInInspector] public GameStates GameState { get; private set; }
+        [HideInInspector] public GameStates GameState { get; private set; }
 
     public enum GameStates
     {
@@ -33,8 +33,6 @@ public class GameManager : MonoBehaviourPunCallbacks
             Instance = this;
         else if (Instance != this)
             Destroy(gameObject);
-
-        photonView = GetComponent<PhotonView>();
     }
 
     private void Start()
@@ -62,10 +60,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         SceneManager.LoadScene(0);
     }
 
-    public override void OnJoinedRoom()
-    {
-    }
-
     public void InstantiatePlayerCar(GameObject prefab)
     {
         CreateNewPlayer(prefab);
@@ -77,7 +71,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         Debug.Log($"Player: {newPlayer.NickName} entered the room!");
     }
 
-    //[PunRPC]
     public void CreateNewPlayer(GameObject prefab)
     {
         GameObject player = PhotonNetwork.Instantiate(prefab.name, InitialPosition, Quaternion.identity);

@@ -296,9 +296,10 @@ GameObject:
   - component: {fileID: 1590931806304588218}
   - component: {fileID: 8019303706881987167}
   - component: {fileID: 5928122920359275674}
+  - component: {fileID: 4487758218571086386}
   m_Layer: 0
   m_Name: PlayerCar
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -320,6 +321,7 @@ Transform:
   - {fileID: 3660867206901786418}
   - {fileID: 4543997408415538954}
   - {fileID: 4128582229214888157}
+  - {fileID: 6392061683462076471}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -502,6 +504,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   controller: {fileID: 3660867207402653680}
+  weaponController: {fileID: 0}
 --- !u!114 &5928122920359275674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -515,6 +518,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PhotonView: {fileID: 0}
+--- !u!114 &4487758218571086386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3660867207402653686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1a73e2938f60ca499681885962415f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WeaponParent: {fileID: 6392061683462076471}
+  Position: {x: 0, y: 0.59, z: 0.63}
+  CurrentWeapon: {fileID: 0}
 --- !u!1 &3660867207658816120
 GameObject:
   m_ObjectHideFlags: 0
@@ -639,6 +657,37 @@ Transform:
   m_Father: {fileID: 5966754323237061408}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6445219538594001863
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6392061683462076471}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6392061683462076471
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6445219538594001863}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3660867207402653683}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3660867206502792441
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -721,6 +770,10 @@ PrefabInstance:
     - target: {fileID: 9188953581786800780, guid: 40817e7351e501546adcb43310cfe38e, type: 3}
       propertyPath: m_Name
       value: Hatchback Body
+      objectReference: {fileID: 0}
+    - target: {fileID: 9188953581786800780, guid: 40817e7351e501546adcb43310cfe38e, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 40817e7351e501546adcb43310cfe38e, type: 3}

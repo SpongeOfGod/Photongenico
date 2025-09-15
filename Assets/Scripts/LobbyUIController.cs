@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using Photon;
 using Photon.Pun;
 using UnityEngine.UI;
 using Photon.Realtime;
@@ -12,6 +9,7 @@ public class LobbyUIController : MonoBehaviour
     [SerializeField] TextMeshProUGUI CurrentPlayersOnRoom;
     [SerializeField] Button StartGameButton;
     [SerializeField] RoomOptions RoomOptions;
+    public GameObject HUD;
     [HideInInspector] public PhotonView photonView;
     private void Awake()
     {
@@ -47,6 +45,7 @@ public class LobbyUIController : MonoBehaviour
             PhotonNetwork.CurrentRoom.IsOpen = false;
         StartGameButton.transform.parent.gameObject.SetActive(false);
         GameManager.Instance.ChangeState(GameManager.GameStates.InRound);
+        HUD.SetActive(true);
     }
 
     [PunRPC]
@@ -57,5 +56,6 @@ public class LobbyUIController : MonoBehaviour
 
         if (PhotonNetwork.IsMasterClient)
             StartGameButton.transform.parent.gameObject.SetActive(true);
+        HUD.SetActive(false);
     }
 }

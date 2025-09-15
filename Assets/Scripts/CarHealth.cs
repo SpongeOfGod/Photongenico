@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using Photon.Pun;
+using TMPro;
 
 public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
 {
@@ -14,6 +15,7 @@ public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
     [Header("Visuals")]
     [SerializeField] private Material hitMaterial;
     [SerializeField] private float hitDuration = 0.2f;
+    [SerializeField] private TextMeshProUGUI healthText;
 
     [Header("Debug")]
     [SerializeField] private float currentSpeed;
@@ -21,15 +23,21 @@ public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
 
     private float currentHealth;
     private Rigidbody rb;
+    private CarWeaponController weaponController;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        weaponController = GetComponent<CarWeaponController>();
         currentHealth = maxHealth;
     }
 
+    private void Start()
+    {
+    }
     private void FixedUpdate()
     {
+        GameManager.Instance.HUD_Controller.RefreshHealth(currentHealth);
         currentSpeed = rb.velocity.magnitude;
     }
 
@@ -37,8 +45,13 @@ public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (!photonView.IsMine) return;
 
-        currentHealth -= amount;
+        if (weaponController.CurrentWeapon == null)
+            currentHealth -= amount;
+        else
+            currentHealth -= (amount + weaponController.CurrentWeapon.DamageAmount) * weaponController.CurrentWeapon.DamageMultiplier;
+
         currentHealth = Mathf.Max(currentHealth, 0f);
+        GameManager.Instance.HUD_Controller.RefreshHealth(currentHealth);
 
         photonView.RPC("RPC_FlashHit", RpcTarget.All);
 
@@ -89,7 +102,7 @@ public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!photonView.IsMine) return;
+        if (!photonView.IsMine || GameManager.Instance.GameState != GameManager.GameStates.InRound) return;
 
         Rigidbody otherRb = collision.rigidbody;
         if (otherRb == null || otherRb == rb) return;

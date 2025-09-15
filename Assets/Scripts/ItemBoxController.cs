@@ -15,10 +15,10 @@ public class ItemBoxController : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.name.Contains("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
             CollidingPlayer = other.gameObject;
-            photonView.RPC("RPC_ItemReaction", RpcTarget.All, other.gameObject);
+            photonView.RPC("RPC_ItemReaction", RpcTarget.All);
         }
     }
     [PunRPC]
@@ -45,6 +45,6 @@ public class ItemBoxController : MonoBehaviour
     private void Update()
     {
         if (GameManager.Instance.GameState != GameManager.GameStates.InRound)
-            photonView.RPC("RPC_ItemReaction", RpcTarget.All, null);
+            photonView.RPC("RPC_ItemReaction", RpcTarget.All);
     }
 }

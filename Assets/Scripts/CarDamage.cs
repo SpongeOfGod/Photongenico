@@ -11,6 +11,7 @@ public class CarDamage : MonoBehaviour
     public Rigidbody CarRb;
     public LayerMask Car;
     [SerializeField] CarController controller;
+    [SerializeField] CarWeaponController weaponController;
     float rayDist = 2f;
     private Vector3 boxsize = Vector3.zero;
 
