@@ -22,6 +22,7 @@ public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] private float lastImpactSpeed;
 
     private float currentHealth;
+    public float CurrentHealth => currentHealth;
     private Rigidbody rb;
     private CarWeaponController weaponController;
 
@@ -52,7 +53,7 @@ public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
 
         photonView.RPC("RPC_FlashHit", RpcTarget.All);
 
-        Debug.Log($"{gameObject.name} recibió {amount:F1} de daño. Vida actual: {currentHealth:F1}");
+        Debug.Log($"{gameObject.name} recibiï¿½ {amount:F1} de daï¿½o. Vida actual: {currentHealth:F1}");
 
         if (currentHealth <= 0f)
         {

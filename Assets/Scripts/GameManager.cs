@@ -5,13 +5,16 @@ using Photon.Realtime;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
     public static GameManager Instance;
     public HUD_Controller HUD_Controller;
+
+    public GameObject leaderUi;
     [SerializeField] GameObject PlayerPrefab;
-    [SerializeField] Vector3 InitialPosition;
+    [SerializeField] ladderboard leaderboard;
     [SerializeField] ChaseCamera chaseCamera;
     [SerializeField] LobbyUIController LobbyUIController;
     [SerializeField] Transform[] spawnpositions;
@@ -75,6 +78,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         GameObject player = PhotonNetwork.Instantiate(prefab.name, spawnpositions[PhotonNetwork.CurrentRoom.PlayerCount -1].position, Quaternion.identity);
 
+        leaderboard.AddplayerToLeaderboard(player.GetComponent<PhotonView>().Owner.NickName, player.GetComponent<CarHealth>().CurrentHealth);
+        player.GetComponent<Playerseeleaderbord>().Leaderboard = leaderUi;
         player.TryGetComponent(out CarNameSync NameSync);
         if (player != null)
         {
