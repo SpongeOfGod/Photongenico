@@ -6,6 +6,8 @@ using UnityEngine;
 public class CarDamage : MonoBehaviour
 {
     private float maxHealth = 100;
+
+    public float tempscore = 0; //score temp hasta que se haga el script
     private float Current = 0;
     public Transform RaycastPosition;
     public Rigidbody CarRb;

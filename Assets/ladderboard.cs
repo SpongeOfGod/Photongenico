@@ -9,9 +9,10 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class ladderboard : MonoBehaviour
 {
-    public List<TextMeshProUGUI> names;
-    public List<TextMeshProUGUI> score;
-    public List<TextMeshProUGUI> life;
+    public List<GameObject> scorelist;
+
+    [SerializeField] GameObject scorepreefab;
+ 
     // Start is called before the first frame update
     void Start()
     {
@@ -26,11 +27,16 @@ public class ladderboard : MonoBehaviour
 
 
 
-    public void AddplayerToLeaderboard(String Name, float health)
+    public void AddplayerToLeaderboard(String Name, float score)
     {
-        names[PhotonNetwork.CurrentRoom.PlayerCount - 1].text = Name;
-        score[PhotonNetwork.CurrentRoom.PlayerCount - 1].text = "0";
-        life[PhotonNetwork.CurrentRoom.PlayerCount -1].text = health.ToString();
+        var newscore = Instantiate(scorepreefab);
+        transform.Find("Name").GetComponent<TextMeshProUGUI>().text = name.ToString();
+        transform.Find("Score").GetComponent<TextMeshProUGUI>().text = score.ToString();
+
+        scorelist.Add(scorepreefab);
+
+        transform.Find("Position").GetComponent<TextMeshProUGUI>().text = scorelist.Count.ToString();
+
 
     }
 }
