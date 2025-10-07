@@ -717,7 +717,7 @@ RectTransform:
   - {fileID: 1567399608}
   - {fileID: 201974577}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -927,7 +927,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &312438758
 GameObject:
@@ -2573,8 +2573,55 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &714287660
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 714287662}
+  - component: {fileID: 714287661}
+  m_Layer: 0
+  m_Name: ErrorHandler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &714287661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 714287660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f61d6c157a1a52d41936957607622600, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LobbyMenu: {fileID: 1657401298}
+  ErrorTextHolder: {fileID: 1567399608}
+  PrefabText: {fileID: 8446194765342090399, guid: 8875af38846049a4896ca77a501e42c8, type: 3}
+--- !u!4 &714287662
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 714287660}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -95.42722, y: -20.551182, z: 46.315666}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &750015913
 GameObject:
   m_ObjectHideFlags: 0
@@ -2641,7 +2688,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &756535447
 GameObject:
@@ -3390,7 +3437,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &970651164
 GameObject:
@@ -3746,8 +3793,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1144296721}
-        m_TargetAssemblyTypeName: LobbyFinderManager, Assembly-CSharp
+      - m_Target: {fileID: 1657401298}
+        m_TargetAssemblyTypeName: LobbyMenu, Assembly-CSharp
         m_MethodName: ChangeMaxPlayersValue
         m_Mode: 3
         m_Arguments:
@@ -4181,7 +4228,7 @@ GameObject:
   - component: {fileID: 1144296722}
   - component: {fileID: 1144296721}
   m_Layer: 0
-  m_Name: ConnectToLobby
+  m_Name: LobbyManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4199,28 +4246,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e0361a7fe6adf646969528952907f6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  state: 0
-  NicknameWindow: {fileID: 1356584076}
-  PlayerName: {fileID: 1850188718}
-  StartButton: {fileID: 1069552106}
-  LobbyStatus: {fileID: 1780571575}
-  ServerInfoWindow: {fileID: 201974577}
-  CreateLobbyField: {fileID: 756535449}
-  PlayingAsName: {fileID: 474424297}
-  MaxPlayersText: {fileID: 457912769}
-  buttonSustract: {fileID: 1429211503}
-  buttonAddup: {fileID: 1040863755}
-  CreateButton: {fileID: 1130302084}
-  GoBack: {fileID: 119141452}
-  SceneToload: pruebas auto
+  LobbyMenu: {fileID: 1657401298}
+  ErrorHandler: {fileID: 714287661}
   MaxNumberOfPlayers: 2
-  JoinLobbyField: {fileID: 1617519217}
-  buttonJoinLobby: {fileID: 574440818}
-  ErrorTextHolder: {fileID: 1567399608}
-  PrefabText: {fileID: 8446194765342090399, guid: 8875af38846049a4896ca77a501e42c8, type: 3}
   LobbyListContainer: {fileID: 1709362697}
   LobbyEntryPrefab: {fileID: 1419281865383261694, guid: ea095ea33cccb7b4692faf0f9af3b9e2, type: 3}
+  LobbyName: 
   Nickname: 
+  isConnected: 0
+  isInLobby: 0
+  SceneToload: pruebas auto
 --- !u!4 &1144296722
 Transform:
   m_ObjectHideFlags: 0
@@ -4234,7 +4269,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1195192328
 GameObject:
@@ -5207,8 +5242,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1144296721}
-        m_TargetAssemblyTypeName: LobbyFinderManager, Assembly-CSharp
+      - m_Target: {fileID: 1657401298}
+        m_TargetAssemblyTypeName: LobbyMenu, Assembly-CSharp
         m_MethodName: ChangeMaxPlayersValue
         m_Mode: 3
         m_Arguments:
@@ -5874,6 +5909,67 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1617519215}
   m_CullTransparentMesh: 1
+--- !u!1 &1657401297
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1657401299}
+  - component: {fileID: 1657401298}
+  m_Layer: 0
+  m_Name: LobbyMenu
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1657401298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1657401297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea6ebd4cf66ba804bbfe124bce9149d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  ServerInfoWindow: {fileID: 201974577}
+  NicknameWindow: {fileID: 1356584076}
+  LobbyStatus: {fileID: 1780571575}
+  PlayingAsName: {fileID: 474424297}
+  MaxPlayersText: {fileID: 457912769}
+  CreateLobbyField: {fileID: 756535449}
+  JoinLobbyField: {fileID: 1617519217}
+  PlayerName: {fileID: 1850188718}
+  buttonSustract: {fileID: 1429211503}
+  buttonAddup: {fileID: 1040863755}
+  StartButton: {fileID: 1069552106}
+  buttonJoinLobby: {fileID: 574440818}
+  CreateButton: {fileID: 1130302084}
+  GoBack: {fileID: 119141452}
+  ErrorHandler: {fileID: 714287661}
+  LobbyManager: {fileID: 1144296721}
+--- !u!4 &1657401299
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1657401297}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -95.42722, y: -20.551182, z: 46.315666}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1709362696
 GameObject:
   m_ObjectHideFlags: 0
