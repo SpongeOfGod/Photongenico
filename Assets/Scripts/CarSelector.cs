@@ -25,6 +25,7 @@ public class CarSelector : MonoBehaviour
         if (GameManager.Instance != null /*&& PhotonView.IsMine*/ && CarToSelect != null) 
         {
             GameManager.Instance.CreateNewPlayer(CarToSelect);
+
             Destroy(gameObject);
         }
     }

@@ -504,6 +504,7 @@ MonoBehaviour:
   healthText: {fileID: 0}
   currentSpeed: 0
   lastImpactSpeed: 0
+  currentHealth: 0
 --- !u!65 &5707704450690278093
 BoxCollider:
   m_ObjectHideFlags: 0

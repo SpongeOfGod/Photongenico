@@ -762,7 +762,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &276340317
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1006,7 +1006,7 @@ MonoBehaviour:
   m_Spacing: {x: 40.45, y: 0}
   m_Constraint: 1
   m_ConstraintCount: 3
---- !u!1 &423185485
+--- !u!1 &381414519
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1014,9 +1014,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 423185488}
-  - component: {fileID: 423185487}
-  - component: {fileID: 423185486}
+  - component: {fileID: 381414522}
+  - component: {fileID: 381414521}
+  - component: {fileID: 381414520}
   m_Layer: 0
   m_Name: ScoreManager
   m_TagString: Untagged
@@ -1024,13 +1024,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &423185486
+--- !u!114 &381414520
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 423185485}
+  m_GameObject: {fileID: 381414519}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c1b2c28f80f44aa418cbabec19abd63a, type: 3}
@@ -1038,33 +1038,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreprefab: {fileID: 3504819572516295666, guid: 510ba7560c7c39c4fab6e9861fee3ec9, type: 3}
   leaderboard: {fileID: 1921638729}
---- !u!114 &423185487
+--- !u!114 &381414521
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 423185485}
+  m_GameObject: {fileID: 381414519}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 039cd5351ef63c34bb51fd89d3429c29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   prefabs: []
---- !u!4 &423185488
+--- !u!4 &381414522
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 423185485}
+  m_GameObject: {fileID: 381414519}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1124.9329, y: -292.5202, z: 7247.4326}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &440548318
 GameObject:
@@ -3332,7 +3332,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1393702925
 GameObject:
@@ -4778,7 +4778,6 @@ MonoBehaviour:
   - {fileID: 1332558260}
   - {fileID: 1902599734}
   - {fileID: 1546253341}
-  crashInfo: {fileID: 7091394480866962439, guid: 4ed061a9cc725b945b643c300375a1b2, type: 3}
 --- !u!4 &1972089458
 Transform:
   m_ObjectHideFlags: 0
