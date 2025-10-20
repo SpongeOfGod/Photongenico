@@ -122,6 +122,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private void JoinLobbyFromButton(string lobbyName)
     {
+        this.LobbyName = lobbyName;
         LobbyMenu.ChangeTextName(lobbyName);
         ConnectToLobby(false);
     }

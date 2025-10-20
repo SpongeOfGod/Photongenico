@@ -48,6 +48,7 @@ MonoBehaviour:
   - RPC_ItemReaction
   - Reaction
   - RPC_Reaction
+  - TakeDamage
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

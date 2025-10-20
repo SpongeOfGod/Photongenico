@@ -21,7 +21,7 @@ public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] private float currentSpeed;
     [SerializeField] private float lastImpactSpeed;
 
-    private float currentHealth;
+    [SerializeField] private float currentHealth;
     public float CurrentHealth => currentHealth;
     private Rigidbody rb;
     private CarWeaponController weaponController;
@@ -42,6 +42,7 @@ public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
+    [PunRPC]
     public void TakeDamage(float amount)
     {
         if (!photonView.IsMine) return;
@@ -126,7 +127,7 @@ public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
         if (weaponController.CurrentWeapon != null)
             damage = (damage + weaponController.CurrentWeapon.DamageAmount) * weaponController.CurrentWeapon.DamageMultiplier;
 
-        TakeDamage(damage);
+        photonView.RPC("TakeDamage", RpcTarget.All, damage);
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
