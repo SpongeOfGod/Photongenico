@@ -1,11 +1,7 @@
-using Adrenak.Tork.Demo;
-using Cinemachine;
 using Photon.Pun;
 using Photon.Realtime;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.SocialPlatforms.Impl;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
@@ -18,7 +14,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] ChaseCamera chaseCamera;
     [SerializeField] LobbyUIController LobbyUIController;
     [SerializeField] Transform[] spawnpositions;
-        [HideInInspector] public GameStates GameState { get; private set; }
+    [SerializeField] public CrashInfo crashInfo; 
+    [HideInInspector] public GameStates GameState { get; private set; }
 
     public enum GameStates
     {
@@ -62,7 +59,14 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         SceneManager.LoadScene(0);
     }
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        CrashInfo crash = Instantiate(crashInfo);
 
+        crash.SetMessage(cause.ToString());
+
+        DontDestroyOnLoad(crash);
+    }
     public void InstantiatePlayerCar(GameObject prefab)
     {
         CreateNewPlayer(prefab);

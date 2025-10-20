@@ -4704,6 +4704,7 @@ MonoBehaviour:
   - {fileID: 1332558260}
   - {fileID: 1902599734}
   - {fileID: 1546253341}
+  crashInfo: {fileID: 7091394480866962439, guid: 4ed061a9cc725b945b643c300375a1b2, type: 3}
 --- !u!4 &1972089458
 Transform:
   m_ObjectHideFlags: 0
