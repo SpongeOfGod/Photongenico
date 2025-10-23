@@ -1,5 +1,6 @@
 using Photon.Pun;
 using Photon.Realtime;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -40,6 +41,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
             OnJoinedRoom();
     }
+
+    public Vector3 GetRandomSpawn() => spawnpositions[Random.Range(0, spawnpositions.Length - 1)].position;
 
     private void Update()
     {
@@ -83,9 +86,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         GameObject player = PhotonNetwork.Instantiate(prefab.name, spawnpositions[PhotonNetwork.CurrentRoom.PlayerCount -1].position, Quaternion.identity);
         var playername = player.GetComponent<PhotonView>().Owner.NickName;
         float score = 10;
-        player.GetComponent<Playerseeleaderbord>().Leaderboard = leaderUi;
-        ScoreManager.Instance.createscoreprefab(playername,score);
-
 
         player.TryGetComponent(out CarNameSync NameSync);
         if (player != null)

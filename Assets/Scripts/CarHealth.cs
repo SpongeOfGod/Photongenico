@@ -2,6 +2,10 @@ using System.Collections;
 using UnityEngine;
 using Photon.Pun;
 using TMPro;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using UnityEngine.UIElements;
 
 public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
 {
@@ -22,15 +26,22 @@ public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] private float lastImpactSpeed;
 
     [SerializeField] private float currentHealth;
-    public float CurrentHealth => currentHealth;
+    public float CurrentHealth { get => currentHealth; set => currentHealth = value; }
+    public float MaxHealth { get => maxHealth; }
+    public List<MeshRenderer> MeshRenderers;
+    public Collider Collider;
+    public TextMeshPro textName;
     private Rigidbody rb;
     private CarWeaponController weaponController;
+    RespawnController RespawnController;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         weaponController = GetComponent<CarWeaponController>();
         currentHealth = maxHealth;
+        var Respawn = GameObject.Find("RespawnController");
+        RespawnController = Respawn.GetComponent<RespawnController>();
     }
 
     private void FixedUpdate()
@@ -40,6 +51,33 @@ public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
             GameManager.Instance.HUD_Controller.RefreshHealth(currentHealth);
             currentSpeed = rb.velocity.magnitude;
         }
+    }
+
+    [PunRPC]
+    public void Initialized()
+    {
+        Collider.enabled = true;
+
+        foreach (var item in MeshRenderers)
+        {
+            item.enabled = true;
+        }
+        currentHealth = maxHealth;
+        textName.enabled = true;
+        gameObject.transform.eulerAngles = Vector3.zero;
+        foreach (Transform child in transform)
+        {
+            child.gameObject.SetActive(true);
+        }
+
+    }
+
+    [PunRPC]
+    public void Reposition(Vector3 position, Vector3 euler)
+    {
+        gameObject.transform.position = position + Vector3.up * 2;
+        gameObject.transform.eulerAngles = euler;
+        rb.useGravity = true;
     }
 
     [PunRPC]
@@ -58,7 +96,7 @@ public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
 
         if (currentHealth <= 0f)
         {
-            Die();
+            photonView.RPC("Die", RpcTarget.All, null);
         }
     }
 
@@ -90,12 +128,31 @@ public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
+    [PunRPC]
     private void Die()
     {
         Debug.Log($"{gameObject.name} ha sido destruido");
+
+        foreach (var item in MeshRenderers)
+        {
+            item.enabled = false;
+        }
+
+        Collider.enabled = false;
+
+        foreach (Transform child in transform)
+        {
+            child.gameObject.SetActive(false);
+        }
+
+        textName.enabled = false;
+        rb.useGravity = false;
+        rb.velocity = Vector3.zero;
+
         if (photonView.IsMine)
         {
-            PhotonNetwork.Destroy(gameObject);
+            RespawnController.ActivateRespawn(this);
+            //PhotonNetwork.Destroy(gameObject);
         }
     }
 

@@ -804,6 +804,15 @@ MonoBehaviour:
   healthText: {fileID: 0}
   currentSpeed: 0
   lastImpactSpeed: 0
+  currentHealth: 0
+  MeshRenderers:
+  - {fileID: 4158226462134106517}
+  - {fileID: 1991592629156067310}
+  - {fileID: 2203691266135619645}
+  - {fileID: 1157450664748885465}
+  - {fileID: 9151184382286196347}
+  Collider: {fileID: 2281321294732594684}
+  textName: {fileID: 4582657943774199512}
 --- !u!114 &-2192795708874934985
 MonoBehaviour:
   m_ObjectHideFlags: 0

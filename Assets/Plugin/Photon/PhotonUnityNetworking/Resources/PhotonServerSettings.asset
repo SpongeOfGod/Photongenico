@@ -49,6 +49,10 @@ MonoBehaviour:
   - Reaction
   - RPC_Reaction
   - TakeDamage
+  - ActivatePlayer
+  - Die
+  - Initialized
+  - Reposition
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
