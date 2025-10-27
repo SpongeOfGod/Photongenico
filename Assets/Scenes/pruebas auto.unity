@@ -1091,6 +1091,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 423185488}
+  - component: {fileID: 423185489}
   m_Layer: 0
   m_Name: ScoreManager
   m_TagString: Untagged
@@ -1113,6 +1114,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &423185489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 423185485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1b2c28f80f44aa418cbabec19abd63a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreprefab: {fileID: 3504819572516295666, guid: 510ba7560c7c39c4fab6e9861fee3ec9, type: 3}
+  leaderboard: {fileID: 1921638729}
 --- !u!1 &440548318
 GameObject:
   m_ObjectHideFlags: 0
@@ -5074,7 +5089,6 @@ GameObject:
   - component: {fileID: 1972089458}
   - component: {fileID: 1972089457}
   - component: {fileID: 1972089459}
-  - component: {fileID: 1972089460}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -5097,7 +5111,7 @@ MonoBehaviour:
   HUD_Controller: {fileID: 1437719885}
   leaderUi: {fileID: 276340316}
   PlayerPrefab: {fileID: 1132797446414550, guid: 58b5a3e507c7b68449674674e18cab44, type: 3}
-  leaderboard: {fileID: 1972089460}
+  leaderboard: {fileID: 0}
   chaseCamera: {fileID: 126317459}
   LobbyUIController: {fileID: 1029794612}
   spawnpositions:
@@ -5143,19 +5157,6 @@ MonoBehaviour:
   sceneViewId: 3
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &1972089460
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1972089456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 039cd5351ef63c34bb51fd89d3429c29, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefabs: []
 --- !u!1 &1979621384
 GameObject:
   m_ObjectHideFlags: 0

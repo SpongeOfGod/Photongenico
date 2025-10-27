@@ -28,6 +28,12 @@ public class setnames : MonoBehaviour
 
     }
 
+    public void setscore(float newscore)
+    {
+        scorenum = newscore;
+        score.text = scorenum.ToString();
+    }
+
 
 
 }

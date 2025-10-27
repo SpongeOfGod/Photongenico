@@ -26,6 +26,8 @@ public class ScoreManager : MonoBehaviourPunCallbacks
     public void createscoreprefab(string name, float number)
     {
         GameObject newprefab = scoreprefab;
+
+        newprefab.name = name;
         leaderboard.prefabs.Add(newprefab);
 
         newprefab.GetComponent<setnames>().Oninstance(name, number);
