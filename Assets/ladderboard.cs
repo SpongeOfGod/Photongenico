@@ -48,10 +48,7 @@ public class ladderboard : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        
-    }
+ 
     public void updatescores(string name, float score)
     {
         int i = 0;
