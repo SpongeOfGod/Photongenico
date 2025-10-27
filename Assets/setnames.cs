@@ -11,23 +11,23 @@ public class setnames : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI score;
 
-    // Start is called before the first frame update
-    void Start()
-    {
+    public float scorenum;
 
-    }
+    // Start is called before the first frame update
 
     public void Oninstance(string name, float number)
     {
         playername.text = name;
-        
+
         score.text = number.ToString();
+        scorenum = number;
 
-        position.text = ScoreManager.Instance.leaderboard.prefabs[PhotonNetwork.CurrentRoom.PlayerCount -1].ToString();
+        position.text = ScoreManager.Instance.leaderboard.prefabs.Count.ToString();
 
-        
-        
+
 
     }
-  
+
+
+
 }

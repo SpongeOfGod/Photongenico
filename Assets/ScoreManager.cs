@@ -10,7 +10,6 @@ public class ScoreManager : MonoBehaviourPunCallbacks
 
     [SerializeField] private GameObject scoreprefab;
   
-
     public  ladderboard leaderboard;
 
     // Start is called before the first frame update
@@ -36,6 +35,6 @@ public class ScoreManager : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
-        
+        leaderboard.shortlist();
     }
 }
