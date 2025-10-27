@@ -184,6 +184,10 @@ public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
         if (weaponController.CurrentWeapon != null)
             damage = (damage + weaponController.CurrentWeapon.DamageAmount) * weaponController.CurrentWeapon.DamageMultiplier;
 
+        bool isdead = currentHealth == 0 ? true : false;
+        collision.gameObject.GetComponent<CarScore>().calculatescore( isdead);
+
+
         photonView.RPC("TakeDamage", RpcTarget.All, damage);
     }
 

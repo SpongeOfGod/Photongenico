@@ -21,11 +21,6 @@ public class ladderboard : MonoBehaviour
 
 
     }
-
-    void Start()
-    {
-      
-    }
     [PunRPC]
     public void shortlist()
     {
@@ -52,7 +47,11 @@ public class ladderboard : MonoBehaviour
                 break;
         }
     }
-    
+
+    private void Update()
+    {
+        
+    }
     public void updatescores(string name, float score)
     {
         int i = 0;

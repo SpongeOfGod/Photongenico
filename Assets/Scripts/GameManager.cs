@@ -3,6 +3,7 @@ using Photon.Realtime;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
@@ -85,8 +86,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         GameObject player = PhotonNetwork.Instantiate(prefab.name, spawnpositions[PhotonNetwork.CurrentRoom.PlayerCount -1].position, Quaternion.identity);
         var playername = player.GetComponent<PhotonView>().Owner.NickName;
+        var playerscore = player.GetComponent<CarScore>().Score;
 
-        ScoreManager.Instance.createscoreprefab(playername, 10);
+        ScoreManager.Instance.createscoreprefab(playername, playerscore);
         player.GetComponent<Playerseeleaderbord>().Leaderboard = leaderUi;
 
         player.TryGetComponent(out CarNameSync NameSync);

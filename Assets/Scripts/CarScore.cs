@@ -1,3 +1,5 @@
+using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,12 +15,21 @@ public class CarScore : MonoBehaviour
 		set {score = value; }
 	}
     // Start is called before the first frame update
-    void Start()
-    {
 
+
+   public  void calculatescore( bool killedpalyer)
+    {
+        if (!killedpalyer)
+        {
+            score++;
+        }
+        else
+        {
+            score += 2;
+        }
+
+        var name = this.GetComponent<PhotonView>().Owner.NickName;
+        ScoreManager.Instance.leaderboard.updatescores(name,Score);
     }
 
-    // Update is called once per frame
-    
-    
 }
