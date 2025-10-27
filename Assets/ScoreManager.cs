@@ -16,11 +16,12 @@ public class ScoreManager : MonoBehaviourPunCallbacks
 
     void Awake()
     {
-          if (Instance == null)
+        if (Instance == null)
             Instance = this;
         else if (Instance != this)
             Destroy(gameObject);
     }
+
 
 
     public void createscoreprefab(string name, float number)
@@ -35,8 +36,5 @@ public class ScoreManager : MonoBehaviourPunCallbacks
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        leaderboard.shortlist();
-    }
+
 }
