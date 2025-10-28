@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
@@ -17,8 +18,10 @@ public class ladderboard : MonoBehaviourPunCallbacks
     
     public void Intanceincanvas()
     {
-        Instantiate(ScorePrefabs[PhotonNetwork.CurrentRoom.PlayerCount - 1],this.transform);
-        Debug.Log("se ha instanciado");
+
+        Transform pos = new UnityEngine.Vector3(this.transform.position.x ,this.transform.position.y + 5 * ScorePrefabs.Count, this.transform.position.z);
+        Instantiate(ScorePrefabs[PhotonNetwork.CurrentRoom.PlayerCount - 1],pos);
+
 
 
     }
