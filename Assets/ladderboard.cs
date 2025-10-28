@@ -12,20 +12,20 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class ladderboard : MonoBehaviourPunCallbacks
 {
-    public List<GameObject> prefabs;
+    public List<GameObject> ScorePrefabs;
     [SerializeField] PhotonView view;
-
+    
     public void Intanceincanvas()
     {
-        //Instantiate(prefabs[PhotonNetwork.CurrentRoom.PlayerCount - 1].gameObject,this.transform);
-        //Debug.Log("se ha instanciado");
+        Instantiate(ScorePrefabs[PhotonNetwork.CurrentRoom.PlayerCount - 1],this.transform);
+        Debug.Log("se ha instanciado");
 
 
     }
     [PunRPC]
     public void shortlist()
     {
-        int n = prefabs.Count - 1;
+        int n = ScorePrefabs.Count - 1;
         bool swapped = false;
 
         for (int i = 0; i < n - 1; i++)
@@ -33,13 +33,13 @@ public class ladderboard : MonoBehaviourPunCallbacks
             swapped = false;
             for (int j = 0; j < n - i - 1; j++)
             {
-                if (prefabs[j].GetComponent<setnames>().scorenum > prefabs[j + 1].GetComponent<setnames>().scorenum)
+                if (ScorePrefabs[j].GetComponent<setnames>().scorenum > ScorePrefabs[j + 1].GetComponent<setnames>().scorenum)
                 {
-                    var tempposition = prefabs[j].transform.position;
-                    var temp = prefabs[j];
-                    prefabs[j] = prefabs[j + 1];
-                    prefabs[j].transform.position = prefabs[j + 1].transform.position;
-                    prefabs[j + 1].transform.position = tempposition;
+                    var tempposition = ScorePrefabs[j].transform.position;
+                    var temp = ScorePrefabs[j];
+                    ScorePrefabs[j] = ScorePrefabs[j + 1];
+                    ScorePrefabs[j].transform.position = ScorePrefabs[j + 1].transform.position;
+                    ScorePrefabs[j + 1].transform.position = tempposition;
 
                     swapped = true;
                 }
@@ -53,16 +53,16 @@ public class ladderboard : MonoBehaviourPunCallbacks
     public void updatescores(string name, float score)
     {
         int i = 0;
-        foreach( var scores in prefabs)
+        foreach( var scores in ScorePrefabs)
         {
 
-            if (prefabs[i].name != name)
+            if (ScorePrefabs[i].name != name)
             {
                 i++;
             }
             else
             {
-                prefabs[i].GetComponent<setnames>().setscore(score);
+                ScorePrefabs[i].GetComponent<setnames>().setscore(score);
             }
         }
            view.RPC("shortlist", RpcTarget.AllBuffered,null);
