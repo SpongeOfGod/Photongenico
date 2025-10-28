@@ -13,7 +13,8 @@ using UnityEngine.SocialPlatforms.Impl;
 public class ladderboard : MonoBehaviourPunCallbacks
 {
     public List<GameObject> prefabs;
-   
+    [SerializeField] PhotonView view;
+
     public void Intanceincanvas()
     {
         Instantiate(prefabs[PhotonNetwork.CurrentRoom.PlayerCount - 1].gameObject,this.transform);
@@ -64,7 +65,7 @@ public class ladderboard : MonoBehaviourPunCallbacks
                 prefabs[i].GetComponent<setnames>().setscore(score);
             }
         }
-        shortlist();
+           view.RPC("shortlist", RpcTarget.AllBuffered,null);
     }
 }
 

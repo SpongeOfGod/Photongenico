@@ -10,10 +10,7 @@ public class Apimania : MonoBehaviour
     [SerializeField] private TMP_Text text;
     [SerializeField] private Button catfactButton;
     // Start is called before the first frame update
-    void Start()
-    {
 
-    }
 
     // Update is called once per frame
   public void callrequest()
@@ -37,7 +34,6 @@ public class Apimania : MonoBehaviour
 
 
     }
-
     
 }
 [System.Serializable]

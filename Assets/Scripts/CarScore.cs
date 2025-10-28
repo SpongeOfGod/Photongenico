@@ -30,6 +30,7 @@ public class CarScore : MonoBehaviour
 
         var name = this.GetComponent<PhotonView>().Owner.NickName;
         ScoreManager.Instance.leaderboard.updatescores(name,Score);
+        
     }
 
 }
