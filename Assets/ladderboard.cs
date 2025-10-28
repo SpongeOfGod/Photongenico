@@ -17,8 +17,8 @@ public class ladderboard : MonoBehaviourPunCallbacks
 
     public void Intanceincanvas()
     {
-        Instantiate(prefabs[PhotonNetwork.CurrentRoom.PlayerCount - 1].gameObject,this.transform);
-        Debug.Log("se ha instanciado");
+        //Instantiate(prefabs[PhotonNetwork.CurrentRoom.PlayerCount - 1].gameObject,this.transform);
+        //Debug.Log("se ha instanciado");
 
 
     }

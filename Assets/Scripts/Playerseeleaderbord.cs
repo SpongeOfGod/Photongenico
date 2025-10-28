@@ -4,14 +4,9 @@ using UnityEngine;
 
 public class Playerseeleaderbord : MonoBehaviour
 {
-
     public GameObject Leaderboard;
-
     private bool seeingleadeboard = false;
-    // Start is called before the first frame update
 
-
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyUp(KeyCode.Tab) || Input.GetKeyDown(KeyCode.Tab))
@@ -19,11 +14,7 @@ public class Playerseeleaderbord : MonoBehaviour
             seeingleadeboard = !seeingleadeboard;
         }
 
-
-        Leaderboard.SetActive(seeingleadeboard);
+        if (Leaderboard != null)
+            Leaderboard.SetActive(seeingleadeboard);
     }
-    
-
-
-    
 }
