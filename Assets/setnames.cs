@@ -22,7 +22,7 @@ public class setnames : MonoBehaviour
         score.text = number.ToString();
         scorenum = number;
 
-        position.text = ScoreManager.Instance.leaderboard.prefabs.Count.ToString();
+        position.text = ScoreManager.Instance.leaderboard.ScorePrefabs.Count.ToString();
 
 
 
