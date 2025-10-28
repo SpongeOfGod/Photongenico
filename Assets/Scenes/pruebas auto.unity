@@ -4943,6 +4943,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefabs: []
+  view: {fileID: 0}
 --- !u!1 &1940029434
 GameObject:
   m_ObjectHideFlags: 0
@@ -5111,7 +5112,7 @@ MonoBehaviour:
   HUD_Controller: {fileID: 1437719885}
   leaderUi: {fileID: 276340316}
   PlayerPrefab: {fileID: 1132797446414550, guid: 58b5a3e507c7b68449674674e18cab44, type: 3}
-  leaderboard: {fileID: 0}
+  leaderboard: {fileID: 1921638729}
   chaseCamera: {fileID: 126317459}
   LobbyUIController: {fileID: 1029794612}
   spawnpositions:
