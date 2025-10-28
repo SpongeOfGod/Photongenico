@@ -21,16 +21,15 @@ public class CarScore : MonoBehaviour
     {
         if (!killedpalyer)
         {
-            score++;
+            Score++;
         }
         else
         {
-            score += 2;
+            Score += 2;
         }
 
         var name = this.GetComponent<PhotonView>().Owner.NickName;
-        ScoreManager.Instance.leaderboard.updatescores(name,Score);
-        
+        ScoreManager.Instance.photonView.RPC("updatescores",RpcTarget.All,name,Score);
     }
 
 }

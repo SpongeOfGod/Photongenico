@@ -19,8 +19,8 @@ public class ladderboard : MonoBehaviourPunCallbacks
     public void Intanceincanvas()
     {
 
-        Transform pos = new UnityEngine.Vector3(this.transform.position.x ,this.transform.position.y + 5 * ScorePrefabs.Count, this.transform.position.z);
-        Instantiate(ScorePrefabs[PhotonNetwork.CurrentRoom.PlayerCount - 1],pos);
+      
+        Instantiate(ScorePrefabs[PhotonNetwork.CurrentRoom.PlayerCount - 1], this.transform);
 
 
 
@@ -52,7 +52,7 @@ public class ladderboard : MonoBehaviourPunCallbacks
         }
     }
 
- 
+ [PunRPC]
     public void updatescores(string name, float score)
     {
         int i = 0;
