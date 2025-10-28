@@ -1092,6 +1092,7 @@ GameObject:
   m_Component:
   - component: {fileID: 423185488}
   - component: {fileID: 423185489}
+  - component: {fileID: 423185490}
   m_Layer: 0
   m_Name: ScoreManager
   m_TagString: Untagged
@@ -1128,6 +1129,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreprefab: {fileID: 3504819572516295666, guid: 510ba7560c7c39c4fab6e9861fee3ec9, type: 3}
   leaderboard: {fileID: 1921638729}
+--- !u!114 &423185490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 423185485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 6
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &440548318
 GameObject:
   m_ObjectHideFlags: 0
@@ -4943,7 +4966,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 039cd5351ef63c34bb51fd89d3429c29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabs: []
+  ScorePrefabs: []
   view: {fileID: 1921638730}
 --- !u!114 &1921638730
 MonoBehaviour:

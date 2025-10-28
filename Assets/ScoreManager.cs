@@ -9,6 +9,8 @@ public class ScoreManager : MonoBehaviourPunCallbacks
     public static ScoreManager Instance;
 
     [SerializeField] private GameObject scoreprefab;
+    
+    public PhotonView View;
   
     public  ladderboard leaderboard;
 
@@ -23,7 +25,7 @@ public class ScoreManager : MonoBehaviourPunCallbacks
     }
 
 
-
+[PunRPC]
     public void createscoreprefab(string name, float number)
     {
         GameObject newprefab = scoreprefab;
