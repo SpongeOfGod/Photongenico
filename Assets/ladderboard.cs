@@ -10,7 +10,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SocialPlatforms.Impl;
 
-public class ladderboard : MonoBehaviour
+public class ladderboard : MonoBehaviourPunCallbacks
 {
     public List<GameObject> prefabs;
    
@@ -64,7 +64,6 @@ public class ladderboard : MonoBehaviour
                 prefabs[i].GetComponent<setnames>().setscore(score);
             }
         }
-
         shortlist();
     }
 }
