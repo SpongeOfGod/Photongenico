@@ -1128,7 +1128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreprefab: {fileID: 3504819572516295666, guid: 510ba7560c7c39c4fab6e9861fee3ec9, type: 3}
-  View: {fileID: 0}
+  View: {fileID: 423185490}
   leaderboard: {fileID: 1921638729}
 --- !u!114 &423185490
 MonoBehaviour:
