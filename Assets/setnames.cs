@@ -15,7 +15,6 @@ public class setnames : MonoBehaviour
 
     // Start is called before the first frame update
 
-[PunRPC]
     public void Oninstance(string name, float number)
     {
         playername.text = name;

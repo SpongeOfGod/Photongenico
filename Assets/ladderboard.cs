@@ -19,7 +19,9 @@ public class ladderboard : MonoBehaviourPunCallbacks
     public void Intanceincanvas()
     {
         int playerCount = PhotonNetwork.CurrentRoom.PlayerCount - 1;
-        Instantiate(ScorePrefabs[playerCount], this.transform);
+
+        var gObject = PhotonNetwork.Instantiate(ScorePrefabs[playerCount].name, UnityEngine.Vector3.zero, UnityEngine.Quaternion.identity);
+        gObject.transform.SetParent(transform);
     }
     [PunRPC]
     public void shortlist()
