@@ -20,7 +20,7 @@ public class ladderboard : MonoBehaviourPunCallbacks
     {
 
       
-        Instantiate(ScorePrefabs[PhotonNetwork.CurrentRoom.PlayerCount - 1], transform.parent);
+        Instantiate(ScorePrefabs[PhotonNetwork.CurrentRoom.PlayerCount - 1], this.transform.parent);
 
 
 
