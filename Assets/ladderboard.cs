@@ -18,12 +18,8 @@ public class ladderboard : MonoBehaviourPunCallbacks
     
     public void Intanceincanvas()
     {
-
-      
-        //Instantiate(ScorePrefabs[PhotonNetwork.CurrentRoom.PlayerCount - 1], this.transform);
-
-
-
+        int playerCount = PhotonNetwork.CurrentRoom.PlayerCount - 1;
+        Instantiate(ScorePrefabs[playerCount], this.transform);
     }
     [PunRPC]
     public void shortlist()
