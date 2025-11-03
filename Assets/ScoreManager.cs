@@ -33,7 +33,7 @@ public class ScoreManager : MonoBehaviourPunCallbacks
         //newprefab.name = name;
         leaderboard.ScorePrefabs.Add(newprefab);
 
-        newprefab.GetComponent<setnames>().Oninstance(name, number);
+        View.RPC("Oninstance", RpcTarget.AllBuffered, name, number);
         leaderboard.Intanceincanvas();
     }
 
