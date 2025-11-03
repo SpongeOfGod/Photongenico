@@ -30,7 +30,7 @@ public class ScoreManager : MonoBehaviourPunCallbacks
     {
         GameObject newprefab = scoreprefab;
 
-        newprefab.name = name;
+        //newprefab.name = name;
         leaderboard.ScorePrefabs.Add(newprefab);
 
         newprefab.GetComponent<setnames>().Oninstance(name, number);
