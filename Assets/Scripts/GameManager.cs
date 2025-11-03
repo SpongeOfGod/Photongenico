@@ -85,9 +85,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     public void CreateNewPlayer(GameObject prefab)
     {
         GameObject player = PhotonNetwork.Instantiate(prefab.name, spawnpositions[PhotonNetwork.CurrentRoom.PlayerCount -1].position, Quaternion.identity);
-        var playername = player.GetComponent<PhotonView>().Owner.NickName;
-        var playerscore = player.GetComponent<CarScore>().Score;
-        ScoreManager.Instance.View.RPC("createscoreprefab", RpcTarget.All, playername, playerscore);
+        string playername = player.GetComponent<PhotonView>().Owner.NickName;
+        float playerscore = player.GetComponent<CarScore>().Score;
+        ScoreManager.Instance.View.RPC("createscoreprefab", RpcTarget.AllBuffered, playername, playerscore);
         player.GetComponent<Playerseeleaderbord>().Leaderboard = leaderUi;
         
 
