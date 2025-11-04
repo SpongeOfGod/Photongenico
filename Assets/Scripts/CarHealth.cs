@@ -33,12 +33,15 @@ public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
     public TextMeshPro textName;
     private Rigidbody rb;
     private CarWeaponController weaponController;
+
+    private PhotonView view;
     RespawnController RespawnController;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         weaponController = GetComponent<CarWeaponController>();
+        view = GetComponent < PhotonView> ();
         currentHealth = maxHealth;
         var Respawn = GameObject.Find("RespawnController");
         RespawnController = Respawn.GetComponent<RespawnController>();

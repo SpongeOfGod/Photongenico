@@ -201,7 +201,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1
+  m_text: 2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -336,7 +336,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ADSASDXS
+  m_text: AS
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -415,7 +415,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3504819572516295667}
   - component: {fileID: 2249090905268475379}
-  - component: {fileID: -7074917354961615896}
+  - component: {fileID: 7896276769588490253}
   m_Layer: 5
   m_Name: leaderboardprefab
   m_TagString: Untagged
@@ -459,10 +459,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playername: {fileID: 3504819571317201865}
+  playname: AS
   position: {fileID: 3504819571055146221}
   score: {fileID: 3504819570972149735}
   scorenum: 0
---- !u!114 &-7074917354961615896
+--- !u!114 &7896276769588490253
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

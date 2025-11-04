@@ -14,14 +14,23 @@ using UnityEngine.SocialPlatforms.Impl;
 public class ladderboard : MonoBehaviourPunCallbacks
 {
     public List<GameObject> ScorePrefabs;
-    [SerializeField] PhotonView view;
-    
+     PhotonView view;
+
+    void Awake()
+    {
+        view = GetComponent<PhotonView>();
+    }
     public void Intanceincanvas()
     {
         int playerCount = PhotonNetwork.CurrentRoom.PlayerCount - 1;
-
-        var gObject = PhotonNetwork.Instantiate(ScorePrefabs[playerCount].name, UnityEngine.Vector3.zero, UnityEngine.Quaternion.identity);
+    for(int i = 0; i <= playerCount; i++)
+        {
+             var gObject = PhotonNetwork.Instantiate(ScorePrefabs[i].name, UnityEngine.Vector3.zero, UnityEngine.Quaternion.identity);
         gObject.transform.SetParent(transform);
+
+        gObject.name = ScorePrefabs[i].GetComponent<setnames>().playname;
+        }
+       
     }
     [PunRPC]
     public void shortlist()

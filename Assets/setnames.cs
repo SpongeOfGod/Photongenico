@@ -7,6 +7,8 @@ using UnityEngine;
 public class setnames : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI playername;
+
+    public string playname;
     [SerializeField] private TextMeshProUGUI position;
 
     [SerializeField] private TextMeshProUGUI score;
@@ -18,7 +20,7 @@ public class setnames : MonoBehaviour
     public void Oninstance(string name, float number)
     {
         playername.text = name;
-
+        playname = name;
         score.text = number.ToString();
         scorenum = number;
 

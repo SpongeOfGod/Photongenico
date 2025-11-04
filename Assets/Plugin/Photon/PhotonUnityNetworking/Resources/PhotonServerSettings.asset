@@ -57,6 +57,10 @@ MonoBehaviour:
   - createscoreprefab
   - updatescores
   - Oninstance
+  - AnnounceWinner
+  - SyncBattleStart
+  - SyncShake
+  - UpdateBattleValue
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

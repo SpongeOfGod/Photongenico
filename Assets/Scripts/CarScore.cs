@@ -9,15 +9,20 @@ public class CarScore : MonoBehaviour
 {
     private float score = 0f;
 
-    public float Score 
-	{
-		get {return score; }
-		set {score = value; }
-	}
+    private PhotonView view;
+
+    public float Score
+    {
+        get { return score; }
+        set { score = value; }
+    }
     // Start is called before the first frame update
 
-
-   public  void calculatescore( bool killedpalyer)
+    void Awake()
+    {
+        view = GetComponent<PhotonView>();
+    }
+    public  void calculatescore( bool killedpalyer)
     {
         if (!killedpalyer)
         {
