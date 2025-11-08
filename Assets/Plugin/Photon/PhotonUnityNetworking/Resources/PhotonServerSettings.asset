@@ -61,6 +61,8 @@ MonoBehaviour:
   - SyncBattleStart
   - SyncShake
   - UpdateBattleValue
+  - HealPlayer
+  - FlashHit
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

@@ -33,18 +33,18 @@ public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
     public TextMeshPro textName;
     private Rigidbody rb;
     private CarWeaponController weaponController;
-
-    private PhotonView view;
     RespawnController RespawnController;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         weaponController = GetComponent<CarWeaponController>();
-        view = GetComponent < PhotonView> ();
         currentHealth = maxHealth;
         var Respawn = GameObject.Find("RespawnController");
         RespawnController = Respawn.GetComponent<RespawnController>();
+
+        PhotonNetwork.SendRate = 40;
+        PhotonNetwork.SerializationRate = 30;
     }
 
     private void FixedUpdate()
@@ -104,6 +104,16 @@ public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     [PunRPC]
+    public void HealPlayer(float amount)
+    {
+        if (!photonView.IsMine) return;
+
+        currentHealth += amount;
+
+        currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
+        GameManager.Instance.HUD_Controller.RefreshHealth(currentHealth);
+    }
+        [PunRPC]
     private void RPC_FlashHit()
     {
         StartCoroutine(FlashHitMaterial());
