@@ -3,7 +3,7 @@ using Photon.Pun;
 using UnityEngine.UI;
 using TMPro;
 
-public class MashButtonManager : MonoBehaviourPun
+public class MashButtonManager : MonoBehaviour
 {
     [Header("References")]
     public Slider battleSlider;
@@ -38,12 +38,20 @@ public class MashButtonManager : MonoBehaviourPun
     private float shakeTimer;
     private Vector3 originalCanvasPosition;
     private Vector3 originalCountdownScale;
+    public PhotonView photonView;
+
+    public string player1Nickname;
+    public string player2Nickname;
+
+    public string loser;
+
 
     [Header("Debug")]
     public bool isDebugTesting = false;
 
     void Start()
     {
+        photonView = GetComponent<PhotonView>();
         shakeObject = gameObject.transform;
         battleSlider.minValue = -maxValue;
         battleSlider.maxValue = maxValue;
@@ -66,7 +74,7 @@ public class MashButtonManager : MonoBehaviourPun
             countdownText.text = "Esperando...";
         }
 
-        if (!isDebugTesting && PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.LocalPlayer != null)
             StartBattle();
         else if (isDebugTesting)
             StartBattle();
@@ -85,6 +93,7 @@ public class MashButtonManager : MonoBehaviourPun
 
             countdownTimer -= Time.deltaTime;
             int seconds = Mathf.CeilToInt(countdownTimer);
+            Debug.Log(seconds);
 
             if (seconds != lastDisplayedSecond)
             {
@@ -153,11 +162,12 @@ public class MashButtonManager : MonoBehaviourPun
                 buttonPressed = true;
             }
         }
-        else if (photonView.IsMine && Input.GetKeyDown(KeyCode.Space))
+        else
+        if (PhotonNetwork.LocalPlayer != null && Input.GetKeyDown(KeyCode.Space))
         {
-            if (PhotonNetwork.IsMasterClient)
+            if (PhotonNetwork.LocalPlayer.NickName == player1Nickname)
                 momentumPlayer1 = Mathf.Min(momentumPlayer1 + momentumGain, maxMomentum);
-            else
+            else if (PhotonNetwork.LocalPlayer.NickName == player2Nickname)
                 momentumPlayer2 = Mathf.Min(momentumPlayer2 + momentumGain, maxMomentum);
 
             buttonPressed = true;
@@ -209,10 +219,10 @@ public class MashButtonManager : MonoBehaviourPun
         {
             colorIndicatorText.text = $"Eres: <color=#{ColorUtility.ToHtmlStringRGB(localColor)}>VERDE</color>";
         }
-        else if (photonView.IsMine)
+        else if (PhotonNetwork.LocalPlayer != null)
         {
-            Color playerColor = PhotonNetwork.IsMasterClient ? localColor : remoteColor;
-            string colorName = PhotonNetwork.IsMasterClient ? "VERDE" : "ROJO";
+            Color playerColor = PhotonNetwork.LocalPlayer.NickName == player1Nickname ? localColor : remoteColor;
+            string colorName = PhotonNetwork.LocalPlayer.NickName == player1Nickname ? "VERDE" : "ROJO";
             colorIndicatorText.text = $"Eres: <color=#{ColorUtility.ToHtmlStringRGB(playerColor)}>{colorName}</color>";
         }
     }
@@ -255,21 +265,36 @@ public class MashButtonManager : MonoBehaviourPun
     void CheckVictory()
     {
         if (battleValue >= maxValue)
-            EndBattle(isDebugTesting ? "Jugador Arriba" : "Jugador 1");
+            EndBattle(isDebugTesting ? "Jugador Arriba" : $"{player1Nickname}", $"{player2Nickname}");
         else if (battleValue <= -maxValue)
-            EndBattle(isDebugTesting ? "Jugador Abajo" : "Jugador 2");
+            EndBattle(isDebugTesting ? "Jugador Abajo" : $"{player2Nickname}", $"{player1Nickname}");
     }
 
-    void StartBattle()
+    public void StartBattle()
     {
         battleValue = 0;
         momentumPlayer1 = 0;
         momentumPlayer2 = 0;
 
-        StartCountdown();
+        if (countdownText != null)
+        {
+            originalCountdownScale = countdownText.transform.localScale;
+        }
+
+        if (shakeObject != null)
+        {
+            originalCanvasPosition = shakeObject.localPosition;
+        }
+
+        if (countdownText != null)
+        {
+            originalCountdownScale = countdownText.transform.localScale;
+        }
 
         if (!isDebugTesting)
             photonView.RPC(nameof(SyncBattleStart), RpcTarget.All, battleValue);
+        else
+            StartCountdown();
     }
 
     [PunRPC]
@@ -283,7 +308,7 @@ public class MashButtonManager : MonoBehaviourPun
         momentumPlayer2 = 0;
     }
 
-    void EndBattle(string winner)
+    void EndBattle(string winner, string loser)
     {
         gameActive = false;
         gameStarting = false;
@@ -295,13 +320,14 @@ public class MashButtonManager : MonoBehaviourPun
         Debug.Log("Ganó " + winner);
 
         if (!isDebugTesting)
-            photonView.RPC(nameof(AnnounceWinner), RpcTarget.All, winner);
+            photonView.RPC(nameof(AnnounceWinner), RpcTarget.All, winner, loser);
         else
-            AnnounceWinner(winner);
+            AnnounceWinner(winner, loser);
+
     }
 
     [PunRPC]
-    void AnnounceWinner(string winner)
+    void AnnounceWinner(string winner, string loser)
     {
         gameActive = false;
         gameStarting = false;
@@ -310,5 +336,8 @@ public class MashButtonManager : MonoBehaviourPun
             countdownText.transform.localScale = originalCountdownScale;
         }
         Debug.Log("Ganó " + winner);
+        this.loser = loser;
+        transform.parent.gameObject.SetActive(false);
+
     }
 }

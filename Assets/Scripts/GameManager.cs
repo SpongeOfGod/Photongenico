@@ -16,7 +16,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] ChaseCamera chaseCamera;
     [SerializeField] LobbyUIController LobbyUIController;
     [SerializeField] Transform[] spawnpositions;
-    [SerializeField] public CrashInfo crashInfo; 
+    [SerializeField] public CrashInfo crashInfo;
+    public MashButtonManager mashButtonManager;
     [HideInInspector] public GameStates GameState { get; private set; }
 
     public enum GameStates
@@ -27,6 +28,15 @@ public class GameManager : MonoBehaviourPunCallbacks
     public void ChangeState(GameStates newState)
     {
         GameState = newState;
+    }
+
+    [PunRPC]
+    public void InitalizeMashFight(string player1, string player2) 
+    {
+        mashButtonManager.transform.parent.gameObject.SetActive(true);
+        mashButtonManager.player1Nickname = player1;
+        mashButtonManager.player2Nickname = player2;
+        mashButtonManager.StartBattle();
     }
 
     private void Awake()

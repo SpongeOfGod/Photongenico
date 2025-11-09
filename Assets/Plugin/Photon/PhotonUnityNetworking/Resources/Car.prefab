@@ -518,6 +518,7 @@ MonoBehaviour:
   - {fileID: 3017176599568798828}
   Collider: {fileID: 6200140786046485882}
   textName: {fileID: 4006278341509548163}
+  explosionForce: 900000
 --- !u!65 &5707704450690278093
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -4327,6 +4327,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1555089717202443466, guid: 4178a4b81c503594fbccbc9873cc1329, type: 3}
+      propertyPath: photonView
+      value: 
+      objectReference: {fileID: 1632173220}
+    - target: {fileID: 1555089717202443466, guid: 4178a4b81c503594fbccbc9873cc1329, type: 3}
+      propertyPath: isDebugTesting
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4771424979211661935, guid: 4178a4b81c503594fbccbc9873cc1329, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -4421,6 +4429,44 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4178a4b81c503594fbccbc9873cc1329, type: 3}
+--- !u!114 &1632173218 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1555089717202443466, guid: 4178a4b81c503594fbccbc9873cc1329, type: 3}
+  m_PrefabInstance: {fileID: 1632173217}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1632173219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b45522b8aaa22d44b39b42942b1d7fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1632173219 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6820516798709021656, guid: 4178a4b81c503594fbccbc9873cc1329, type: 3}
+  m_PrefabInstance: {fileID: 1632173217}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1632173220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1632173219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 8
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1661389070
 GameObject:
   m_ObjectHideFlags: 0
@@ -5448,6 +5494,7 @@ MonoBehaviour:
   - {fileID: 1902599734}
   - {fileID: 1546253341}
   crashInfo: {fileID: 7091394480866962439, guid: 4ed061a9cc725b945b643c300375a1b2, type: 3}
+  mashButtonManager: {fileID: 1632173218}
 --- !u!4 &1972089458
 Transform:
   m_ObjectHideFlags: 0

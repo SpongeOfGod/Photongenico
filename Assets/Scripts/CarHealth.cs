@@ -34,6 +34,7 @@ public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
     private Rigidbody rb;
     private CarWeaponController weaponController;
     RespawnController RespawnController;
+    public float explosionForce = 900000f;
 
     private void Awake()
     {
@@ -53,6 +54,19 @@ public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
         {
             GameManager.Instance.HUD_Controller.RefreshHealth(currentHealth);
             currentSpeed = rb.velocity.magnitude;
+
+            //if (Input.GetKeyDown(KeyCode.Space)) 
+            //{
+            //    rb.AddExplosionForce(explosionForce, transform.position + transform.forward, 1f, 0f);
+            //}
+
+
+            if (GameManager.Instance.mashButtonManager.loser == PhotonNetwork.LocalPlayer.NickName) 
+            {
+                GameManager.Instance.mashButtonManager.loser = string.Empty;
+                rb.AddExplosionForce(explosionForce, transform.position + transform.forward, 1f, 0f);
+                photonView.RPC("TakeDamage", RpcTarget.All, 5f);
+            }
         }
     }
 
@@ -144,29 +158,20 @@ public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     private void Die()
     {
-        Debug.Log($"{gameObject.name} ha sido destruido");
-
         foreach (var item in MeshRenderers)
-        {
             item.enabled = false;
-        }
 
         Collider.enabled = false;
 
         foreach (Transform child in transform)
-        {
             child.gameObject.SetActive(false);
-        }
 
         textName.enabled = false;
         rb.useGravity = false;
         rb.velocity = Vector3.zero;
 
         if (photonView.IsMine)
-        {
             RespawnController.ActivateRespawn(this);
-            //PhotonNetwork.Destroy(gameObject);
-        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -198,6 +203,18 @@ public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
             damage = (damage + weaponController.CurrentWeapon.DamageAmount) * weaponController.CurrentWeapon.DamageMultiplier;
 
         bool isdead = currentHealth == 0 ? true : false;
+
+        if (Vector3.Dot(collision.transform.forward, transform.forward) < 0.4) 
+        {
+            collision.gameObject.TryGetComponent<PhotonView>(out var photon);
+            collision.gameObject.TryGetComponent<CarHealth>(out var health);
+
+            GameManager.Instance.InitalizeMashFight(photonView.Owner.NickName, photon.Owner.NickName);
+            GameManager.Instance.photonView.RPC("InitalizeMashFight", photon.Owner, photonView.Owner.NickName, photon.Owner.NickName);
+            return;
+        }
+
+
         collision.gameObject.GetComponent<CarScore>().calculatescore( isdead);
 
 
