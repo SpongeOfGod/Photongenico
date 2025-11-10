@@ -64,6 +64,7 @@ public class MashButtonManager : MonoBehaviour
 
         AssignLocalColor();
         UpdateColorIndicator();
+        fillImage.color = localPlayerColor;
 
         if (countdownText != null)
             countdownText.text = "Esperando...";
@@ -196,7 +197,6 @@ public class MashButtonManager : MonoBehaviour
         if (color == new Color(0.5f, 0f, 1f)) return "Violeta";
         return "Desconocido";
     }
-
 
     void StartCountdown()
     {
