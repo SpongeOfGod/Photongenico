@@ -65,6 +65,8 @@ public class SimpleCarController : CarControllerBase, IPunObservable
         if (GameManager.Instance.mashButtonManager.winner == _pv.Owner.NickName && _pv.IsMine) 
         {
             GameManager.Instance.leaderboardManager.PhotonView.RPC("AddScore", RpcTarget.All, 20, _pv.Owner.NickName);
+            GameManager.Instance.mashButtonManager.player1Nickname = string.Empty;
+            GameManager.Instance.mashButtonManager.player2Nickname = string.Empty;
             GameManager.Instance.mashButtonManager.winner = string.Empty;
         }
     }
