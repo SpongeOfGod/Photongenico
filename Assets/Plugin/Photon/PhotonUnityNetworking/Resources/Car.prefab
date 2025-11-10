@@ -265,7 +265,7 @@ MonoBehaviour:
   _hitDetectionType: 0
   _layerMask:
     serializedVersion: 2
-    m_Bits: 115
+    m_Bits: 2147483647
   _queryTriggerInteraction: 1
   _suspensionStroke: 0.1
   _suspensionSpring: 40000
@@ -448,9 +448,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PositionModel:
     SynchronizeEnabled: 1
-    TeleportEnabled: 1
+    TeleportEnabled: 0
     TeleportIfDistanceGreaterThan: 3
-    InterpolateOption: 2
+    InterpolateOption: 3
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 1
     ExtrapolateOption: 0
@@ -632,7 +632,7 @@ MonoBehaviour:
   _hitDetectionType: 0
   _layerMask:
     serializedVersion: 2
-    m_Bits: 115
+    m_Bits: 2147483647
   _queryTriggerInteraction: 1
   _suspensionStroke: 0.1
   _suspensionSpring: 40000
@@ -690,7 +690,7 @@ MonoBehaviour:
   _hitDetectionType: 0
   _layerMask:
     serializedVersion: 2
-    m_Bits: 115
+    m_Bits: 2147483647
   _queryTriggerInteraction: 1
   _suspensionStroke: 0.1
   _suspensionSpring: 40000
@@ -748,7 +748,7 @@ MonoBehaviour:
   _hitDetectionType: 0
   _layerMask:
     serializedVersion: 2
-    m_Bits: 115
+    m_Bits: 2147483647
   _queryTriggerInteraction: 1
   _suspensionStroke: 0.1
   _suspensionSpring: 40000
