@@ -35,7 +35,7 @@ public class RespawnController : MonoBehaviour
         }
 
         var position = GameManager.Instance.GetRandomSpawn();
-        var rotation = new Vector3(0, 0, 0);
+        var rotation = new Vector3(0, carHealth.transform.rotation.eulerAngles.y, 0);
         HolderUI.SetActive(false);
         carHealth.photonView.RPC("Reposition", RpcTarget.All, position, rotation);
         carHealth.photonView.RPC("Initialized", RpcTarget.All, null);
