@@ -54,15 +54,18 @@ public class SimpleCarController : CarControllerBase, IPunObservable
 
     protected void Update()
     {
-        UpdateAnimator();
+        if (_pv.IsMine)
+        {
+            UpdateAnimator();
+        }
 
-        if (hurtAnotherPlayer) 
+        if (hurtAnotherPlayer)
         {
             GameManager.Instance.leaderboardManager.PhotonView.RPC("AddScore", RpcTarget.All, 10, _pv.Owner.NickName);
             hurtAnotherPlayer = false;
         }
 
-        if (GameManager.Instance.mashButtonManager.winner == _pv.Owner.NickName && _pv.IsMine) 
+        if (GameManager.Instance.mashButtonManager.winner == _pv.Owner.NickName && _pv.IsMine)
         {
             GameManager.Instance.leaderboardManager.PhotonView.RPC("AddScore", RpcTarget.All, 20, _pv.Owner.NickName);
             GameManager.Instance.mashButtonManager.player1Nickname = string.Empty;
@@ -74,7 +77,7 @@ public class SimpleCarController : CarControllerBase, IPunObservable
     protected override void FixedUpdate()
     {
         bool sameNickname = GameManager.Instance.mashButtonManager.player1Nickname == PhotonNetwork.LocalPlayer.NickName || GameManager.Instance.mashButtonManager.player2Nickname == PhotonNetwork.LocalPlayer.NickName;
-        if (!_pv.IsMine) 
+        if (!_pv.IsMine)
             return;
 
         if (sameNickname)
@@ -85,7 +88,7 @@ public class SimpleCarController : CarControllerBase, IPunObservable
     }
 
     [PunRPC]
-    private void MadeDamage() 
+    private void MadeDamage()
     {
         if (_pv.IsMine)
             hurtAnotherPlayer = true;
@@ -192,6 +195,13 @@ public class SimpleCarController : CarControllerBase, IPunObservable
             stream.SendNext(SteerInput);
             stream.SendNext(_reverse);
             stream.SendNext(_motorRPM);
+
+            Vector3 localVelocity = transform.InverseTransformDirection(Rigidbody.velocity);
+            float speedXZ = new Vector2(localVelocity.x, localVelocity.z).magnitude;
+            bool onAir = Mathf.Abs(localVelocity.y) > 0.5f && !IsGrounded();
+
+            stream.SendNext(speedXZ);
+            stream.SendNext(onAir);
         }
         else
         {
@@ -200,6 +210,15 @@ public class SimpleCarController : CarControllerBase, IPunObservable
             SteerInput = (float)stream.ReceiveNext();
             _reverse = (bool)stream.ReceiveNext();
             _motorRPM = (float)stream.ReceiveNext();
+
+            float speedXZ = (float)stream.ReceiveNext();
+            bool onAir = (bool)stream.ReceiveNext();
+
+            if (_animator != null)
+            {
+                _animator.SetFloat("SpeedX", speedXZ);
+                _animator.SetBool("OnAir", onAir);
+            }
         }
     }
 }
