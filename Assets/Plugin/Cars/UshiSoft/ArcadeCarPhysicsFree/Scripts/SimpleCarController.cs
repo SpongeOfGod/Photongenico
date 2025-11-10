@@ -4,6 +4,9 @@ using Photon.Pun;
 [RequireComponent(typeof(PhotonView))]
 public class SimpleCarController : CarControllerBase, IPunObservable
 {
+    [Header("Animation")]
+    [SerializeField] private Animator _animator;
+
     [SerializeField, Min(0f)] private float _maxForwardSpeedKPH = 180f;
     [SerializeField, Min(0f)] private float _maxBackwardSpeedKPH = 60f;
     [SerializeField, Min(0f)] private float _maxMotorTorque = 300f;
@@ -32,7 +35,7 @@ public class SimpleCarController : CarControllerBase, IPunObservable
     private bool IsExceedMaxMotorRPM =>
         Mathf.Abs(_motorRPM) > (_reverse ? _maxMotorBackwardRPM : _maxMotorForwardRPM);
 
-    public override float MaxSpeedKPH => Mathf.Max(_maxForwardSpeedKPH, _maxBackwardSpeedKPH);
+    public override float MaxSpeedKPH => Mathf.Max(_maxForwardSpeedKPH, _maxMotorBackwardRPM);
 
     protected override void Awake()
     {
@@ -43,11 +46,30 @@ public class SimpleCarController : CarControllerBase, IPunObservable
         _maxMotorBackwardRPM = CalcMotorRPMFromSpeedKPH(_maxBackwardSpeedKPH);
     }
 
+    protected void Update()
+    {
+        UpdateAnimator();
+    }
+
     protected override void FixedUpdate()
     {
         if (!_pv.IsMine) return;
         base.FixedUpdate();
         AddDriveTorque();
+    }
+
+    private void UpdateAnimator()
+    {
+        if (_animator == null) return;
+
+        Vector3 localVelocity = transform.InverseTransformDirection(Rigidbody.velocity);
+
+        float speedXZ = new Vector2(localVelocity.x, localVelocity.z).magnitude;
+
+        _animator.SetFloat("SpeedX", speedXZ);
+        bool onAir = Mathf.Abs(localVelocity.y) > 0.5f && !IsGrounded();
+
+        _animator.SetBool("OnAir", onAir);
     }
 
     private void AddDriveTorque()
