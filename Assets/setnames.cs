@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
+using Photon.Realtime;
 using TMPro;
 using UnityEngine;
 
@@ -19,13 +20,14 @@ public class setnames : MonoBehaviour
 
     public void Oninstance(string name, float number)
     {
+        var temp = 1;
         playername.text = name;
         playname = name;
         score.text = number.ToString();
         scorenum = number;
+        position.text = temp.ToString();
 
-        position.text = ScoreManager.Instance.leaderboard.ScorePrefabs.Count.ToString();
-
+        temp++;
 
 
     }

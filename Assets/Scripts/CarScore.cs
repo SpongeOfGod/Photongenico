@@ -22,19 +22,31 @@ public class CarScore : MonoBehaviour
     {
         view = GetComponent<PhotonView>();
     }
-    public  void calculatescore( bool killedpalyer)
+    
+    public  void calculatescore( string PlayerName)
     {
-        if (!killedpalyer)
-        {
-            Score++;
-        }
-        else
-        {
-            Score += 2;
-        }
 
-        var name = this.GetComponent<PhotonView>().Owner.NickName;
-        ScoreManager.Instance.photonView.RPC("updatescores",RpcTarget.All,name,Score);
-    }
+        Score += 2;
 
-}
+        var scores = ScoreManager.Instance.Scores;
+      
+   
+        for (int i = 0; i < PhotonNetwork.CurrentRoom.PlayerCount -1; i++)
+            if (scores[i].name != PlayerName)
+            {
+                return;
+            }
+            else
+            {
+                scores[i].GetComponent<setnames>().setscore(score);
+                ScoreManager.Instance.photonView.RPC("shortlist",RpcTarget.All);
+            }
+        }
+            
+        
+
+   
+  }
+    
+
+
