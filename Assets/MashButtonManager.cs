@@ -86,7 +86,7 @@ public class MashButtonManager : MonoBehaviour
         if (countdownText != null)
             countdownText.text = "Esperando...";
 
-        if (PhotonNetwork.LocalPlayer != null || isDebugTesting)
+        if (isDebugTesting)
             StartBattle();
     }
 
@@ -104,7 +104,6 @@ public class MashButtonManager : MonoBehaviour
     void Update()
     {
         HandleCountdown();
-
         HandleBattleValue();
 
         if (!gameActive) return;
@@ -251,7 +250,12 @@ public class MashButtonManager : MonoBehaviour
 
         targetBattleValue = Mathf.Clamp(targetBattleValue + modifiedDelta, -maxValue, maxValue);
 
-        if (!isDebugTesting)
+        if (PhotonNetwork.IsMasterClient || isDebugTesting)
+        {
+            CheckVictory();
+        }
+
+        if (!isDebugTesting && gameActive)
         {
             photonView.RPC(nameof(SyncTargetBattleValue), RpcTarget.Others, targetBattleValue);
         }
@@ -270,12 +274,11 @@ public class MashButtonManager : MonoBehaviour
 
         if (PhotonNetwork.IsMasterClient || isDebugTesting)
         {
-            if (targetBattleValue != 0)
+            if (gameActive && targetBattleValue != 0)
             {
                 float autoDecayForce = -Mathf.Sign(targetBattleValue) * Time.deltaTime * (momentumDecay * 0.5f);
                 UpdateLocalTargetBattleValue(autoDecayForce);
             }
-            CheckVictory();
         }
 
         if (battleSlider != null)
@@ -331,6 +334,7 @@ public class MashButtonManager : MonoBehaviour
         targetBattleValue = 0;
         momentumPlayer1 = 0;
         momentumPlayer2 = 0;
+        gameActive = false;
 
         if (countdownText != null)
             originalCountdownScale = countdownText.transform.localScale;
