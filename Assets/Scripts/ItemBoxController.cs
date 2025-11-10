@@ -19,7 +19,6 @@ public class ItemBoxController : MonoBehaviour
         {
             CollidingPlayer = other.gameObject;
             RPC_ItemReaction();
-            //photonView.RPC("RPC_ItemReaction", RpcTarget.All);
         }
     }
 
@@ -29,10 +28,8 @@ public class ItemBoxController : MonoBehaviour
         {
             CollidingPlayer = collision.gameObject;
             RPC_ItemReaction();
-            //photonView.RPC("RPC_ItemReaction", RpcTarget.All);
         }
     }
-    //[PunRPC]
     private void RPC_ItemReaction() 
     {
         if (CollidingPlayer != null) 

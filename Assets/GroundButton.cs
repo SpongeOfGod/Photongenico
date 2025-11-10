@@ -1,11 +1,5 @@
-using System.Collections;
 using UnityEngine;
 using Photon.Pun;
-using TMPro;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using UnityEngine.UIElements;
 public class GroundButton : MonoBehaviourPunCallbacks, IPunObservable
 {
     public enum PressMode {notPressed, pressed }
@@ -16,6 +10,7 @@ public class GroundButton : MonoBehaviourPunCallbacks, IPunObservable
     private float timeSinceLastPressed;
     private float timerButtonOff = 1f; 
     private bool press = false;
+    public bool debug;
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
@@ -42,6 +37,13 @@ public class GroundButton : MonoBehaviourPunCallbacks, IPunObservable
                 if (timeSinceLastPressed < Time.time - timerButtonOff && press == false)
                     pressMode = PressMode.notPressed;
                 break;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && debug) 
+        {
+            pressMode = PressMode.pressed;
+            timeSinceLastPressed = Time.time;
+            press = true;
         }
     }
 
