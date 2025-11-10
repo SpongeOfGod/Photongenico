@@ -15,6 +15,7 @@ public class GroundButton : MonoBehaviourPunCallbacks, IPunObservable
     public float pressSpeed = 0.5f;
     private float timeSinceLastPressed;
     private float timerButtonOff = 1f; 
+    private bool press = false;
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
@@ -38,18 +39,27 @@ public class GroundButton : MonoBehaviourPunCallbacks, IPunObservable
                 transform.position = Vector3.Lerp(transform.position, newPos, pressSpeed);
 
 
-                if (timeSinceLastPressed < Time.time - timerButtonOff)
+                if (timeSinceLastPressed < Time.time - timerButtonOff && press == false)
                     pressMode = PressMode.notPressed;
                 break;
         }
     }
 
-    private void OnCollisionStay(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.CompareTag("Player")) 
         {
-            timeSinceLastPressed = Time.time;
             pressMode = PressMode.pressed;
+            press = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            timeSinceLastPressed = Time.time;
+            press = false;
         }
     }
 }
