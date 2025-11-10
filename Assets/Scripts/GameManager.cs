@@ -35,21 +35,32 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         mashButtonManager.transform.parent.gameObject.SetActive(true);
 
-        int actorA = PhotonNetwork.PlayerList.First(p => p.NickName == playerA).ActorNumber;
-        int actorB = PhotonNetwork.PlayerList.First(p => p.NickName == playerB).ActorNumber;
-
-        if (actorA < actorB)
+        if (PhotonNetwork.IsMasterClient)
         {
-            mashButtonManager.player1Nickname = playerA;
-            mashButtonManager.player2Nickname = playerB;
-        }
-        else
-        {
-            mashButtonManager.player1Nickname = playerB;
-            mashButtonManager.player2Nickname = playerA;
-        }
+            int actorA = PhotonNetwork.PlayerList.First(p => p.NickName == playerA).ActorNumber;
+            int actorB = PhotonNetwork.PlayerList.First(p => p.NickName == playerB).ActorNumber;
 
-        mashButtonManager.StartBattle();
+
+            string p1, p2;
+
+            if (actorA < actorB)
+            {
+                p1 = playerA;
+                p2 = playerB;
+            }
+            else
+            {
+                p1 = playerB;
+                p2 = playerA;
+            }
+
+            mashButtonManager.photonView.RPC(
+                "SyncMashFightRolesAndStart",
+                RpcTarget.All,
+                p1,
+                p2
+            );
+        }
     }
 
     private void Awake()

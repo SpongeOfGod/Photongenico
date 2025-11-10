@@ -64,6 +64,10 @@ MonoBehaviour:
   - HealPlayer
   - FlashHit
   - InitalizeMashFight
+  - ApplyPush
+  - SyncBattleValue
+  - SyncMashFightRolesAndStart
+  - SyncPush
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
