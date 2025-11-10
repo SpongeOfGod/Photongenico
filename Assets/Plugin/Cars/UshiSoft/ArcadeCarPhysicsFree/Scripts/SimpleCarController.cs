@@ -53,7 +53,13 @@ public class SimpleCarController : CarControllerBase, IPunObservable
 
     protected override void FixedUpdate()
     {
-        if (!_pv.IsMine) return;
+        bool sameNickname = GameManager.Instance.mashButtonManager.player1Nickname == PhotonNetwork.LocalPlayer.NickName || GameManager.Instance.mashButtonManager.player2Nickname == PhotonNetwork.LocalPlayer.NickName;
+        if (!_pv.IsMine) 
+            return;
+
+        if (sameNickname)
+            Rigidbody.velocity = Vector3.zero;
+
         base.FixedUpdate();
         AddDriveTorque();
     }

@@ -55,15 +55,12 @@ public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
             GameManager.Instance.HUD_Controller.RefreshHealth(currentHealth);
             currentSpeed = rb.velocity.magnitude;
 
-            //if (Input.GetKeyDown(KeyCode.Space)) 
-            //{
-            //    rb.AddExplosionForce(explosionForce, transform.position + transform.forward, 1f, 0f);
-            //}
-
-
             if (GameManager.Instance.mashButtonManager.loser == PhotonNetwork.LocalPlayer.NickName) 
             {
                 GameManager.Instance.mashButtonManager.loser = string.Empty;
+                GameManager.Instance.mashButtonManager.player1Nickname = string.Empty;
+                GameManager.Instance.mashButtonManager.player2Nickname = string.Empty;
+
                 rb.AddExplosionForce(explosionForce, transform.position + transform.forward, 1f, 0f);
                 photonView.RPC("TakeDamage", RpcTarget.All, 5f);
             }
@@ -222,6 +219,8 @@ public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
 
             GameManager.Instance.InitalizeMashFight(photonView.Owner.NickName, photon.Owner.NickName);
             GameManager.Instance.photonView.RPC("InitalizeMashFight", photon.Owner, photonView.Owner.NickName, photon.Owner.NickName);
+            rb.velocity = Vector3.zero;
+            otherRb.velocity = Vector3.zero;
             return;
         }
 
