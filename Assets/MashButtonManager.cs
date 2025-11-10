@@ -3,6 +3,7 @@ using Photon.Pun;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+using System.Linq;
 
 public class MashButtonManager : MonoBehaviour
 {
@@ -11,12 +12,12 @@ public class MashButtonManager : MonoBehaviour
     public TextMeshProUGUI colorIndicatorText;
     public TextMeshProUGUI countdownText;
 
-    private float maxValue = 800f;
-    private float basePushAmount = 15f;
-    private float momentumGain = 0.2f;
-    private float momentumDecay = 1f;
-    private float maxMomentum = 10f;
-    private float comebackMultiplier = 0.5f;
+    private float maxValue = 1200f;
+    private float basePushAmount = 20f;
+    private float momentumGain = 1.0f;
+    private float momentumDecay = 2f;
+    private float maxMomentum = 25f;
+    private float comebackMultiplier = 0.6f;
 
     private Transform shakeObject;
     private float shakeDuration = 0.1f;
@@ -26,6 +27,7 @@ public class MashButtonManager : MonoBehaviour
     private float pulseSpeed = 10f;
 
     private float battleValue = 0f;
+    private float targetBattleValue = 0f;
     private bool gameActive = false;
     private bool gameStarting = false;
     private float countdownTimer;
@@ -50,9 +52,9 @@ public class MashButtonManager : MonoBehaviour
 
     private Color localPlayerColor;
     private static readonly List<Color> playerColors = new List<Color>
-  {
-    Color.green, Color.red, Color.blue, Color.yellow,
-    Color.magenta, Color.cyan, new Color(1f,0.5f,0f), new Color(0.5f,0f,1f)
+    {
+        Color.green, Color.red, Color.blue, Color.yellow,
+        Color.magenta, Color.cyan, new Color(1f,0.5f,0f), new Color(0.5f,0f,1f)
     };
 
     void Start()
@@ -103,11 +105,12 @@ public class MashButtonManager : MonoBehaviour
     {
         HandleCountdown();
 
+        HandleBattleValue();
+
         if (!gameActive) return;
 
         HandleShake();
         HandleMomentumAndInput();
-        HandleBattleValue();
     }
 
     void HandleCountdown()
@@ -136,9 +139,9 @@ public class MashButtonManager : MonoBehaviour
         if (countdownText.transform.localScale.x > originalCountdownScale.x)
         {
             countdownText.transform.localScale = Vector3.Lerp(
-              countdownText.transform.localScale,
-              originalCountdownScale,
-              Time.deltaTime * pulseSpeed
+                countdownText.transform.localScale,
+                originalCountdownScale,
+                Time.deltaTime * pulseSpeed
             );
         }
 
@@ -178,6 +181,22 @@ public class MashButtonManager : MonoBehaviour
         float pushDelta = 0f;
         bool buttonPressed = false;
 
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (isDebugTesting || (PhotonNetwork.LocalPlayer != null && PhotonNetwork.LocalPlayer.NickName == player1Nickname))
+            {
+                momentumPlayer1 = Mathf.Min(momentumPlayer1 + momentumGain, maxMomentum);
+                pushDelta = basePushAmount + momentumPlayer1;
+                buttonPressed = true;
+            }
+            else if (PhotonNetwork.LocalPlayer != null && PhotonNetwork.LocalPlayer.NickName == player2Nickname)
+            {
+                momentumPlayer2 = Mathf.Min(momentumPlayer2 + momentumGain, maxMomentum);
+                pushDelta = -(basePushAmount + momentumPlayer2);
+                buttonPressed = true;
+            }
+        }
+
         if (isDebugTesting)
         {
             if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -193,51 +212,70 @@ public class MashButtonManager : MonoBehaviour
                 buttonPressed = true;
             }
         }
-        else if (PhotonNetwork.LocalPlayer != null && Input.GetKeyDown(KeyCode.Space))
-        {
-            if (PhotonNetwork.LocalPlayer.NickName == player1Nickname)
-            {
-                momentumPlayer1 = Mathf.Min(momentumPlayer1 + momentumGain, maxMomentum);
-                pushDelta = basePushAmount + momentumPlayer1;
-            }
-            else if (PhotonNetwork.LocalPlayer.NickName == player2Nickname)
-            {
-                momentumPlayer2 = Mathf.Min(momentumPlayer2 + momentumGain, maxMomentum);
-                pushDelta = -(basePushAmount + momentumPlayer2);
-            }
 
-            if (pushDelta != 0)
-            {
-                buttonPressed = true;
-            }
-        }
 
-        if (buttonPressed)
+        if (buttonPressed && pushDelta != 0)
         {
             StartShake();
-            if (!isDebugTesting)
+            if (isDebugTesting)
             {
-                photonView.RPC(nameof(SyncPush), RpcTarget.All, pushDelta);
+                UpdateLocalTargetBattleValue(pushDelta);
+            }
+            else
+            {
+                photonView.RPC(nameof(SyncPushAndMomentum), RpcTarget.MasterClient, pushDelta);
                 photonView.RPC(nameof(SyncShake), RpcTarget.Others);
             }
         }
     }
 
     [PunRPC]
-    void SyncPush(float pushDelta)
+    void SyncPushAndMomentum(float pushDelta)
     {
-        UpdateLocalBattleValue(pushDelta);
+        if (!PhotonNetwork.IsMasterClient) return;
+        UpdateLocalTargetBattleValue(pushDelta);
     }
+
+    void UpdateLocalTargetBattleValue(float delta)
+    {
+        float modifiedDelta = delta;
+
+        if (targetBattleValue > 0 && delta < 0)
+        {
+            modifiedDelta *= (1 + comebackMultiplier * (targetBattleValue / maxValue));
+        }
+        else if (targetBattleValue < 0 && delta > 0)
+        {
+            modifiedDelta *= (1 + comebackMultiplier * (Mathf.Abs(targetBattleValue) / maxValue));
+        }
+
+        targetBattleValue = Mathf.Clamp(targetBattleValue + modifiedDelta, -maxValue, maxValue);
+
+        if (!isDebugTesting)
+        {
+            photonView.RPC(nameof(SyncTargetBattleValue), RpcTarget.Others, targetBattleValue);
+        }
+    }
+
+    [PunRPC]
+    void SyncTargetBattleValue(float newTarget)
+    {
+        targetBattleValue = newTarget;
+    }
+
+
     void HandleBattleValue()
     {
-        if (battleValue != 0)
-        {
-            float autoDecayForce = -Mathf.Sign(battleValue) * Time.deltaTime * (momentumDecay * 0.5f);
+        battleValue = Mathf.Lerp(battleValue, targetBattleValue, Time.deltaTime * 10f);
 
-            if (isDebugTesting)
-                UpdateLocalBattleValue(autoDecayForce);
-            else
-                photonView.RPC(nameof(UpdateBattleValue), RpcTarget.All, autoDecayForce);
+        if (PhotonNetwork.IsMasterClient || isDebugTesting)
+        {
+            if (targetBattleValue != 0)
+            {
+                float autoDecayForce = -Mathf.Sign(targetBattleValue) * Time.deltaTime * (momentumDecay * 0.5f);
+                UpdateLocalTargetBattleValue(autoDecayForce);
+            }
+            CheckVictory();
         }
 
         if (battleSlider != null)
@@ -279,30 +317,18 @@ public class MashButtonManager : MonoBehaviour
 
     [PunRPC] void SyncShake() => StartShake();
 
-    void UpdateLocalBattleValue(float delta)
-    {
-        battleValue = Mathf.Clamp(battleValue + delta, -maxValue, maxValue);
-        CheckVictory();
-    }
-
-    [PunRPC]
-    void UpdateBattleValue(float delta)
-    {
-        battleValue = Mathf.Clamp(battleValue + delta, -maxValue, maxValue);
-        CheckVictory();
-    }
-
     void CheckVictory()
     {
-        if (battleValue >= maxValue)
+        if (targetBattleValue >= maxValue)
             EndBattle(player1Nickname, player2Nickname);
-        else if (battleValue <= -maxValue)
+        else if (targetBattleValue <= -maxValue)
             EndBattle(player2Nickname, player1Nickname);
     }
 
     public void StartBattle()
     {
         battleValue = 0;
+        targetBattleValue = 0;
         momentumPlayer1 = 0;
         momentumPlayer2 = 0;
 
@@ -322,6 +348,10 @@ public class MashButtonManager : MonoBehaviour
     {
         if (battleSlider != null)
             battleSlider.value = startValue;
+
+        battleValue = startValue;
+        targetBattleValue = startValue;
+
         StartCountdown();
         momentumPlayer1 = 0;
         momentumPlayer2 = 0;
@@ -342,12 +372,14 @@ public class MashButtonManager : MonoBehaviour
         if (fillImage != null && backgroundImage != null)
         {
             fillImage.color = player1Color;
-
             backgroundImage.color = player2Color;
         }
 
-        localPlayerColor = GetPlayerColorByNickname(PhotonNetwork.LocalPlayer.NickName);
-        UpdateColorIndicator();
+        if (PhotonNetwork.LocalPlayer != null)
+        {
+            localPlayerColor = GetPlayerColorByNickname(PhotonNetwork.LocalPlayer.NickName);
+            UpdateColorIndicator();
+        }
 
         StartBattle();
     }
@@ -359,7 +391,7 @@ public class MashButtonManager : MonoBehaviour
             return Color.gray;
         }
 
-        Photon.Realtime.Player player = System.Linq.Enumerable.FirstOrDefault(PhotonNetwork.PlayerList, p => p.NickName == nickname);
+        Photon.Realtime.Player player = Enumerable.FirstOrDefault(PhotonNetwork.PlayerList, p => p.NickName == nickname);
 
         if (player != null)
         {
