@@ -1,7 +1,8 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using Photon.Pun;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
 
 public class MashButtonManager : MonoBehaviour
 {
@@ -16,14 +17,11 @@ public class MashButtonManager : MonoBehaviour
     private float momentumDecay = 1f;
     private float maxMomentum = 10f;
     private float comebackMultiplier = 0.5f;
-    private Color localColor = Color.green;
-    private Color remoteColor = Color.red;
 
     private Transform shakeObject;
     private float shakeDuration = 0.1f;
     private float shakeMagnitude = 5f;
     private float countdownDuration = 3f;
-
     private float pulseScale = 1.5f;
     private float pulseSpeed = 10f;
 
@@ -42,58 +40,56 @@ public class MashButtonManager : MonoBehaviour
 
     public string player1Nickname;
     public string player2Nickname;
-
     public string loser;
-
 
     [Header("Debug")]
     public bool isDebugTesting = false;
 
+    private Color localPlayerColor;
+    private static readonly List<Color> playerColors = new List<Color>
+    {
+        Color.green, Color.red, Color.blue, Color.yellow, Color.magenta, Color.cyan, new Color(1f, 0.5f, 0f), new Color(0.5f, 0f, 1f)
+    };
+
     void Start()
     {
         photonView = GetComponent<PhotonView>();
-        shakeObject = gameObject.transform;
+        shakeObject = transform;
         battleSlider.minValue = -maxValue;
         battleSlider.maxValue = maxValue;
         battleSlider.value = 0;
         fillImage = battleSlider.fillRect.GetComponent<Image>();
+        originalCanvasPosition = shakeObject.localPosition;
+        originalCountdownScale = countdownText != null ? countdownText.transform.localScale : Vector3.one;
 
-        if (shakeObject != null)
-        {
-            originalCanvasPosition = shakeObject.localPosition;
-        }
-
-        if (countdownText != null)
-        {
-            originalCountdownScale = countdownText.transform.localScale;
-        }
-
+        AssignLocalColor();
         UpdateColorIndicator();
+
         if (countdownText != null)
-        {
             countdownText.text = "Esperando...";
+
+        if (PhotonNetwork.LocalPlayer != null || isDebugTesting)
+            StartBattle();
+    }
+
+    void AssignLocalColor()
+    {
+        if (isDebugTesting)
+        {
+            localPlayerColor = Color.green;
+            return;
         }
 
-        if (PhotonNetwork.LocalPlayer != null)
-            StartBattle();
-        else if (isDebugTesting)
-            StartBattle();
+        int index = (PhotonNetwork.LocalPlayer.ActorNumber - 1) % playerColors.Count;
+        localPlayerColor = playerColors[index];
     }
 
     void Update()
     {
         if (gameStarting)
         {
-            if (countdownText == null)
-            {
-                gameStarting = false;
-                gameActive = true;
-                return;
-            }
-
             countdownTimer -= Time.deltaTime;
             int seconds = Mathf.CeilToInt(countdownTimer);
-            Debug.Log(seconds);
 
             if (seconds != lastDisplayedSecond)
             {
@@ -107,23 +103,17 @@ public class MashButtonManager : MonoBehaviour
 
             if (countdownText.transform.localScale.x > originalCountdownScale.x)
             {
-                countdownText.transform.localScale = Vector3.Lerp(
-                    countdownText.transform.localScale,
-                    originalCountdownScale,
-                    Time.deltaTime * pulseSpeed
-                );
+                countdownText.transform.localScale = Vector3.Lerp(countdownText.transform.localScale, originalCountdownScale, Time.deltaTime * pulseSpeed);
             }
 
             if (seconds <= 0)
             {
-                countdownText.text = "¡MASH!";
+                countdownText.text = "MASH!";
                 countdownText.transform.localScale = originalCountdownScale;
-
                 gameStarting = false;
                 gameActive = true;
                 lastDisplayedSecond = -1;
             }
-
             return;
         }
 
@@ -132,17 +122,11 @@ public class MashButtonManager : MonoBehaviour
         if (shakeTimer > 0)
         {
             shakeTimer -= Time.deltaTime;
-            if (shakeObject != null)
-            {
-                float x = Random.Range(-1f, 1f) * shakeMagnitude;
-                float y = Random.Range(-1f, 1f) * shakeMagnitude;
-                shakeObject.localPosition = originalCanvasPosition + new Vector3(x, y, 0f);
-            }
+            float x = Random.Range(-1f, 1f) * shakeMagnitude;
+            float y = Random.Range(-1f, 1f) * shakeMagnitude;
+            shakeObject.localPosition = originalCanvasPosition + new Vector3(x, y, 0f);
         }
-        else if (shakeObject != null && shakeObject.localPosition != originalCanvasPosition)
-        {
-            shakeObject.localPosition = originalCanvasPosition;
-        }
+        else shakeObject.localPosition = originalCanvasPosition;
 
         momentumPlayer1 = Mathf.Max(0, momentumPlayer1 - momentumDecay * Time.deltaTime);
         momentumPlayer2 = Mathf.Max(0, momentumPlayer2 - momentumDecay * Time.deltaTime);
@@ -162,14 +146,12 @@ public class MashButtonManager : MonoBehaviour
                 buttonPressed = true;
             }
         }
-        else
-        if (PhotonNetwork.LocalPlayer != null && Input.GetKeyDown(KeyCode.Space))
+        else if (PhotonNetwork.LocalPlayer != null && Input.GetKeyDown(KeyCode.Space))
         {
             if (PhotonNetwork.LocalPlayer.NickName == player1Nickname)
                 momentumPlayer1 = Mathf.Min(momentumPlayer1 + momentumGain, maxMomentum);
-            else if (PhotonNetwork.LocalPlayer.NickName == player2Nickname)
+            else
                 momentumPlayer2 = Mathf.Min(momentumPlayer2 + momentumGain, maxMomentum);
-
             buttonPressed = true;
         }
 
@@ -177,26 +159,14 @@ public class MashButtonManager : MonoBehaviour
         {
             StartShake();
             if (!isDebugTesting)
-            {
                 photonView.RPC(nameof(SyncShake), RpcTarget.Others);
-            }
         }
 
-        float bonusPlayer1 = 0f;
-        float bonusPlayer2 = 0f;
-
-        if (battleValue > 0)
-            bonusPlayer2 = comebackMultiplier;
-        else if (battleValue < 0)
-            bonusPlayer1 = comebackMultiplier;
-
+        float bonusPlayer1 = battleValue < 0 ? comebackMultiplier : 0f;
+        float bonusPlayer2 = battleValue > 0 ? comebackMultiplier : 0f;
         float forcePlayer1 = basePushAmount + momentumPlayer1 + bonusPlayer1;
         float forcePlayer2 = basePushAmount + momentumPlayer2 + bonusPlayer2;
-        float netForce = forcePlayer1 - forcePlayer2;
-
-        float distanceFromCenter = Mathf.Abs(battleValue);
-        float centerMultiplier = 1.5f - (distanceFromCenter / maxValue);
-        netForce *= centerMultiplier;
+        float netForce = (forcePlayer1 - forcePlayer2) * (1.5f - (Mathf.Abs(battleValue) / maxValue));
 
         if (isDebugTesting)
             UpdateLocalBattleValue(netForce);
@@ -204,33 +174,32 @@ public class MashButtonManager : MonoBehaviour
             photonView.RPC(nameof(UpdateBattleValue), RpcTarget.All, netForce);
 
         battleSlider.value = battleValue;
-
-        if (isDebugTesting)
-            fillImage.color = localColor;
-        else
-            fillImage.color = remoteColor;
+        fillImage.color = localPlayerColor;
     }
 
     void UpdateColorIndicator()
     {
         if (colorIndicatorText == null) return;
 
-        if (isDebugTesting)
-        {
-            colorIndicatorText.text = $"Eres: <color=#{ColorUtility.ToHtmlStringRGB(localColor)}>VERDE</color>";
-        }
-        else if (PhotonNetwork.LocalPlayer != null)
-        {
-            Color playerColor = PhotonNetwork.LocalPlayer.NickName == player1Nickname ? localColor : remoteColor;
-            string colorName = PhotonNetwork.LocalPlayer.NickName == player1Nickname ? "VERDE" : "ROJO";
-            colorIndicatorText.text = $"Eres: <color=#{ColorUtility.ToHtmlStringRGB(playerColor)}>{colorName}</color>";
-        }
+        string colorName = GetColorName(localPlayerColor);
+        colorIndicatorText.text = $"Eres: <color=#{ColorUtility.ToHtmlStringRGB(localPlayerColor)}>{colorName}</color>!";
     }
+    string GetColorName(Color color)
+    {
+        if (color == Color.green) return "Verde";
+        if (color == Color.red) return "Rojo";
+        if (color == Color.blue) return "Azul";
+        if (color == Color.yellow) return "Amarillo";
+        if (color == Color.magenta) return "Magenta";
+        if (color == Color.cyan) return "Cian";
+        if (color == new Color(1f, 0.5f, 0f)) return "Naranja";
+        if (color == new Color(0.5f, 0f, 1f)) return "Violeta";
+        return "Desconocido";
+    }
+
 
     void StartCountdown()
     {
-        if (countdownText == null) return;
-
         gameActive = false;
         gameStarting = true;
         countdownTimer = countdownDuration;
@@ -238,16 +207,9 @@ public class MashButtonManager : MonoBehaviour
         countdownText.transform.localScale = originalCountdownScale;
     }
 
-    void StartShake()
-    {
-        shakeTimer = shakeDuration;
-    }
+    void StartShake() => shakeTimer = shakeDuration;
 
-    [PunRPC]
-    void SyncShake()
-    {
-        StartShake();
-    }
+    [PunRPC] void SyncShake() => StartShake();
 
     void UpdateLocalBattleValue(float delta)
     {
@@ -265,9 +227,9 @@ public class MashButtonManager : MonoBehaviour
     void CheckVictory()
     {
         if (battleValue >= maxValue)
-            EndBattle(isDebugTesting ? "Jugador Arriba" : $"{player1Nickname}", $"{player2Nickname}");
+            EndBattle("Jugador Izq", "Jugador Der");
         else if (battleValue <= -maxValue)
-            EndBattle(isDebugTesting ? "Jugador Abajo" : $"{player2Nickname}", $"{player1Nickname}");
+            EndBattle("Jugador Der", "Jugador Izq");
     }
 
     public void StartBattle()
@@ -275,35 +237,14 @@ public class MashButtonManager : MonoBehaviour
         battleValue = 0;
         momentumPlayer1 = 0;
         momentumPlayer2 = 0;
-
-        if (countdownText != null)
-        {
-            originalCountdownScale = countdownText.transform.localScale;
-        }
-
-        if (shakeObject != null)
-        {
-            originalCanvasPosition = shakeObject.localPosition;
-        }
-
-        if (countdownText != null)
-        {
-            originalCountdownScale = countdownText.transform.localScale;
-        }
-
-        if (!isDebugTesting)
-            photonView.RPC(nameof(SyncBattleStart), RpcTarget.All, battleValue);
-        else
-            StartCountdown();
+        photonView.RPC(nameof(SyncBattleStart), RpcTarget.All, battleValue);
     }
 
     [PunRPC]
     void SyncBattleStart(float startValue)
     {
         battleSlider.value = startValue;
-
         StartCountdown();
-
         momentumPlayer1 = 0;
         momentumPlayer2 = 0;
     }
@@ -317,13 +258,7 @@ public class MashButtonManager : MonoBehaviour
             countdownText.text = "FIN";
             countdownText.transform.localScale = originalCountdownScale;
         }
-        Debug.Log("Ganó " + winner);
-
-        if (!isDebugTesting)
-            photonView.RPC(nameof(AnnounceWinner), RpcTarget.All, winner, loser);
-        else
-            AnnounceWinner(winner, loser);
-
+        photonView.RPC(nameof(AnnounceWinner), RpcTarget.All, winner, loser);
     }
 
     [PunRPC]
@@ -331,13 +266,8 @@ public class MashButtonManager : MonoBehaviour
     {
         gameActive = false;
         gameStarting = false;
-        if (countdownText != null)
-        {
-            countdownText.transform.localScale = originalCountdownScale;
-        }
-        Debug.Log("Ganó " + winner);
+        countdownText.transform.localScale = originalCountdownScale;
         this.loser = loser;
         transform.parent.gameObject.SetActive(false);
-
     }
 }
