@@ -382,6 +382,7 @@ MonoBehaviour:
   _maxMotorFrictionTorque: 75
   _motorInertia: 0.1
   _finalGearRatio: 8
+  _pv: {fileID: 0}
 --- !u!114 &6564441387689784170
 MonoBehaviour:
   m_ObjectHideFlags: 0

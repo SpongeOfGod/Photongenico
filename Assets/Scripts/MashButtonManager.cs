@@ -46,6 +46,8 @@ public class MashButtonManager : MonoBehaviour
     public string player1Nickname;
     public string player2Nickname;
     public string loser;
+    public string winner;
+
 
     [Header("Debug")]
     public bool isDebugTesting = false;
@@ -436,6 +438,7 @@ public class MashButtonManager : MonoBehaviour
 
         Debug.Log("Ganó " + winner);
         this.loser = loser;
+        this.winner = winner;
 
         if (transform.parent != null)
             transform.parent.gameObject.SetActive(false);

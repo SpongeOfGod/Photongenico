@@ -212,9 +212,9 @@ public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
 
         bool isdead = currentHealth == 0 ? true : false;
 
+        collision.gameObject.TryGetComponent<PhotonView>(out var photon);
         if (Vector3.Dot(collision.transform.forward, transform.forward) < -0.8) 
         {
-            collision.gameObject.TryGetComponent<PhotonView>(out var photon);
             collision.gameObject.TryGetComponent<CarHealth>(out var health);
 
             GameManager.Instance.InitalizeMashFight(photonView.Owner.NickName, photon.Owner.NickName);
@@ -223,7 +223,7 @@ public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
             otherRb.velocity = Vector3.zero;
             return;
         }
-
+        photon.RPC("MadeDamage", RpcTarget.All, null);
         //collision.gameObject.GetComponent<CarScore>().calculatescore( isdead);
 
 

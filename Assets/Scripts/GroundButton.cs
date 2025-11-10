@@ -38,13 +38,6 @@ public class GroundButton : MonoBehaviourPunCallbacks, IPunObservable
                     pressMode = PressMode.notPressed;
                 break;
         }
-
-        if (Input.GetKeyDown(KeyCode.Space) && debug) 
-        {
-            pressMode = PressMode.pressed;
-            timeSinceLastPressed = Time.time;
-            press = true;
-        }
     }
 
     private void OnTriggerEnter(Collider collision)

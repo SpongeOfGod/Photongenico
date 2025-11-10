@@ -10,7 +10,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     public static GameManager Instance;
     public HUD_Controller HUD_Controller;
 
-    public GameObject leaderUi;
     [SerializeField] GameObject PlayerPrefab;
 
     [SerializeField] ChaseCamera chaseCamera;
@@ -18,6 +17,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] Transform[] spawnpositions;
     [SerializeField] public CrashInfo crashInfo;
     public MashButtonManager mashButtonManager;
+    public LeaderboardManager leaderboardManager;
     [HideInInspector] public GameStates GameState { get; private set; }
 
     public enum GameStates
@@ -123,8 +123,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         float playerscore = player.GetComponent<CarScore>().Score;
         if (ScoreManager.Instance != null)
             ScoreManager.Instance.View.RPC("createscoreprefab", RpcTarget.AllBuffered, playername, playerscore);
-        player.GetComponent<Playerseeleaderbord>().Leaderboard = leaderUi;
-        
 
         player.TryGetComponent(out CarNameSync NameSync);
         if (player != null)

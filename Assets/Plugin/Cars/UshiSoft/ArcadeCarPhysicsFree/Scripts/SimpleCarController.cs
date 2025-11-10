@@ -20,8 +20,9 @@ public class SimpleCarController : CarControllerBase, IPunObservable
 
     private float _motorRPM;
     private bool _reverse;
+    private bool hurtAnotherPlayer;
 
-    private PhotonView _pv;
+    public PhotonView _pv;
 
     public override bool Reverse
     {
@@ -46,9 +47,26 @@ public class SimpleCarController : CarControllerBase, IPunObservable
         _maxMotorBackwardRPM = CalcMotorRPMFromSpeedKPH(_maxBackwardSpeedKPH);
     }
 
+    private void Start()
+    {
+        GameManager.Instance.leaderboardManager.CreateNewItem(this);
+    }
+
     protected void Update()
     {
         UpdateAnimator();
+
+        if (hurtAnotherPlayer) 
+        {
+            GameManager.Instance.leaderboardManager.PhotonView.RPC("AddScore", RpcTarget.All, 10, _pv.Owner.NickName);
+            hurtAnotherPlayer = false;
+        }
+
+        if (GameManager.Instance.mashButtonManager.winner == _pv.Owner.NickName && _pv.IsMine) 
+        {
+            GameManager.Instance.leaderboardManager.PhotonView.RPC("AddScore", RpcTarget.All, 20, _pv.Owner.NickName);
+            GameManager.Instance.mashButtonManager.winner = string.Empty;
+        }
     }
 
     protected override void FixedUpdate()
@@ -62,6 +80,13 @@ public class SimpleCarController : CarControllerBase, IPunObservable
 
         base.FixedUpdate();
         AddDriveTorque();
+    }
+
+    [PunRPC]
+    private void MadeDamage() 
+    {
+        if (_pv.IsMine)
+            hurtAnotherPlayer = true;
     }
 
     private void UpdateAnimator()

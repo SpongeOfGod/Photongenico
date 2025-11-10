@@ -26,6 +26,7 @@ public class RespawnController : MonoBehaviour
         countDownText.text = startTime.ToString();
         GameObject gameobject = carHealth.gameObject;
         HolderUI.SetActive(true);
+        startTime = 3f;
         while (startTime >= 0) 
         {
             startTime -= Time.deltaTime;
