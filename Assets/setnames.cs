@@ -22,6 +22,8 @@ public class setnames : MonoBehaviour
     {
         var temp = 1;
         playername.text = name;
+
+        Debug.Log(playername.text);
         playname = name;
         score.text = number.ToString();
         scorenum = number;

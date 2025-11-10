@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public GameObject leaderUi;
     [SerializeField] GameObject PlayerPrefab;
-    [SerializeField] ladderboard leaderboard;
+
     [SerializeField] ChaseCamera chaseCamera;
     [SerializeField] LobbyUIController LobbyUIController;
     [SerializeField] Transform[] spawnpositions;

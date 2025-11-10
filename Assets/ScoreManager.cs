@@ -55,7 +55,7 @@ public class ScoreManager : MonoBehaviourPunCallbacks
         {
             Scores[i].GetComponent<setnames>().Oninstance(playerName, number);
 
-            Scores[i].name = playerName;
+            Scores[i].gameObject.name = playerName;
         }
 
 
