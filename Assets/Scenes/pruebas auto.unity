@@ -4587,9 +4587,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cars:
   - {fileID: 6564441387689784171, guid: 049c2fc757d74724b97e5f15f18d527b, type: 3}
-  - {fileID: 1132797446414550, guid: 58b5a3e507c7b68449674674e18cab44, type: 3}
-  - {fileID: 3660867207402653686, guid: 30a40bfb9d56e854eb85b619a5bb18b7, type: 3}
-  - {fileID: 2729041284907094165, guid: 65ae5932ce6918847a5a51081c5dc748, type: 3}
+  - {fileID: 6564441387689784171, guid: bc5b0f67c49369b4da567ea2f242cece, type: 3}
+  - {fileID: 6564441387689784171, guid: bc5b0f67c49369b4da567ea2f242cece, type: 3}
   CarToSelect: {fileID: 0}
   SceneToLoad: pruebas auto
 --- !u!4 &1289252783
@@ -6666,7 +6665,6 @@ MonoBehaviour:
   HUD_Controller: {fileID: 1437719885}
   leaderUi: {fileID: 276340316}
   PlayerPrefab: {fileID: 1132797446414550, guid: 58b5a3e507c7b68449674674e18cab44, type: 3}
-  leaderboard: {fileID: 0}
   chaseCamera: {fileID: 126317459}
   LobbyUIController: {fileID: 1029794612}
   spawnpositions:

@@ -135,25 +135,36 @@ public class CarHealth : MonoBehaviourPunCallbacks, IPunObservable
 
     private IEnumerator FlashHitMaterial()
     {
-        MeshRenderer[] renderers = GetComponentsInChildren<MeshRenderer>();
-        Material[][] originalMaterials = new Material[renderers.Length][];
+        var meshRenderers = new List<Renderer>();
 
-        for (int i = 0; i < renderers.Length; i++)
+        meshRenderers.AddRange(GetComponentsInChildren<MeshRenderer>(includeInactive: false));
+        meshRenderers.AddRange(GetComponentsInChildren<SkinnedMeshRenderer>(includeInactive: false));
+
+        meshRenderers = meshRenderers.FindAll(r => r.enabled && r.gameObject.activeInHierarchy);
+
+        if (meshRenderers.Count == 0)
+            yield break;
+
+        Material[][] originalMaterials = new Material[meshRenderers.Count][];
+
+        for (int i = 0; i < meshRenderers.Count; i++)
         {
-            originalMaterials[i] = renderers[i].materials;
-            Material[] newMats = new Material[renderers[i].materials.Length];
+            originalMaterials[i] = meshRenderers[i].materials;
+            Material[] newMats = new Material[meshRenderers[i].materials.Length];
             for (int j = 0; j < newMats.Length; j++)
                 newMats[j] = hitMaterial;
-            renderers[i].materials = newMats;
+            meshRenderers[i].materials = newMats;
         }
 
         yield return new WaitForSeconds(hitDuration);
 
-        for (int i = 0; i < renderers.Length; i++)
+        for (int i = 0; i < meshRenderers.Count; i++)
         {
-            renderers[i].materials = originalMaterials[i];
+            if (meshRenderers[i] != null)
+                meshRenderers[i].materials = originalMaterials[i];
         }
     }
+
 
     [PunRPC]
     private void Die()

@@ -936,6 +936,7 @@ MonoBehaviour:
   - {fileID: 23293741647572384}
   Collider: {fileID: 7460666274088437742}
   textName: {fileID: 907661812343153581}
+  explosionForce: 900000
 --- !u!114 &7091132820402161521
 MonoBehaviour:
   m_ObjectHideFlags: 0
