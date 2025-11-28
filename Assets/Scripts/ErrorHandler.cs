@@ -9,7 +9,7 @@ public class ErrorHandler : MonoBehaviourPunCallbacks
     public static ErrorHandler Instance;
     public LobbyMenu LobbyMenu;
     public Transform ErrorTextHolder;
-    public TextMeshProUGUI PrefabText;
+    public TextVisualEffects PrefabText;
 
     private void Awake()
     {
@@ -21,7 +21,7 @@ public class ErrorHandler : MonoBehaviourPunCallbacks
     public void HandleErrorMessage(string message)
     {
         var prefab = Instantiate(PrefabText, ErrorTextHolder);
-        prefab.text = message;
+        prefab.Text.text = message;
         prefab.gameObject.SetActive(true);
         LobbyMenu.ResetMenu();
     }

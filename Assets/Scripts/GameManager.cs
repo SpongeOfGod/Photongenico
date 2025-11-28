@@ -18,7 +18,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] public CrashInfo crashInfo;
     public MashButtonManager mashButtonManager;
     public InGameLeaderboardManager leaderboardManager;
+    public DisconnectFeedback DisconnectFeedback;
     [HideInInspector] public GameStates GameState { get; private set; }
+    bool LocalIsMasterClient;
 
     public enum GameStates
     {
@@ -73,8 +75,13 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient) 
+        {
+            LocalIsMasterClient = true;
             OnJoinedRoom();
+        }
+        else
+            LocalIsMasterClient = false;
     }
 
     public Vector3 GetRandomSpawn() => spawnpositions[Random.Range(0, spawnpositions.Length - 1)].position;
@@ -86,10 +93,18 @@ public class GameManager : MonoBehaviourPunCallbacks
             ChangeState(GameStates.Startup);
             LobbyUIController.photonView.RPC("ReturnToStartup", RpcTarget.All);
         }
+
+        if (PhotonNetwork.IsMasterClient && !LocalIsMasterClient) 
+        {
+            LocalIsMasterClient = true;
+            DisconnectFeedback.AddFeedback("Ahora eres el Master Client.");
+        }
     }
 
     public void LeaveRoom()
     {
+        var nickname = PhotonNetwork.LocalPlayer.NickName;
+        DisconnectFeedback.PhotonView.RPC("AddFeedback", RpcTarget.Others, $"\"{nickname}\" se ha ido del lobby.");
         PhotonNetwork.LeaveRoom(this);
     }
 
@@ -103,6 +118,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         crash.SetMessage(cause.ToString());
 
+        DisconnectFeedback.PhotonView.RPC("AddFeedback", RpcTarget.All, cause.ToString());
+
         DontDestroyOnLoad(crash);
     }
     public void InstantiatePlayerCar(GameObject prefab)
@@ -113,6 +130,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         base.OnPlayerEnteredRoom(newPlayer);
+        DisconnectFeedback.AddFeedback($"El jugador {newPlayer.NickName} ha entrado a la sala.");
         Debug.Log($"Player: {newPlayer.NickName} entered the room!");
     }
 

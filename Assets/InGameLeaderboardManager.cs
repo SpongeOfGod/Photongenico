@@ -47,7 +47,7 @@ public class InGameLeaderboardManager : MonoBehaviour
         List<InGameLeaderboardItem> items = new();
 
         for (int i = 0; i < keys.Length; i++)
-            if (PlayerScores[keys[i]].gameObject.activeSelf)
+            if (PlayerScores[keys[i]] != null && PlayerScores[keys[i]].gameObject.activeSelf)
                 items.Add(PlayerScores[keys[i]]);
 
         if (items != null)

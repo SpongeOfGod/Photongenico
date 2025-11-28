@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class NameRegister
 {
+    public static bool NameRegistered;
     public void SetLeaderboardName(string name) => 
         LootLockerSDKManager.SetPlayerName(name, 
             response =>
@@ -12,6 +13,7 @@ public class NameRegister
                 else 
                 {
                     Debug.Log($"The name \"{name}\" was succesfully set!");
+                    NameRegistered = true;
                     SessionLootLocker.identifier = name;
                 }
             });

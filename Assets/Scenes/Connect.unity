@@ -2987,7 +2987,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LobbyMenu: {fileID: 1657401298}
   ErrorTextHolder: {fileID: 1567399608}
-  PrefabText: {fileID: 8446194765342090399, guid: 8875af38846049a4896ca77a501e42c8, type: 3}
+  PrefabText: {fileID: 730712520634642320, guid: e170572d5dec4804cacb9e04f254bc82, type: 3}
 --- !u!4 &714287662
 Transform:
   m_ObjectHideFlags: 0
