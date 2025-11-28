@@ -22,7 +22,7 @@ public class Wheel : MonoBehaviour, IPunObservable
     [SerializeField, Min(0.001f)] private float _radius = 0.3f;
     [SerializeField] private float _width = 0.2f;
 
-    [SerializeField, Range(-45f, 45f)] private float _camberAngle = 0f;
+    [SerializeField, Range(-360f, 360f)] private float _camberAngle = 0f;
 
     [SerializeField] private float _groundOffset = 0f;
 

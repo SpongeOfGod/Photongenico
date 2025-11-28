@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] Transform[] spawnpositions;
     [SerializeField] public CrashInfo crashInfo;
     public MashButtonManager mashButtonManager;
-    public LeaderboardManager leaderboardManager;
+    public InGameLeaderboardManager leaderboardManager;
     [HideInInspector] public GameStates GameState { get; private set; }
 
     public enum GameStates

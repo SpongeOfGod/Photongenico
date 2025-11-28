@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class LobbyMenu : MonoBehaviour
 {
-    public enum MenuState { Nickname, ServerInfo }
+    public enum MenuState { Nickname, ServerInfo, Leaderboard }
     [HideInInspector] public MenuState state;
 
     [Header("Windows")]
@@ -26,21 +26,43 @@ public class LobbyMenu : MonoBehaviour
     public Button buttonJoinLobby;
     public Button CreateButton;
     public Button GoBack;
+    public Button GoBackFromLeaderboard;
+    public Button GoToLeaderboard;
 
     [Header("Error Handler")]
     public ErrorHandler ErrorHandler;
 
     [Header("Lobby Manager")]
     public LobbyManager LobbyManager;
+
+    [Header("Lootlocker")]
+    NameRegister nameRegister;
+
+    [Header("Leaderboard")]
+    public Transform Holder;
+    public GlobalLeaderboardController LeaderboardController;
     void Start()
     {
+        nameRegister = new NameRegister();
         CreateLobbyField.onValueChanged.AddListener(CheckCreateLobby);
         JoinLobbyField.onValueChanged.AddListener(CheckLoadLobby);
         PlayerName.onValueChanged.AddListener(CheckName);
-        StartButton.onClick.AddListener(() => SwitchState(MenuState.ServerInfo));
+        StartButton.onClick.AddListener(() => 
+        {
+            nameRegister.SetLeaderboardName(LobbyManager.Nickname);
+            SwitchState(MenuState.ServerInfo);
+
+            if (SessionLootLocker.identifier != LobbyManager.Nickname) 
+            {
+                SessionLootLocker.identifier = LobbyManager.Nickname;
+                SessionLootLocker.instance.Initialize();
+            }
+        } );
         buttonJoinLobby.onClick.AddListener(JoinLobby);
         CreateButton.onClick.AddListener(CreateLobby);
         GoBack.onClick.AddListener(() => SwitchState(MenuState.Nickname));
+        GoBackFromLeaderboard.onClick.AddListener(() => SwitchState(MenuState.ServerInfo));
+        GoToLeaderboard.onClick.AddListener(() => SwitchState(MenuState.Leaderboard));
     }
     public void ResetMenu()
     {
@@ -128,12 +150,21 @@ public class LobbyMenu : MonoBehaviour
         {
             case MenuState.Nickname:
                 ServerInfoWindow.gameObject.SetActive(false);
+                Holder.gameObject.SetActive(false);
                 NicknameWindow.gameObject.SetActive(true);
                 break;
 
             case MenuState.ServerInfo:
                 NicknameWindow.gameObject.SetActive(false);
+                Holder.gameObject.SetActive(false);
                 ServerInfoWindow.gameObject.SetActive(true);
+                break;
+
+            case MenuState.Leaderboard:
+                LeaderboardController.Refresh();
+                NicknameWindow.gameObject.SetActive(false);
+                ServerInfoWindow.gameObject.SetActive(false);
+                Holder.gameObject.SetActive(true);
                 break;
         }
     }

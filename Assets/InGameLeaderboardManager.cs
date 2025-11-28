@@ -4,19 +4,19 @@ using UnityEngine;
 using Photon.Pun;
 using System.Linq;
 
-public class LeaderboardManager : MonoBehaviour
+public class InGameLeaderboardManager : MonoBehaviour
 {
     public GameObject LeaderBoardPrefab;
     public Transform ScoreHolder;
     public GameObject VisualHolder;
-    public Dictionary<string, LeaderboardItem> PlayerScores = new();
+    public Dictionary<string, InGameLeaderboardItem> PlayerScores = new();
     public PhotonView PhotonView;
 
     public void CreateNewItem(SimpleCarController carController) 
     {
         var gameObj = PhotonNetwork.Instantiate(LeaderBoardPrefab.name, Vector3.zero, Quaternion.identity);
         gameObj.transform.SetParent(ScoreHolder);
-        gameObj.TryGetComponent<LeaderboardItem>(out var item);
+        gameObj.TryGetComponent<InGameLeaderboardItem>(out var item);
         gameObj.transform.localScale = Vector3.one;
         item.carController = carController;
 
@@ -29,6 +29,9 @@ public class LeaderboardManager : MonoBehaviour
     public void AddScore(int score, string nickname) 
     {
         PlayerScores[nickname].score += score;
+
+        if (PhotonNetwork.LocalPlayer.NickName == nickname)
+            GlobalScoreSubmitter.SubmitScore(PlayerScores[nickname].score, "global_leaderboard");
     }
 
     private void Update()
@@ -41,7 +44,7 @@ public class LeaderboardManager : MonoBehaviour
         var keys = PlayerScores.Keys.ToArray();
         bool swap = true;
 
-        List<LeaderboardItem> items = new();
+        List<InGameLeaderboardItem> items = new();
 
         for (int i = 0; i < keys.Length; i++)
             if (PlayerScores[keys[i]].gameObject.activeSelf)

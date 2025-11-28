@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class LeaderboardItem : MonoBehaviourPunCallbacks, IPunObservable
+public class InGameLeaderboardItem : MonoBehaviourPunCallbacks, IPunObservable
 {
     public int score = 0;
     public SimpleCarController carController;

@@ -269,7 +269,7 @@ MonoBehaviour:
   _queryTriggerInteraction: 1
   _suspensionStroke: 0.1
   _suspensionSpring: 40000
-  _suspensionDamper: 2000
+  _suspensionDamper: 20000
   _radius: 0.3
   _width: 1
   _camberAngle: 0
@@ -630,7 +630,7 @@ MonoBehaviour:
   _queryTriggerInteraction: 1
   _suspensionStroke: 0.1
   _suspensionSpring: 40000
-  _suspensionDamper: 2000
+  _suspensionDamper: 20000
   _radius: 0.3
   _width: 1
   _camberAngle: 0
@@ -688,7 +688,7 @@ MonoBehaviour:
   _queryTriggerInteraction: 1
   _suspensionStroke: 0.1
   _suspensionSpring: 40000
-  _suspensionDamper: 2000
+  _suspensionDamper: 20000
   _radius: 0.3
   _width: 1
   _camberAngle: 0
@@ -746,7 +746,7 @@ MonoBehaviour:
   _queryTriggerInteraction: 1
   _suspensionStroke: 0.1
   _suspensionSpring: 40000
-  _suspensionDamper: 2000
+  _suspensionDamper: 20000
   _radius: 0.3
   _width: 1
   _camberAngle: 0
