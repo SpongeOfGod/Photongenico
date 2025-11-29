@@ -123,10 +123,10 @@ public class CarController : MonoBehaviour
     }
       void restartRotation()
         {
-            if (Input.GetKeyDown(KeyCode.LeftShift) && Physics.Raycast( upray.position,upray.up,drivable))
+            if (Physics.Raycast( upray.position,upray.up,drivable))
             {
                 transform.rotation = Quaternion.identity;
-        }
+            }
       }
     void CheckGround()
     {

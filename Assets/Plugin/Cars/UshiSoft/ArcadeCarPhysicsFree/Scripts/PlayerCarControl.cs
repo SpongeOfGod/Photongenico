@@ -22,6 +22,10 @@ public class PlayerCarControl : DriverBase
 
     [SerializeField] private bool _enableVirtualPad = true;
 
+    [SerializeField] private Transform upray;
+
+    [SerializeField] private LayerMask drivable;
+
     private PhotonView _photonView;
 
     public bool SteerLimitByFriction { get => _steerLimitByFriction; set => _steerLimitByFriction = value; }
@@ -40,6 +44,7 @@ public class PlayerCarControl : DriverBase
 
         UpdateSteerInput();
         UpdateThrottleAndBrakeInput();
+        restartRotation();
     }
 
     protected override void Stop()
@@ -60,6 +65,15 @@ public class PlayerCarControl : DriverBase
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) return 1f;
         return 0f;
     }
+
+    private  void restartRotation()
+        {
+            if (Physics.Raycast( upray.position,upray.up,drivable))
+            {
+                transform.rotation = Quaternion.identity;
+                Debug.Log("roto");
+            }
+      }
 
     private float GetRawThrottleInput()
     {

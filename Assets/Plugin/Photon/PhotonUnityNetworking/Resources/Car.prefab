@@ -32,7 +32,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6564441387689784175}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -216,8 +216,39 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6564441387689784175}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!1 &4331138803588399568
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8261248033741122709}
+  m_Layer: 0
+  m_Name: Upray
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8261248033741122709
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4331138803588399568}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.42, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 0.4}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6564441387689784175}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6564441387629008707
 GameObject:
   m_ObjectHideFlags: 0
@@ -319,6 +350,7 @@ Transform:
   - {fileID: 6564441388296349720}
   - {fileID: 6564441388048501143}
   - {fileID: 6564441387629008706}
+  - {fileID: 8261248033741122709}
   - {fileID: 233293782879105596}
   - {fileID: 6564441389344696605}
   - {fileID: 1876926697465107658}
@@ -406,6 +438,10 @@ MonoBehaviour:
   _autoShiftToReverse: 1
   _switchToReverseSpeedKPH: 1
   _enableVirtualPad: 1
+  upray: {fileID: 8261248033741122709}
+  drivable:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!114 &4716586590261903063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -725,7 +761,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6564441387689784175}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6564441389344696604
 MonoBehaviour:
@@ -1498,7 +1534,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8702246673366071629, guid: 936398ea95533fb41a72fab57a248d89, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8702246673366071629, guid: 936398ea95533fb41a72fab57a248d89, type: 3}
       propertyPath: m_LocalScale.z
