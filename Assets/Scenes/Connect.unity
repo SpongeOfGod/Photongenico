@@ -7284,7 +7284,7 @@ MonoBehaviour:
   IndexNames: 0
   PossibleLevels:
   - Level1
-  - Level2
+  - Nivel2
   LevelSelectedUI: {fileID: 764134855}
   LevelSelected: Level1
   ErrorHandler: {fileID: 714287661}
