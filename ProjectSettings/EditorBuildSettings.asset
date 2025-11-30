@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Connect.unity
     guid: 7e95c331fcd2d284b95fb9da44d75745
   - enabled: 1
-    path: Assets/Scenes/pruebas auto.unity
+    path: Assets/Scenes/Level2.unity
     guid: 1dc9e62a6f9430f42b494fc4705a7191
+  - enabled: 1
+    path: Assets/Scenes/Level1.unity
+    guid: ff6258a681cee774b9058e3b13781a66
   m_configObjects: {}

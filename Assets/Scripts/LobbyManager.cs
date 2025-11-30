@@ -85,7 +85,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log(PhotonNetwork.CurrentRoom.Name);
-        SceneManager.LoadScene(SceneToload);
+        if (PhotonNetwork.IsMasterClient)
+            PhotonNetwork.LoadLevel(LobbyMenu.LevelSelected);
     }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,6 +29,14 @@ public class LobbyMenu : MonoBehaviour
     public Button GoBack;
     public Button GoBackFromLeaderboard;
     public Button GoToLeaderboard;
+
+    [Header("Buttons")]
+    public Button ChangeLevelUp;
+    public Button ChangeLevelDown;
+    public int IndexNames;
+    public List<string> PossibleLevels;
+    public TextMeshProUGUI LevelSelectedUI;
+    public string LevelSelected;
 
     [Header("Error Handler")]
     public ErrorHandler ErrorHandler;
@@ -168,7 +177,19 @@ public class LobbyMenu : MonoBehaviour
                 break;
         }
     }
+    public void ChangSelectedLevel(int value)
+    {
+        if (value > 0 && IndexNames + value < PossibleLevels.Count) 
+            IndexNames += value;
+        else if (value < 0 && IndexNames - value >= 0)
+            IndexNames += value;
 
+        ChangeLevelUp.gameObject.SetActive(IndexNames < PossibleLevels.Count - 1);
+        ChangeLevelDown.gameObject.SetActive(IndexNames > 0);
+
+        LevelSelectedUI.text = PossibleLevels[IndexNames];
+        LevelSelected = PossibleLevels[IndexNames];
+    }
 
     public void ChangeMaxPlayersValue(int value)
     {
