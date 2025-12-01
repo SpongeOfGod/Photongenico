@@ -32,6 +32,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.UseRpcMonoBehaviourCache = true;
         PhotonNetwork.ConnectUsingSettings();
+        LobbyMenu.LoadingString("Conectando...");
     }
 
     public override void OnConnectedToMaster()
@@ -41,6 +42,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinLobby(TypedLobby.Default);
 
         LobbyMenu.TurnOnButton();
+        LobbyMenu.LoadingString("¡Conectado!");
     }
 
     public override void OnJoinedLobby() => isInLobby = true;
@@ -87,6 +89,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         Debug.Log(PhotonNetwork.CurrentRoom.Name);
         if (PhotonNetwork.IsMasterClient)
             PhotonNetwork.LoadLevel(LobbyMenu.LevelSelected);
+
+        LobbyMenu.LoadingScreen();
     }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {

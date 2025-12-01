@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -16,6 +17,7 @@ public class LobbyMenu : MonoBehaviour
     public TextMeshProUGUI LobbyStatus;
     public TextMeshProUGUI PlayingAsName;
     public TextMeshProUGUI MaxPlayersText;
+    public TextMeshProUGUI TextLoadingName;
     public TMP_InputField CreateLobbyField;
     public TMP_InputField JoinLobbyField;
     public TMP_InputField PlayerName;
@@ -30,13 +32,16 @@ public class LobbyMenu : MonoBehaviour
     public Button GoBackFromLeaderboard;
     public Button GoToLeaderboard;
 
-    [Header("Buttons")]
+    [Header("LevelSelect")]
     public Button ChangeLevelUp;
     public Button ChangeLevelDown;
     public int IndexNames;
     public List<string> PossibleLevels;
     public TextMeshProUGUI LevelSelectedUI;
     public string LevelSelected;
+
+    [Header("LoadingScreen")]
+    public GameObject LoadingScreenObject;
 
     [Header("Error Handler")]
     public ErrorHandler ErrorHandler;
@@ -50,6 +55,8 @@ public class LobbyMenu : MonoBehaviour
     [Header("Leaderboard")]
     public Transform Holder;
     public GlobalLeaderboardController LeaderboardController;
+
+    private bool loadingName = false;
     void Start()
     {
         nameRegister = new NameRegister();
@@ -59,13 +66,12 @@ public class LobbyMenu : MonoBehaviour
         PlayerName.onValueChanged.AddListener(CheckName);
         StartButton.onClick.AddListener(() => 
         {
-            nameRegister.SetLeaderboardName(LobbyManager.Nickname);
-            SwitchState(MenuState.ServerInfo);
-
-            if (SessionLootLocker.identifier != LobbyManager.Nickname) 
+            if (!loadingName) 
             {
-                SessionLootLocker.identifier = LobbyManager.Nickname;
-                SessionLootLocker.instance.Initialize();
+                loadingName = true;
+                LoadingString("Registrando nombre...");
+                nameRegister.SetLeaderboardName(LobbyManager.Nickname);
+                StartCoroutine(LoadingName());
             }
         } );
         buttonJoinLobby.onClick.AddListener(JoinLobby);
@@ -79,6 +85,25 @@ public class LobbyMenu : MonoBehaviour
         CreateButton.gameObject.SetActive(true);
         CreateLobbyField.gameObject.SetActive(true);
         PlayerName.gameObject.SetActive(true);
+    }
+
+    IEnumerator LoadingName() 
+    {
+        while (!NameRegister.NameRegistered)
+            yield return null;
+
+        SessionLootLocker.instance.Initialize();
+
+        while (!SessionLootLocker.SessionInitialized)
+            yield return null;
+
+        SwitchState(MenuState.ServerInfo);
+
+    }
+
+    public void LoadingScreen() 
+    {
+        LoadingScreenObject.SetActive(true);
     }
 
     public void TurnOffMenu()
@@ -152,6 +177,11 @@ public class LobbyMenu : MonoBehaviour
         }
     }
 
+    public void LoadingString(string nameText) 
+    {
+        TextLoadingName.text = nameText;
+    }
+
     public void SwitchState(MenuState newState)
     {
         state = newState;
@@ -159,6 +189,7 @@ public class LobbyMenu : MonoBehaviour
         switch (state)
         {
             case MenuState.Nickname:
+                loadingName = false;
                 ServerInfoWindow.gameObject.SetActive(false);
                 Holder.gameObject.SetActive(false);
                 NicknameWindow.gameObject.SetActive(true);

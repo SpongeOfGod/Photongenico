@@ -7,6 +7,7 @@ using Photon.Realtime;
 public class LobbyUIController : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI CurrentPlayersOnRoom;
+    [SerializeField] TextMeshProUGUI StateType;
     [SerializeField] Button StartGameButton;
     [SerializeField] RoomOptions RoomOptions;
     public GameObject HUD;
@@ -25,13 +26,20 @@ public class LobbyUIController : MonoBehaviour
             CurrentPlayersOnRoom.text = $"Players: {currentNumberOfPlayers} / {PhotonNetwork.CurrentRoom.MaxPlayers}";
         }
 
-        if (PhotonNetwork.IsMasterClient) 
+        if (PhotonNetwork.IsMasterClient)
         {
             StartGameButton.interactable = PhotonNetwork.CurrentRoom.PlayerCount >= 2;
 
             if (!StartGameButton.gameObject.activeSelf)
                 StartGameButton.gameObject.SetActive(true);
+
+            StateType.text = PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers ? "Max number of players reached" : "Waiting for players";
         }
+        else
+        {
+            StateType.text = "Waiting for Master to start";
+        }
+
     }
     private void CallRPCStarGame() 
     {
@@ -59,6 +67,5 @@ public class LobbyUIController : MonoBehaviour
             StartGameButton.transform.parent.gameObject.SetActive(true);
 
         SoundManager.Instance.SetStartmusic();
-        HUD.SetActive(false);
     }
 }

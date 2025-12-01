@@ -4,7 +4,9 @@ using UnityEngine;
 public class NameRegister
 {
     public static bool NameRegistered;
-    public void SetLeaderboardName(string name) => 
+    public void SetLeaderboardName(string name)
+    {
+        NameRegistered = false;
         LootLockerSDKManager.SetPlayerName(name, 
             response =>
             {
@@ -17,4 +19,5 @@ public class NameRegister
                     SessionLootLocker.identifier = name;
                 }
             });
+    } 
 }

@@ -27,6 +27,7 @@ public class SessionLootLocker : MonoBehaviour
     IEnumerator StartGuestSession() 
     {
         bool done = false;
+        SessionInitialized = false;
 
         LootLockerSDKManager.StartGuestSession(identifier,
             response =>
