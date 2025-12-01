@@ -10,8 +10,11 @@ public class NameRegister
         LootLockerSDKManager.SetPlayerName(name, 
             response =>
             {
-                if (!response.success)
+                if (!response.success) 
+                {
+                    Debug.Log(response.errorData.message.ToString());
                     Debug.LogError("Error while trying to set name.");
+                }
                 else 
                 {
                     Debug.Log($"The name \"{name}\" was succesfully set!");

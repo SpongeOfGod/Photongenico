@@ -29,6 +29,8 @@ public class SessionLootLocker : MonoBehaviour
         bool done = false;
         SessionInitialized = false;
 
+        identifier = (UnityEngine.Random.Range(100000, 999999) * DateTime.Now.Millisecond).ToString();
+
         LootLockerSDKManager.StartGuestSession(identifier,
             response =>
             {

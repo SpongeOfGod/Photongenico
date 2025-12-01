@@ -70,7 +70,6 @@ public class LobbyMenu : MonoBehaviour
             {
                 loadingName = true;
                 LoadingString("Registrando nombre...");
-                nameRegister.SetLeaderboardName(LobbyManager.Nickname);
                 StartCoroutine(LoadingName());
             }
         } );
@@ -89,13 +88,16 @@ public class LobbyMenu : MonoBehaviour
 
     IEnumerator LoadingName() 
     {
-        while (!NameRegister.NameRegistered)
-            yield return null;
-
         SessionLootLocker.instance.Initialize();
 
         while (!SessionLootLocker.SessionInitialized)
             yield return null;
+
+        nameRegister.SetLeaderboardName(LobbyManager.Nickname);
+
+        while (!NameRegister.NameRegistered)
+            yield return null;
+
 
         SwitchState(MenuState.ServerInfo);
 
