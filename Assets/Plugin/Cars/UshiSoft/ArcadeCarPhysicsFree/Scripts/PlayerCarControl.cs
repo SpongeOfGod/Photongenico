@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using Photon.Pun;
+using System.Collections;
+using System.Threading;
 
 [DisallowMultipleComponent]
 [RequireComponent(typeof(PhotonView))]
@@ -27,6 +29,9 @@ public class PlayerCarControl : DriverBase
     [SerializeField] private LayerMask drivable;
 
     private PhotonView _photonView;
+    private bool IsRotating;
+    public float timeToRotate = 0.75f;
+    private float Timer;
 
     public bool SteerLimitByFriction { get => _steerLimitByFriction; set => _steerLimitByFriction = value; }
     public bool AutoSwitchToReverse { get => _autoShiftToReverse; set => _autoShiftToReverse = value; }
@@ -40,7 +45,7 @@ public class PlayerCarControl : DriverBase
 
     protected override void Drive()
     {
-        if (!_photonView.IsMine) return;
+        if (!_photonView.IsMine || IsRotating) return;
 
         UpdateSteerInput();
         UpdateThrottleAndBrakeInput();
@@ -67,13 +72,41 @@ public class PlayerCarControl : DriverBase
     }
 
     private  void restartRotation()
+    {
+        Debug.Log($"{transform.eulerAngles}");
+
+        if ((transform.eulerAngles.x > 260 && transform.eulerAngles.x < 280))
+            Timer += Time.deltaTime;
+
+        if (!IsRotating && (Timer > 1))
         {
-            if (Physics.Raycast( upray.position,upray.up,drivable))
-            {
-                transform.rotation = Quaternion.identity;
-                Debug.Log("roto");
-            }
-      }
+            Timer = 0;
+            Debug.Log("Rotating");
+            IsRotating = true;
+            StartCoroutine(RotatingPlayer());
+        }
+    }
+
+    private IEnumerator RotatingPlayer() 
+    {
+        float elapsedTime = 0;
+        Vector3 initialRotation = transform.rotation.eulerAngles;
+        Vector3 endRotation = initialRotation;
+        endRotation.x = 0f;
+        endRotation.z = 0f;
+        endRotation.y = 0f;
+
+        while (elapsedTime < timeToRotate) 
+        {
+            elapsedTime += Time.deltaTime;
+            var t = elapsedTime / timeToRotate;
+            transform.eulerAngles = Vector3.Lerp(initialRotation, endRotation, t);
+            yield return null;
+        }
+
+        transform.eulerAngles = endRotation;
+        IsRotating = false;
+    }
 
     private float GetRawThrottleInput()
     {

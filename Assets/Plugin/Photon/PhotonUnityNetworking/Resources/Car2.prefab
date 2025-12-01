@@ -1451,6 +1451,7 @@ MonoBehaviour:
   drivable:
     serializedVersion: 2
     m_Bits: 64
+  timeToRotate: 0.75
 --- !u!114 &4716586590261903063
 MonoBehaviour:
   m_ObjectHideFlags: 0
