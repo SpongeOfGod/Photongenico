@@ -82,6 +82,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
         else
             LocalIsMasterClient = false;
+
+           SoundManager.Instance.SetStartmusic(); 
     }
 
     public Vector3 GetRandomSpawn() => spawnpositions[Random.Range(0, spawnpositions.Length - 1)].position;
