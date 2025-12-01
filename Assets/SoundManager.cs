@@ -6,11 +6,11 @@ public class SoundManager : MonoBehaviour
 {
     // Start is called before the first frame update
     
-    public AudioSource source;
+    public AudioSource Source;
     public static SoundManager Instance;
 
-    public AudioClip round;
-
+    public AudioClip Round; 
+    public AudioClip StartUp;
    
     private void Awake()
     {
@@ -26,7 +26,16 @@ public class SoundManager : MonoBehaviour
 
     public void SetRoundMusic()
     {
-        source.clip = round;
-        source.Play();
+        Source.Stop();
+        Source.clip = Round;
+        Source.Play();
+    }
+
+
+    public void SetStartmusic()
+    {
+        Source.Stop();
+        Source.clip = StartUp;
+        Source.Play();
     }
 }

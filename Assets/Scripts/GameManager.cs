@@ -91,6 +91,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.CurrentRoom != null && PhotonNetwork.CurrentRoom.PlayerCount < 2 && GameState != GameStates.Startup && PhotonNetwork.IsMasterClient)
         {
             ChangeState(GameStates.Startup);
+            SoundManager.Instance.SetStartmusic();
             LobbyUIController.photonView.RPC("ReturnToStartup", RpcTarget.All);
         }
 
