@@ -45,6 +45,7 @@ public class LobbyUIController : MonoBehaviour
             PhotonNetwork.CurrentRoom.IsOpen = false;
         StartGameButton.transform.parent.gameObject.SetActive(false);
         GameManager.Instance.ChangeState(GameManager.GameStates.InRound);
+        SoundManager.Instance.SetRoundMusic();
         HUD.SetActive(true);
     }
 
