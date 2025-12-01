@@ -53,6 +53,7 @@ public class LobbyMenu : MonoBehaviour
     void Start()
     {
         nameRegister = new NameRegister();
+        LevelSelectedUI.text = PossibleLevels[IndexNames];
         CreateLobbyField.onValueChanged.AddListener(CheckCreateLobby);
         JoinLobbyField.onValueChanged.AddListener(CheckLoadLobby);
         PlayerName.onValueChanged.AddListener(CheckName);

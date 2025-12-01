@@ -103,9 +103,13 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void LeaveRoom()
     {
-        var nickname = PhotonNetwork.LocalPlayer.NickName;
-        DisconnectFeedback.PhotonView.RPC("AddFeedback", RpcTarget.Others, $"\"{nickname}\" se ha ido del lobby.");
         PhotonNetwork.LeaveRoom(this);
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        var nickname = otherPlayer.NickName;
+        DisconnectFeedback.AddFeedback($"\"{nickname}\" se ha ido del lobby.");
     }
 
     public override void OnLeftRoom()

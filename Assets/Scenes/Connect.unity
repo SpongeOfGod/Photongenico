@@ -7283,10 +7283,11 @@ MonoBehaviour:
   ChangeLevelDown: {fileID: 835296123}
   IndexNames: 0
   PossibleLevels:
-  - Level1
+  - Nivel1
   - Nivel2
+  - Nivel3
   LevelSelectedUI: {fileID: 764134855}
-  LevelSelected: Level1
+  LevelSelected: Nivel1
   ErrorHandler: {fileID: 714287661}
   LobbyManager: {fileID: 1144296721}
   Holder: {fileID: 939151996}

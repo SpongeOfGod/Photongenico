@@ -57,6 +57,8 @@ public class LobbyUIController : MonoBehaviour
 
         if (PhotonNetwork.IsMasterClient)
             StartGameButton.transform.parent.gameObject.SetActive(true);
+
+        SoundManager.Instance.source.Stop();
         HUD.SetActive(false);
     }
 }
